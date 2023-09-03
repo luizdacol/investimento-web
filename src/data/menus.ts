@@ -18,50 +18,22 @@ export type menu = {
 
 const initMenu: menu[] = [
   {
-    label: "Dashboard",
+    label: "Carteira",
     path: "/",
     icon: faTachometer,
   },
   {
-    label: 'Halaman'
+    label: 'Ativos'
   },
   {
-    label: "Blank",
-    path: "/blank",
+    label: "Ações",
+    path: "/acoes",
     icon: faPage4,
   },
   {
-    label: "404",
-    path: "/404",
+    label: "FII",
+    path: "/fundos-imobiliario",
     icon: faNotdef,
-  },
-  
-  {
-    label: 'Tabel dan Form'
-  },
-  {
-    label: "Form",
-    path: "/form",
-    icon: faWindows,
-  },
-  {
-    label: "Tabel",
-    path: "/table",
-    icon: faTable,
-  },
-
-  {
-    label: 'Otentikasi'
-  },
-  {
-    label: "Login",
-    path: "/auth/login",
-    icon: faLock,
-  },
-  {
-    label: "Register",
-    path: "/auth/register",
-    icon: faNoteSticky,
   },
 ];
 
