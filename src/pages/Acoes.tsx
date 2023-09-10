@@ -1,49 +1,37 @@
-import Table from "../components/AcoesTable/Table"
+import { useEffect, useState } from "react";
+import Table from "../components/AcoesTable/Table";
+import { AcoesService } from "../services/AcoesService";
 
 export interface Acao {
-    data: Date,
-    ticker: string,
-    precoUnitario: number,
-    quantidade: number,
-    precoTotal: number,
-    operacao: string,
-    tipo: 'BDR' | 'Ação'
+  data: Date;
+  ticker: string;
+  precoUnitario: number;
+  quantidade: number;
+  precoTotal: number;
+  operacao: string;
+  tipo: "BDR" | "Ação";
 }
 
-function Acoes(){
+function Acoes() {
+  const [data, setData] = useState<Acao[]>([]);
 
-    const data: Acao[] = [{
-        data: new Date("2023-08-28"),
-        ticker: "ITSA4",
-        precoUnitario: 9.60,
-        quantidade: 100,
-        precoTotal: 960,
-        operacao: "Compra",
-        tipo: "Ação"
-    },
-    {
-        data: new Date("2023-08-28"),
-        ticker: "VALE3",
-        precoUnitario: 62,
-        quantidade: 100,
-        precoTotal: 6200,
-        operacao: "Compra",
-        tipo: "Ação"
-    }]
+  useEffect(() => {
+    const data = AcoesService.getAllAcoes();
+    setData(data);
+  }, []);
 
-    return (
-        <>
-        <main className="h-full">
-            
-          {/* Main Content */}
-          <div className="mainCard">
-            <div className="border w-full border-gray-200 bg-white py-4 px-6 rounded-md">
-              <Table acoes={data}></Table>
-            </div>
+  return (
+    <>
+      <main className="h-full">
+        {/* Main Content */}
+        <div className="mainCard">
+          <div className="border w-full border-gray-200 bg-white py-4 px-6 rounded-md">
+            <Table acoes={data}></Table>
           </div>
-        </main>
-      </>
-    )
+        </div>
+      </main>
+    </>
+  );
 }
 
-export default Acoes
+export default Acoes;

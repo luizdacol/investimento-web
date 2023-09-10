@@ -13,7 +13,8 @@ type tableProps = {
 };
 
 function Table({ acoes }: tableProps) {
-  const headers = Object.keys(acoes[0]).concat("ações");
+  let headers = Array<string>();
+  if (acoes.length !== 0) headers = Object.keys(acoes[0]).concat("ações");
 
   return (
     <div className="overflow-x-auto space-y-2">
