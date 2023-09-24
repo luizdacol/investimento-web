@@ -4,12 +4,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faRemove } from "@fortawesome/free-solid-svg-icons";
 
 type ActionProps = {
-  id: string;
+  id: number;
   updateAction: boolean;
   deleteAction: boolean;
+  handleDelete: (id: number) => Promise<void>;
 };
 
-function ActionCell({ id, updateAction, deleteAction }: ActionProps) {
+function ActionCell({
+  id,
+  updateAction,
+  deleteAction,
+  handleDelete,
+}: ActionProps) {
   return (
     <>
       <td
@@ -25,11 +31,11 @@ function ActionCell({ id, updateAction, deleteAction }: ActionProps) {
         )}
         {deleteAction && (
           <Link
-            // onClick={(e) => {
-            //   e.preventDefault();
-            //   handleDelete(row.id);
-            // }}
-            to={`/auth/master/user/${id}/edit`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleDelete(id);
+            }}
+            to={"/acoes"}
             className={`text-red-700 inline-flex py-2 px-2 rounded  text-sm`}
           >
             <FontAwesomeIcon icon={faRemove} />
