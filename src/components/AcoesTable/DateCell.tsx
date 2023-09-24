@@ -20,7 +20,7 @@ function DateCell({
         }
       >
         <span className="font-medium text-sm text-gray-900">
-          {cellValue.toLocaleDateString("pt-BR")}
+          {cellValue.toLocaleDateString("pt-BR", { timeZone: "UTC" })}
         </span>
       </td>
     </>
