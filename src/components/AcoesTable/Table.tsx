@@ -13,8 +13,16 @@ type tableProps = {
 };
 
 function Table({ acoes }: tableProps) {
-  let headers = Array<string>();
-  if (acoes.length !== 0) headers = Object.keys(acoes[0]).concat("ações");
+  const headers = [
+    "Data",
+    "Ticker",
+    "Preço Unitario",
+    "Quantidade",
+    "Preço Total",
+    "Tipo de Operação",
+    "Tipo de Ativo",
+    "Ações",
+  ];
 
   return (
     <div className="overflow-x-auto space-y-2">
