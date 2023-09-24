@@ -9,15 +9,19 @@ export interface Acao {
   quantidade: number;
   precoTotal: number;
   operacao: string;
-  tipo: "BDR" | "Ação";
+  tipo: string;
 }
 
 function Acoes() {
   const [data, setData] = useState<Acao[]>([]);
 
   useEffect(() => {
-    const data = AcoesService.getAllAcoes();
-    setData(data);
+    const fetchData = async () => {
+      const data = await AcoesService.getAllAcoes();
+      setData(data);
+    };
+
+    fetchData();
   }, []);
 
   return (
