@@ -10,6 +10,7 @@ export interface Acao {
   precoTotal: number;
   operacao: string;
   tipo: string;
+  segmento: string;
 }
 
 function Acoes() {

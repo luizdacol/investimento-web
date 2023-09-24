@@ -4,14 +4,16 @@ import SelectList from "../components/Form/SelectList";
 import { Acao } from "./Acoes";
 import { AcoesService } from "../services/AcoesService";
 import { useNavigate } from "react-router-dom";
+import InputDate from "../components/Form/InputDate";
 
 function FormAcoes() {
   const [data, setData] = useState<string>("");
   const [ticker, setTicker] = useState<string>("");
   const [precoUnitario, setPrecoUnitario] = useState<string>("");
   const [quantidade, setQuantidade] = useState<string>("");
-  const [tipo, setTipo] = useState<string>("Ação");
-  const [operacao, setOperacao] = useState<string>("Compra");
+  const [segmento, setSegmento] = useState<string>("");
+  const [tipoAtivo, setTipoAtivo] = useState<string>("Ação");
+  const [tipoOperacao, setTipoOperacao] = useState<string>("Compra");
 
   const navigate = useNavigate();
 
@@ -24,8 +26,9 @@ function FormAcoes() {
       precoUnitario: +precoUnitario,
       quantidade: +quantidade,
       precoTotal: +precoUnitario * +quantidade,
-      tipo: tipo,
-      operacao: operacao,
+      tipo: tipoAtivo,
+      operacao: tipoOperacao,
+      segmento: segmento,
     };
 
     const statusCriacao = await AcoesService.postAcao(acao);
@@ -40,7 +43,7 @@ function FormAcoes() {
         <div className="mainCard">
           <div className="border w-full border-gray-200 bg-white py-4 px-6 rounded-md">
             <form onSubmit={handleSubmit}>
-              <InputText
+              <InputDate
                 id="data"
                 label="Data"
                 value={data}
@@ -73,23 +76,31 @@ function FormAcoes() {
                 }}
               />
               <SelectList
-                id="operacao"
-                label="Operação"
+                id="tipoOperacao"
+                label="Tipo da Operação"
                 options={["Compra", "Venda"]}
-                value={operacao}
+                value={tipoOperacao}
                 handleOnChange={(event) => {
-                  setOperacao(event.target.value);
+                  setTipoOperacao(event.target.value);
                 }}
               ></SelectList>
               <SelectList
-                id="tipo"
-                label="Tipo"
-                value={tipo}
-                options={["Ação", "BDR"]}
+                id="tipoAtivo"
+                label="Tipo do Ativo"
+                value={tipoAtivo}
+                options={["Ação", "BDR", "FII"]}
                 handleOnChange={(event) => {
-                  setTipo(event.target.value);
+                  setTipoAtivo(event.target.value);
                 }}
               ></SelectList>
+              <InputText
+                id="segmento"
+                label="Segmento"
+                value={segmento}
+                handleOnChange={(event) => {
+                  setSegmento(event.target.value);
+                }}
+              />
               <div className="mt-6 flex flex-row">
                 <button
                   className="bg-emerald-600 text-gray-100 px-3 py-2 rounded-lg shadow-lg text-sm"
