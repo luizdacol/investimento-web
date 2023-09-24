@@ -29,7 +29,7 @@ function SelectList({
         value={value}
       >
         {options.map((item) => (
-          <option key={item} value={item.toLowerCase()}>
+          <option key={item} value={item}>
             {item}
           </option>
         ))}
