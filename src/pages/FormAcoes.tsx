@@ -7,7 +7,9 @@ import InputDate from "../components/Form/InputDate";
 import { OperacaoRendaVariavel } from "../interfaces/Operacao";
 
 function FormAcoes() {
-  const [data, setData] = useState<string>("");
+  const today = new Date().toLocaleDateString("en-US", { timeZone: "UTC" });
+
+  const [data, setData] = useState<string>(today);
   const [ticker, setTicker] = useState<string>("");
   const [precoUnitario, setPrecoUnitario] = useState<string>("");
   const [quantidade, setQuantidade] = useState<string>("");
