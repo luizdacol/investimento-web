@@ -3,6 +3,7 @@ import InputText from "../components/Form/InputText";
 import SelectList from "../components/Form/SelectList";
 import { Acao } from "./Acoes";
 import { AcoesService } from "../services/AcoesService";
+import { useNavigate } from "react-router-dom";
 
 function FormAcoes() {
   const [data, setData] = useState<string>("");
@@ -11,6 +12,8 @@ function FormAcoes() {
   const [quantidade, setQuantidade] = useState<string>("");
   const [tipo, setTipo] = useState<string>("Ação");
   const [operacao, setOperacao] = useState<string>("Compra");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,7 +28,10 @@ function FormAcoes() {
       operacao: operacao,
     };
 
-    await AcoesService.postAcao(acao);
+    const statusCriacao = await AcoesService.postAcao(acao);
+    if (statusCriacao) {
+      navigate("/acoes");
+    }
   };
 
   return (

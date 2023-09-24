@@ -37,7 +37,7 @@ const getAllAcoes = async () => {
   });
 };
 
-const postAcao = async (acao: Acao) => {
+const postAcao = async (acao: Acao): Promise<boolean> => {
   const requestOperacao = {
     data: acao.data,
     precoTotal: acao.precoTotal,
@@ -49,7 +49,15 @@ const postAcao = async (acao: Acao) => {
     segmento: "",
   };
 
-  await AxiosClient.post("v1/renda-variavel/operacoes", requestOperacao);
+  const response = await AxiosClient.post(
+    "v1/renda-variavel/operacoes",
+    requestOperacao
+  );
+  if (response.status === 201) return true;
+  else {
+    console.log("Erro ao inserir operação: ", response.data);
+    return false;
+  }
 };
 
 export const AcoesService = {
