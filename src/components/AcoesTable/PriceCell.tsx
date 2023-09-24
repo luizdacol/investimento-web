@@ -19,11 +19,15 @@ function PriceCell({
           className
         }
       >
-        <span className="font-medium text-sm text-gray-900">
+        <span
+          className="font-medium text-sm text-gray-900"
+          title={cellValue.toLocaleString("pt-BR")}
+        >
           {cellValue.toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
             minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
           })}
         </span>
       </td>

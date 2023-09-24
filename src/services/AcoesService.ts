@@ -28,9 +28,9 @@ const getAllAcoes = async () => {
     return {
       data: new Date(op.data),
       operacao: op.tipo,
-      precoTotal: op.precoTotal,
-      precoUnitario: op.precoUnitario,
-      quantidade: op.quantidade,
+      precoTotal: +op.precoTotal,
+      precoUnitario: +op.precoUnitario,
+      quantidade: +op.quantidade,
       ticker: op.ativo.ticker,
       tipo: op.ativo.tipo,
     } as Acao;
