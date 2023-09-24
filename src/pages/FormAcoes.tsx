@@ -1,10 +1,10 @@
 import { FormEvent, useState } from "react";
 import InputText from "../components/Form/InputText";
 import SelectList from "../components/Form/SelectList";
-import { Acao } from "./Acoes";
-import { AcoesService } from "../services/AcoesService";
+import { RendaVariavelService } from "../services/AcoesService";
 import { useNavigate } from "react-router-dom";
 import InputDate from "../components/Form/InputDate";
+import { OperacaoRendaVariavel } from "../interfaces/Operacao";
 
 function FormAcoes() {
   const [data, setData] = useState<string>("");
@@ -20,18 +20,18 @@ function FormAcoes() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const acao: Acao = {
+    const operacao: Omit<OperacaoRendaVariavel, "id"> = {
       data: new Date(data),
       ticker: ticker,
       precoUnitario: +precoUnitario,
       quantidade: +quantidade,
       precoTotal: +precoUnitario * +quantidade,
-      tipo: tipoAtivo,
-      operacao: tipoOperacao,
+      tipoAtivo: tipoAtivo,
+      tipoOperacao: tipoOperacao,
       segmento: segmento,
     };
 
-    const statusCriacao = await AcoesService.postAcao(acao);
+    const statusCriacao = await RendaVariavelService.createOperacao(operacao);
     if (statusCriacao) {
       navigate("/acoes");
     }

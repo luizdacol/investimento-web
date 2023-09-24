@@ -1,7 +1,5 @@
-import { Acao } from "../pages/Acoes";
-
+import { OperacaoRendaVariavel } from "../interfaces/Operacao";
 import { AxiosClient } from "../providers/AxiosClient";
-import { MockClient } from "../providers/MockClient";
 
 interface Ativo {
   id: number;
@@ -11,6 +9,7 @@ interface Ativo {
 }
 
 interface Operacao {
+  id: number;
   data: Date;
   ativo: Ativo;
   precoUnitario: number;
@@ -19,35 +18,38 @@ interface Operacao {
   tipo: string;
 }
 
-const getAllAcoes = async () => {
+const getOperacoes = async () => {
   let operacoes = await AxiosClient.get<Operacao[]>(
     "v1/renda-variavel/operacoes"
   );
 
   return operacoes.data.map((op) => {
     return {
+      id: +op.id,
       data: new Date(op.data),
-      operacao: op.tipo,
+      tipoOperacao: op.tipo,
       precoTotal: +op.precoTotal,
       precoUnitario: +op.precoUnitario,
       quantidade: +op.quantidade,
       ticker: op.ativo.ticker,
-      tipo: op.ativo.tipo,
-    } as Acao;
+      tipoAtivo: op.ativo.tipo,
+    } as OperacaoRendaVariavel;
   });
 };
 
-const postAcao = async (acao: Acao): Promise<boolean> => {
-  const requestOperacao = {
-    data: acao.data,
-    precoTotal: acao.precoTotal,
-    precoUnitario: acao.precoUnitario,
-    quantidade: acao.quantidade,
-    tipoOperacao: acao.operacao,
-    ticker: acao.ticker,
-    tipoAtivo: acao.tipo,
-    segmento: "",
-  };
+const createOperacao = async (
+  requestOperacao: Omit<OperacaoRendaVariavel, "id">
+): Promise<boolean> => {
+  // const requestOperacao = {
+  //   data: acao.data,
+  //   precoTotal: acao.precoTotal,
+  //   precoUnitario: acao.precoUnitario,
+  //   quantidade: acao.quantidade,
+  //   tipoOperacao: acao.tipoOperacao,
+  //   ticker: acao.ticker,
+  //   tipoAtivo: acao.tipoAtivo,
+  //   segmento: "",
+  // };
 
   const response = await AxiosClient.post(
     "v1/renda-variavel/operacoes",
@@ -60,7 +62,19 @@ const postAcao = async (acao: Acao): Promise<boolean> => {
   }
 };
 
-export const AcoesService = {
-  getAllAcoes,
-  postAcao,
+const deleteOperacao = async (id: number): Promise<boolean> => {
+  const response = await AxiosClient.delete(
+    `v1/renda-variavel/operacoes/${id}`
+  );
+  if (response.status === 204) return true;
+  else {
+    console.log("Erro ao deletar operação: ", response.data);
+    return false;
+  }
+};
+
+export const RendaVariavelService = {
+  getOperacoes,
+  createOperacao,
+  deleteOperacao,
 };

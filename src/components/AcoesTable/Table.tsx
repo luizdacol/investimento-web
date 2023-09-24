@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Acao } from "../../pages/Acoes";
 import ActionCell from "./ActionCell";
 import Cell from "./Cell";
 import DateCell from "./DateCell";
@@ -7,23 +6,15 @@ import Header from "./Header";
 import PriceCell from "./PriceCell";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { OperacaoRendaVariavel } from "../../interfaces/Operacao";
 
 type tableProps = {
-  acoes: Acao[];
+  operacoes: OperacaoRendaVariavel[];
+  headers: string[];
+  handleDelete: (id: number) => Promise<void>;
 };
 
-function Table({ acoes }: tableProps) {
-  const headers = [
-    "Data",
-    "Ticker",
-    "Preço Unitario",
-    "Quantidade",
-    "Preço Total",
-    "Tipo de Operação",
-    "Tipo de Ativo",
-    "Ações",
-  ];
-
+function Table({ operacoes: acoes, headers, handleDelete }: tableProps) {
   return (
     <div className="overflow-x-auto space-y-2">
       <div className="flex flex-row-reverse">
@@ -59,12 +50,13 @@ function Table({ acoes }: tableProps) {
                   dataLabel="Quantidade"
                 />
                 <PriceCell cellValue={acao.precoTotal} dataLabel="PrecoTotal" />
-                <Cell cellValue={acao.operacao} dataLabel="Operacao" />
-                <Cell cellValue={acao.tipo} dataLabel="Tipo" />
+                <Cell cellValue={acao.tipoOperacao} dataLabel="Operacao" />
+                <Cell cellValue={acao.tipoAtivo} dataLabel="Tipo" />
                 <ActionCell
-                  id="1"
+                  id={acao.id}
                   updateAction={true}
                   deleteAction={true}
+                  handleDelete={handleDelete}
                 ></ActionCell>
               </tr>
             ))}
