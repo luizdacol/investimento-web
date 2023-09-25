@@ -73,8 +73,28 @@ const deleteOperacao = async (id: number): Promise<boolean> => {
   }
 };
 
+const getOperacaoById = async (id: number) => {
+  let response = await AxiosClient.get<Operacao>(
+    `v1/renda-variavel/operacoes/${id}`
+  );
+
+  const operacao = response.data;
+
+  return {
+    id: +operacao.id,
+    data: new Date(operacao.data),
+    tipoOperacao: operacao.tipo,
+    precoTotal: +operacao.precoTotal,
+    precoUnitario: +operacao.precoUnitario,
+    quantidade: +operacao.quantidade,
+    ticker: operacao.ativo.ticker,
+    tipoAtivo: operacao.ativo.tipo,
+  } as OperacaoRendaVariavel;
+};
+
 export const RendaVariavelService = {
   getOperacoes,
   createOperacao,
   deleteOperacao,
+  getOperacaoById,
 };
