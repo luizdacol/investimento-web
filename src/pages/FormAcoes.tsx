@@ -1,13 +1,15 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import InputText from "../components/Form/InputText";
 import SelectList from "../components/Form/SelectList";
 import { RendaVariavelService } from "../services/AcoesService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import InputDate from "../components/Form/InputDate";
 import { OperacaoRendaVariavel } from "../interfaces/Operacao";
 
 function FormAcoes() {
-  const today = new Date().toLocaleDateString("en-US", { timeZone: "UTC" });
+  const today = new Date().toISOString().substring(0, 10);
+  const [urlParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const [data, setData] = useState<string>(today);
   const [ticker, setTicker] = useState<string>("");
@@ -17,7 +19,28 @@ function FormAcoes() {
   const [tipoAtivo, setTipoAtivo] = useState<string>("Ação");
   const [tipoOperacao, setTipoOperacao] = useState<string>("Compra");
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchOperacao = async () => {
+      const operacaoId = urlParams.get("id");
+      if (!!operacaoId) {
+        const operacao = await RendaVariavelService.getOperacaoById(
+          +operacaoId
+        );
+
+        console.log("data: ", operacao.data.toISOString().substring(0, 10));
+
+        setData(operacao.data.toISOString().substring(0, 10));
+        setTicker(operacao.ticker);
+        setPrecoUnitario(operacao.precoUnitario.toString());
+        setQuantidade(operacao.quantidade.toString());
+        setTipoOperacao(operacao.tipoOperacao);
+        setTipoAtivo(operacao.tipoAtivo);
+        setSegmento(operacao.segmento);
+      }
+    };
+
+    fetchOperacao();
+  }, [urlParams]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

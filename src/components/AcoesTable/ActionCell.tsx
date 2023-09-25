@@ -23,7 +23,7 @@ function ActionCell({
       >
         {updateAction && (
           <Link
-            to={`/auth/master/user/${id}/edit`}
+            to={`/form-acoes?id=${id}`}
             className={`text-sky-700 inline-flex py-2 px-2 rounded  text-sm`}
           >
             <FontAwesomeIcon icon={faPencil} />
