@@ -40,17 +40,6 @@ const getOperacoes = async () => {
 const createOperacao = async (
   requestOperacao: Omit<OperacaoRendaVariavel, "id">
 ): Promise<boolean> => {
-  // const requestOperacao = {
-  //   data: acao.data,
-  //   precoTotal: acao.precoTotal,
-  //   precoUnitario: acao.precoUnitario,
-  //   quantidade: acao.quantidade,
-  //   tipoOperacao: acao.tipoOperacao,
-  //   ticker: acao.ticker,
-  //   tipoAtivo: acao.tipoAtivo,
-  //   segmento: "",
-  // };
-
   const response = await AxiosClient.post(
     "v1/renda-variavel/operacoes",
     requestOperacao
@@ -69,6 +58,21 @@ const deleteOperacao = async (id: number): Promise<boolean> => {
   if (response.status === 204) return true;
   else {
     console.log("Erro ao deletar operação: ", response.data);
+    return false;
+  }
+};
+
+const updateOperacao = async (
+  id: number,
+  requestOperacao: Omit<OperacaoRendaVariavel, "id">
+): Promise<boolean> => {
+  const response = await AxiosClient.patch(
+    `v1/renda-variavel/operacoes/${id}`,
+    requestOperacao
+  );
+  if (response.status === 200) return true;
+  else {
+    console.log("Erro ao atualizar operação: ", response.data);
     return false;
   }
 };
@@ -96,5 +100,6 @@ export const RendaVariavelService = {
   getOperacoes,
   createOperacao,
   deleteOperacao,
+  updateOperacao,
   getOperacaoById,
 };

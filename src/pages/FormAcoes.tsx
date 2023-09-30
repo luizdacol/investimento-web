@@ -11,6 +11,7 @@ function FormAcoes() {
   const [urlParams] = useSearchParams();
   const navigate = useNavigate();
 
+  const [id, setId] = useState<string>();
   const [data, setData] = useState<string>(today);
   const [ticker, setTicker] = useState<string>("");
   const [precoUnitario, setPrecoUnitario] = useState<string>("");
@@ -27,8 +28,7 @@ function FormAcoes() {
           +operacaoId
         );
 
-        console.log("data: ", operacao.data.toISOString().substring(0, 10));
-
+        setId(operacaoId);
         setData(operacao.data.toISOString().substring(0, 10));
         setTicker(operacao.ticker);
         setPrecoUnitario(operacao.precoUnitario.toString());
@@ -56,8 +56,11 @@ function FormAcoes() {
       segmento: segmento,
     };
 
-    const statusCriacao = await RendaVariavelService.createOperacao(operacao);
-    if (statusCriacao) {
+    let status;
+    if (!!id) status = await RendaVariavelService.updateOperacao(+id, operacao);
+    else status = await RendaVariavelService.createOperacao(operacao);
+
+    if (status) {
       navigate("/acoes");
     }
   };
@@ -131,7 +134,7 @@ function FormAcoes() {
                   className="bg-emerald-600 text-gray-100 px-3 py-2 rounded-lg shadow-lg text-sm"
                   type="submit"
                 >
-                  Salvar
+                  {!!id ? "Atualizar" : "Salvar"}
                 </button>
               </div>
             </form>
