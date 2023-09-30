@@ -4,21 +4,21 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/Layout/AuthLayout";
 import Carteira from "./pages/Carteira";
-import Acoes from "./pages/Acoes";
-import FundosImobiliario from "./pages/FundosImobiliario";
-import FormAcoes from "./pages/FormAcoes";
+import Operacoes from "./pages/renda-variavel/Operacoes";
+import FormOperacoes from "./pages/renda-variavel/FormOperacoes";
+import Proventos from "./pages/renda-variavel/Proventos";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<AuthLayout />}>
         <Route path="/" element={<Carteira />}></Route>
-        <Route path="/acoes" element={<Acoes />}></Route>
+        <Route path="/renda-variavel/operacoes" element={<Operacoes />}></Route>
+        <Route path="/renda-variavel/proventos" element={<Proventos />}></Route>
         <Route
-          path="/fundos-imobiliario"
-          element={<FundosImobiliario />}
+          path="/renda-variavel/form-operacoes"
+          element={<FormOperacoes />}
         ></Route>
-        <Route path="/form-acoes" element={<FormAcoes />}></Route>
       </Route>
     </Routes>
   );

@@ -23,7 +23,7 @@ function ActionCell({
       >
         {updateAction && (
           <Link
-            to={`/form-acoes?id=${id}`}
+            to={`/renda-variavel/form-operacoes?id=${id}`}
             className={`text-sky-700 inline-flex py-2 px-2 rounded  text-sm`}
           >
             <FontAwesomeIcon icon={faPencil} />
@@ -35,7 +35,7 @@ function ActionCell({
               e.preventDefault();
               handleDelete(id);
             }}
-            to={"/acoes"}
+            to={"/renda-variavel/operacoes"}
             className={`text-red-700 inline-flex py-2 px-2 rounded  text-sm`}
           >
             <FontAwesomeIcon icon={faRemove} />

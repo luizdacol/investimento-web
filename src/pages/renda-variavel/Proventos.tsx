@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import Table from "../components/AcoesTable/Table";
-import { RendaVariavelService } from "../services/AcoesService";
-import { OperacaoRendaVariavel } from "../interfaces/Operacao";
+import Table from "../../components/Table/Table";
+import { RendaVariavelService } from "../../services/AcoesService";
+import { OperacaoRendaVariavel } from "../../interfaces/Operacao";
 
-function Acoes() {
+function Proventos() {
   const [operacoes, setOperacoes] = useState<OperacaoRendaVariavel[]>([]);
   const [reload, setReload] = useState<Boolean>(false);
 
@@ -41,11 +41,9 @@ function Acoes() {
         {/* Main Content */}
         <div className="mainCard">
           <div className="border w-full border-gray-200 bg-white py-4 px-6 rounded-md">
-            <Table
-              operacoes={operacoes}
-              handleDelete={handleDelete}
-              headers={headers}
-            ></Table>
+            <Table headers={headers} newItemRedirect="/">
+              OPA
+            </Table>
           </div>
         </div>
       </main>
@@ -53,4 +51,4 @@ function Acoes() {
   );
 }
 
-export default Acoes;
+export default Proventos;

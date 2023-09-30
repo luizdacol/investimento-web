@@ -1,12 +1,12 @@
 import { FormEvent, useEffect, useState } from "react";
-import InputText from "../components/Form/InputText";
-import SelectList from "../components/Form/SelectList";
-import { RendaVariavelService } from "../services/AcoesService";
+import InputText from "../../components/Form/InputText";
+import SelectList from "../../components/Form/SelectList";
+import { RendaVariavelService } from "../../services/AcoesService";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import InputDate from "../components/Form/InputDate";
-import { OperacaoRendaVariavel } from "../interfaces/Operacao";
+import InputDate from "../../components/Form/InputDate";
+import { OperacaoRendaVariavel } from "../../interfaces/Operacao";
 
-function FormAcoes() {
+function FormOperacoes() {
   const today = new Date().toISOString().substring(0, 10);
   const [urlParams] = useSearchParams();
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ function FormAcoes() {
     else status = await RendaVariavelService.createOperacao(operacao);
 
     if (status) {
-      navigate("/acoes");
+      navigate("/renda-variavel/operacoes");
     }
   };
 
@@ -144,4 +144,4 @@ function FormAcoes() {
   );
 }
 
-export default FormAcoes;
+export default FormOperacoes;

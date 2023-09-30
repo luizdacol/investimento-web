@@ -1,40 +1,39 @@
 import { faPage4, faWindows } from "@fortawesome/free-brands-svg-icons";
 import {
   faTachometer,
-  faTable,
-  faLock,
-  faNoteSticky,
-  faNotdef,
-  IconDefinition
+  faShoppingCart,
+  IconDefinition,
+  faDollarSign,
+  faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 
 export type menu = {
-  label: string,
-  path?: string,
-  icon?: IconDefinition,
-  submenu?: menu[],
-  role?: string
-}
+  label: string;
+  path?: string;
+  icon?: IconDefinition;
+  submenu?: menu[];
+  role?: string;
+};
 
 const initMenu: menu[] = [
   {
     label: "Carteira",
     path: "/",
-    icon: faTachometer,
+    icon: faWallet,
   },
   {
-    label: 'Ativos'
+    label: "Renda Variavel",
   },
   {
-    label: "Ações",
-    path: "/acoes",
-    icon: faPage4,
+    label: "Operações",
+    path: "/renda-variavel/operacoes",
+    icon: faShoppingCart,
   },
   {
-    label: "FII",
-    path: "/fundos-imobiliario",
-    icon: faNotdef,
+    label: "Proventos",
+    path: "/renda-variavel/proventos",
+    icon: faDollarSign,
   },
 ];
 
-export default initMenu
+export default initMenu;
