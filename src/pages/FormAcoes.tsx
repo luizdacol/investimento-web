@@ -45,12 +45,11 @@ function FormAcoes() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const operacao: Omit<OperacaoRendaVariavel, "id"> = {
+    const operacao: Omit<OperacaoRendaVariavel, "id" | "precoTotal"> = {
       data: new Date(data),
       ticker: ticker,
       precoUnitario: +precoUnitario,
       quantidade: +quantidade,
-      precoTotal: +precoUnitario * +quantidade,
       tipoAtivo: tipoAtivo,
       tipoOperacao: tipoOperacao,
       segmento: segmento,
