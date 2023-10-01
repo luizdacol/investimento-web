@@ -5,10 +5,13 @@ import { ProventoRendaVariavel } from "../../interfaces/Provento";
 import DateCell from "../../components/Table/DateCell";
 import PriceCell from "../../components/Table/PriceCell";
 import Cell from "../../components/Table/Cell";
+import ActionCell from "../../components/Table/ActionCell";
+import { useNavigate } from "react-router-dom";
 
 function Proventos() {
   const [proventos, setProventos] = useState<ProventoRendaVariavel[]>([]);
   const [reload, setReload] = useState<Boolean>(false);
+  const navigate = useNavigate();
 
   const headers = [
     "Data Com",
@@ -19,6 +22,7 @@ function Proventos() {
     "Posição",
     "Valor total",
     "Tipo",
+    "Ações",
   ];
 
   useEffect(() => {
@@ -32,10 +36,14 @@ function Proventos() {
   }, [reload]);
 
   const handleDelete = async (id: number): Promise<void> => {
-    const status = await RendaVariavelService.deleteOperacao(id);
+    const status = await RendaVariavelService.deleteProvento(id);
     if (status) {
       setReload(true);
     }
+  };
+
+  const handleUpdate = async (id: number): Promise<void> => {
+    navigate(`/renda-variavel/form-proventos?id=${id}`);
   };
 
   return (
@@ -76,6 +84,11 @@ function Proventos() {
                     dataLabel="ValorTotal"
                   />
                   <Cell cellValue={provento.tipo} dataLabel="Tipo" />
+                  <ActionCell
+                    id={provento.id}
+                    handleDelete={handleDelete}
+                    handleUpdate={handleUpdate}
+                  ></ActionCell>
                 </tr>
               ))}
             </Table>

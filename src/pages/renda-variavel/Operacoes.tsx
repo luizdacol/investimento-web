@@ -6,10 +6,12 @@ import Cell from "../../components/Table/Cell";
 import DateCell from "../../components/Table/DateCell";
 import PriceCell from "../../components/Table/PriceCell";
 import Table from "../../components/Table/Table";
+import { useNavigate } from "react-router-dom";
 
 function Operacoes() {
   const [operacoes, setOperacoes] = useState<OperacaoRendaVariavel[]>([]);
   const [reload, setReload] = useState<Boolean>(false);
+  const navigate = useNavigate();
 
   const headers = [
     "Data",
@@ -37,6 +39,10 @@ function Operacoes() {
     if (status) {
       setReload(true);
     }
+  };
+
+  const handleUpdate = async (id: number): Promise<void> => {
+    navigate(`/renda-variavel/form-operacoes?id=${id}`);
   };
 
   return (
@@ -75,9 +81,8 @@ function Operacoes() {
                   <Cell cellValue={operacao.tipoAtivo} dataLabel="Tipo" />
                   <ActionCell
                     id={operacao.id}
-                    updateAction={true}
-                    deleteAction={true}
                     handleDelete={handleDelete}
+                    handleUpdate={handleUpdate}
                   ></ActionCell>
                 </tr>
               ))}

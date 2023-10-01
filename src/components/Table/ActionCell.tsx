@@ -1,46 +1,39 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faRemove } from "@fortawesome/free-solid-svg-icons";
 
 type ActionProps = {
   id: number;
-  updateAction: boolean;
-  deleteAction: boolean;
   handleDelete: (id: number) => Promise<void>;
+  handleUpdate: (id: number) => Promise<void>;
 };
 
-function ActionCell({
-  id,
-  updateAction,
-  deleteAction,
-  handleDelete,
-}: ActionProps) {
+function ActionCell({ id, handleUpdate, handleDelete }: ActionProps) {
   return (
     <>
       <td
         className={`border-b md:text-left block md:table-cell md:whitespace-nowrap text-slate-800 md:first:pl-4 md:last:pr-4 px-3 py-2 `}
       >
-        {updateAction && (
-          <Link
-            to={`/renda-variavel/form-operacoes?id=${id}`}
-            className={`text-sky-700 inline-flex py-2 px-2 rounded  text-sm`}
+        {
+          <span
+            className={`text-sky-700 inline-flex py-2 px-2 rounded text-sm cursor-pointer`}
+            onClick={(e) => {
+              handleUpdate(id);
+            }}
           >
             <FontAwesomeIcon icon={faPencil} />
-          </Link>
-        )}
-        {deleteAction && (
-          <Link
+          </span>
+        }
+        {
+          <span
+            className={`text-red-700 inline-flex py-2 px-2 rounded text-sm cursor-pointer`}
             onClick={(e) => {
-              e.preventDefault();
               handleDelete(id);
             }}
-            to={"/renda-variavel/operacoes"}
-            className={`text-red-700 inline-flex py-2 px-2 rounded  text-sm`}
           >
             <FontAwesomeIcon icon={faRemove} />
-          </Link>
-        )}
+          </span>
+        }
       </td>
     </>
   );

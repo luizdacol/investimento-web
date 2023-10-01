@@ -184,6 +184,17 @@ const updateProvento = async (
   }
 };
 
+const deleteProvento = async (id: number): Promise<boolean> => {
+  const response = await AxiosClient.delete(
+    `v1/renda-variavel/proventos/${id}`
+  );
+  if (response.status === 204) return true;
+  else {
+    console.log("Erro ao deletar provento: ", response.data);
+    return false;
+  }
+};
+
 export const RendaVariavelService = {
   getOperacoes,
   createOperacao,
@@ -194,4 +205,5 @@ export const RendaVariavelService = {
   getProventoById,
   createProvento,
   updateProvento,
+  deleteProvento,
 };
