@@ -16,9 +16,6 @@ function FormProventos() {
   const [dataPagamento, setDataPagamento] = useState<string>(today);
   const [ticker, setTicker] = useState<string>("");
   const [valorBruto, setValorBruto] = useState<string>("");
-  const [valorLiquido, setValorLiquido] = useState<string>("");
-  const [valorTotal, setValorTotal] = useState<string>("");
-  const [posicao, setPosicao] = useState<string>("");
   const [tipo, setTipo] = useState<string>("Dividendo");
 
   useEffect(() => {
@@ -34,9 +31,6 @@ function FormProventos() {
         setDataPagamento(provento.dataPagamento.toISOString().substring(0, 10));
         setTicker(provento.ticker);
         setValorBruto(provento.valorBruto.toString());
-        setValorLiquido(provento.valorLiquido.toString());
-        setPosicao(provento.posicao.toString());
-        setValorTotal(provento.valorTotal.toString());
         setTipo(provento.tipo);
       }
     };
@@ -103,30 +97,6 @@ function FormProventos() {
                 value={valorBruto}
                 handleOnChange={(event) => {
                   setValorBruto(event.target.value);
-                }}
-              />
-              <InputText
-                id="valorLiquido"
-                label="Valor Liquido"
-                value={valorLiquido}
-                handleOnChange={(event) => {
-                  setValorLiquido(event.target.value);
-                }}
-              />
-              <InputText
-                id="posicao"
-                label="Posicao"
-                value={posicao}
-                handleOnChange={(event) => {
-                  setPosicao(event.target.value);
-                }}
-              />
-              <InputText
-                id="valorTotal"
-                label="Valor Total"
-                value={valorTotal}
-                handleOnChange={(event) => {
-                  setValorTotal(event.target.value);
                 }}
               />
               <SelectList
