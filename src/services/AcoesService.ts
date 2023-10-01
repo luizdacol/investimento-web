@@ -1,4 +1,5 @@
 import { OperacaoRendaVariavel } from "../interfaces/Operacao";
+import { ProventoRendaVariavel } from "../interfaces/Provento";
 import { AxiosClient } from "../providers/AxiosClient";
 
 interface Ativo {
@@ -15,6 +16,18 @@ interface Operacao {
   precoUnitario: number;
   quantidade: number;
   precoTotal: number;
+  tipo: string;
+}
+
+interface Provento {
+  id: number;
+  dataCom: Date;
+  dataPagamento: Date;
+  ativo: Ativo;
+  valorBruto: number;
+  valorLiquido: number;
+  posicao: number;
+  valorTotal: number;
   tipo: string;
 }
 
@@ -96,10 +109,89 @@ const getOperacaoById = async (id: number) => {
   } as OperacaoRendaVariavel;
 };
 
+const getProventos = async (): Promise<ProventoRendaVariavel[]> => {
+  let proventos = await AxiosClient.get<Provento[]>(
+    "v1/renda-variavel/proventos"
+  );
+
+  return proventos.data.map((provento) => {
+    return {
+      id: +provento.id,
+      dataCom: new Date(provento.dataCom),
+      dataPagamento: new Date(provento.dataPagamento),
+      tipo: provento.tipo,
+      valorTotal: +provento.valorTotal,
+      valorBruto: +provento.valorBruto,
+      valorLiquido: +provento.valorLiquido,
+      posicao: +provento.posicao,
+      ticker: provento.ativo.ticker,
+    } as ProventoRendaVariavel;
+  });
+};
+
+const getProventoById = async (id: number) => {
+  let response = await AxiosClient.get<Provento>(
+    `v1/renda-variavel/proventos/${id}`
+  );
+
+  const provento = response.data;
+
+  return {
+    id: +provento.id,
+    dataCom: new Date(provento.dataCom),
+    dataPagamento: new Date(provento.dataPagamento),
+    tipo: provento.tipo,
+    valorTotal: +provento.valorTotal,
+    valorBruto: +provento.valorBruto,
+    valorLiquido: +provento.valorLiquido,
+    posicao: +provento.posicao,
+    ticker: provento.ativo.ticker,
+  } as ProventoRendaVariavel;
+};
+
+const createProvento = async (
+  requestProvento: Omit<
+    ProventoRendaVariavel,
+    "id" | "valorLiquido" | "valorTotal" | "posicao"
+  >
+): Promise<boolean> => {
+  const response = await AxiosClient.post(
+    "v1/renda-variavel/proventos",
+    requestProvento
+  );
+  if (response.status === 201) return true;
+  else {
+    console.log("Erro ao inserir provento: ", response.data);
+    return false;
+  }
+};
+
+const updateProvento = async (
+  id: number,
+  requestProvento: Omit<
+    ProventoRendaVariavel,
+    "id" | "valorLiquido" | "valorTotal" | "posicao"
+  >
+): Promise<boolean> => {
+  const response = await AxiosClient.patch(
+    `v1/renda-variavel/proventos/${id}`,
+    requestProvento
+  );
+  if (response.status === 200) return true;
+  else {
+    console.log("Erro ao atualizar provento: ", response.data);
+    return false;
+  }
+};
+
 export const RendaVariavelService = {
   getOperacoes,
   createOperacao,
   deleteOperacao,
   updateOperacao,
   getOperacaoById,
+  getProventos,
+  getProventoById,
+  createProvento,
+  updateProvento,
 };

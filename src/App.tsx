@@ -7,6 +7,7 @@ import Carteira from "./pages/Carteira";
 import Operacoes from "./pages/renda-variavel/Operacoes";
 import FormOperacoes from "./pages/renda-variavel/FormOperacoes";
 import Proventos from "./pages/renda-variavel/Proventos";
+import FormProventos from "./pages/renda-variavel/FormProventos";
 
 function App() {
   return (
@@ -18,6 +19,10 @@ function App() {
         <Route
           path="/renda-variavel/form-operacoes"
           element={<FormOperacoes />}
+        ></Route>
+        <Route
+          path="/renda-variavel/form-proventos"
+          element={<FormProventos />}
         ></Route>
       </Route>
     </Routes>
