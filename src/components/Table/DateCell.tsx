@@ -7,6 +7,10 @@ function DateCell({
   className,
   showLabel = true,
 }: CellProps<Date>) {
+  const dataFutura = cellValue > new Date();
+  let negrito = "";
+  if (dataFutura) negrito = "font-bold";
+
   return (
     <>
       <td
@@ -19,7 +23,7 @@ function DateCell({
           className
         }
       >
-        <span className="font-medium text-sm text-gray-900">
+        <span className={`font-medium text-sm text-gray-900 ` && negrito}>
           {cellValue.toLocaleDateString("pt-BR", { timeZone: "UTC" })}
         </span>
       </td>
