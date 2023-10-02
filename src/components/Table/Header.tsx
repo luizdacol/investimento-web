@@ -1,13 +1,17 @@
-type headerProps = {
+type HeaderProps = {
   headers: string[];
+  title: string;
 };
 
-function Header({ headers }: headerProps) {
+function Header(props: HeaderProps) {
   return (
     <>
-      <thead className="hidden bg-slate-100 md:table-header-group text-gray-600">
+      <caption className="text-gray-600 bg-gray-400 font-semibold py-1.5 ">
+        {props.title}
+      </caption>
+      <thead className="hidden bg-slate-200 md:table-header-group text-gray-600">
         <tr className="block md:table-row">
-          {headers.map((column) => (
+          {props.headers.map((column) => (
             <th
               scope="col"
               key={column}

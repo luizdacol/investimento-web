@@ -6,6 +6,7 @@ import { ReactNode } from "react";
 
 type TableProps = {
   headers: string[];
+  title: string;
   children: ReactNode;
   newItemRedirect: string;
 };
@@ -28,7 +29,7 @@ function Table(props: TableProps) {
         <table
           className={`block md:table w-full text-sm text-left text-gray-500`}
         >
-          <Header headers={props.headers}></Header>
+          <Header headers={props.headers} title={props.title}></Header>
           <tbody className="block md:table-row-group">{props.children}</tbody>
         </table>
       </div>

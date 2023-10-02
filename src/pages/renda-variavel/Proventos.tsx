@@ -54,6 +54,7 @@ function Proventos() {
           <div className="border w-full border-gray-200 bg-white py-4 px-6 rounded-md">
             <Table
               headers={headers}
+              title="Proventos"
               newItemRedirect="/renda-variavel/form-proventos"
             >
               {proventos.map((provento, index) => (
