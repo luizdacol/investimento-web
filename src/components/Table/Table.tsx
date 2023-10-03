@@ -8,22 +8,24 @@ type TableProps = {
   headers: string[];
   title: string;
   children: ReactNode;
-  newItemRedirect: string;
+  newItemRedirect?: string;
 };
 
 function Table(props: TableProps) {
   return (
     <div className="overflow-x-auto space-y-2">
       <div className="flex flex-row-reverse">
-        <Link
-          to={props.newItemRedirect}
-          className="bg-emerald-600 text-gray-100 px-3 py-2 rounded-lg shadow-lg text-sm flex gap-2 items-center"
-        >
-          <div>
-            <FontAwesomeIcon icon={faPlus} />
-          </div>
-          <span>Novo Item</span>
-        </Link>
+        {props.newItemRedirect && (
+          <Link
+            to={props.newItemRedirect}
+            className="bg-emerald-600 text-gray-100 px-3 py-2 rounded-lg shadow-lg text-sm flex gap-2 items-center"
+          >
+            <div>
+              <FontAwesomeIcon icon={faPlus} />
+            </div>
+            <span>Novo Item</span>
+          </Link>
+        )}
       </div>
       <div>
         <table
