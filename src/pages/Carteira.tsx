@@ -1,8 +1,15 @@
-function Carteira(){
+import ConsolidadoRendaVariavel from "../components/Carteira/ConsolidadoRendaVariavel";
 
-    return (
-        <div>Carteira Consolidada</div>
-    )
+function Carteira() {
+  return (
+    <>
+      <main className="h-full">
+        {/* Main Content */}
+        <ConsolidadoRendaVariavel title="Ação" tipo="Ação" />
+        <ConsolidadoRendaVariavel title="FII" tipo="FII" />
+      </main>
+    </>
+  );
 }
 
-export default Carteira
+export default Carteira;
