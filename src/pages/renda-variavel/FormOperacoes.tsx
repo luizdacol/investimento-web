@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import InputText from "../../components/Form/InputText";
 import SelectList from "../../components/Form/SelectList";
-import { RendaVariavelService } from "../../services/AcoesService";
+import { RendaVariavelService } from "../../services/RendaVariavelService";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import InputDate from "../../components/Form/InputDate";
 import { OperacaoRendaVariavel } from "../../interfaces/Operacao";

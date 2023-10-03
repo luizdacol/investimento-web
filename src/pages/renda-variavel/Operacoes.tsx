@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { RendaVariavelService } from "../../services/AcoesService";
+import { RendaVariavelService } from "../../services/RendaVariavelService";
 import { OperacaoRendaVariavel } from "../../interfaces/Operacao";
 import ActionCell from "../../components/Table/ActionCell";
 import Cell from "../../components/Table/Cell";

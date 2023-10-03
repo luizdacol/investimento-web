@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Table from "../../components/Table/Table";
-import { RendaVariavelService } from "../../services/AcoesService";
+import { RendaVariavelService } from "../../services/RendaVariavelService";
 import { ProventoRendaVariavel } from "../../interfaces/Provento";
 import DateCell from "../../components/Table/DateCell";
 import PriceCell from "../../components/Table/PriceCell";
