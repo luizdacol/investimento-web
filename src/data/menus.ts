@@ -34,6 +34,14 @@ const initMenu: menu[] = [
     path: "/renda-variavel/proventos",
     icon: faDollarSign,
   },
+  {
+    label: "Renda Fixa",
+  },
+  {
+    label: "Operações",
+    path: "/renda-fixa/operacoes",
+    icon: faShoppingCart,
+  },
 ];
 
 export default initMenu;
