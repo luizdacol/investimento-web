@@ -2,61 +2,41 @@ import { AxiosClient } from "../providers/AxiosClient";
 import { OperacaoRendaFixa } from "../interfaces/OperacaoRendaFixa";
 
 const getOperacoes = async () => {
-  //let operacoes = await AxiosClient.get<Operacao[]>("v1/renda-fixa/operacoes");
-  let operacoes: OperacaoRendaFixa[] = [
-    {
-      id: 1,
-      data: new Date(),
-      titulo: "Tesouro Selic",
-      quantidade: 100,
-      precoUnitario: 100,
-      precoTotal: 10000,
-      rentabilidadeContratada: "SELIC + 0,110%",
-      vencimento: new Date(2026, 3, 10),
-      tipoAtivo: "Tesouro Direto",
-    },
-  ];
-  return operacoes;
-
-  //   return operacoes.data.map((op) => {
-  //     return {
-  //       id: +op.id,
-  //       data: new Date(op.data),
-  //       tipoOperacao: op.tipo,
-  //       precoTotal: +op.precoTotal,
-  //       precoUnitario: +op.precoUnitario,
-  //       quantidade: +op.quantidade,
-  //       ticker: op.ativo.ticker,
-  //       tipoAtivo: op.ativo.tipo,
-  //     } as OperacaoRendaVariavel;
-  //   });
+  let operacoes = await AxiosClient.get<OperacaoRendaFixa[]>(
+    "v1/renda-fixa/operacoes"
+  );
+  return operacoes.data.map((op) => {
+    return {
+      ...op,
+      data: new Date(op.data),
+      dataVencimento: new Date(op.dataVencimento),
+      precoTotal: +op.precoTotal,
+      precoUnitario: +op.precoUnitario,
+      quantidade: +op.quantidade,
+    };
+  });
 };
 
 const getOperacaoById = async (id: number) => {
-  let operacoes: OperacaoRendaFixa = {
-    id: 1,
-    data: new Date(),
-    titulo: "Tesouro Selic",
-    quantidade: 100,
-    precoUnitario: 100,
-    precoTotal: 10000,
-    rentabilidadeContratada: "SELIC + 0,110%",
-    vencimento: new Date(2026, 3, 10),
-    tipoAtivo: "Tesouro Direto",
-  };
-  return operacoes;
+  let response = await AxiosClient.get<OperacaoRendaFixa>(
+    `v1/renda-fixa/operacoes/${id}`
+  );
 
-  //   let response = await AxiosClient.get<Operacao>(
-  //     `v1/renda-fixa/operacoes/${id}`
-  //   );
+  const op = response.data;
+
+  return {
+    ...op,
+    data: new Date(op.data),
+    dataVencimento: new Date(op.dataVencimento),
+    precoTotal: +op.precoTotal,
+    precoUnitario: +op.precoUnitario,
+    quantidade: +op.quantidade,
+  };
 };
 
 const createOperacao = async (
   requestOperacao: Omit<OperacaoRendaFixa, "id" | "precoTotal">
 ): Promise<boolean> => {
-  console.log("inserido com sucesso");
-  return true;
-
   const response = await AxiosClient.post(
     "v1/renda-fixa/operacoes",
     requestOperacao
@@ -72,9 +52,6 @@ const updateOperacao = async (
   id: number,
   requestOperacao: Omit<OperacaoRendaFixa, "id" | "precoTotal">
 ): Promise<boolean> => {
-  console.log("atualizado com sucesso");
-  return true;
-
   const response = await AxiosClient.patch(
     `v1/renda-fixa/operacoes/${id}`,
     requestOperacao
@@ -87,9 +64,6 @@ const updateOperacao = async (
 };
 
 const deleteOperacao = async (id: number): Promise<boolean> => {
-  console.log("deletado com sucesso");
-  return true;
-
   const response = await AxiosClient.delete(`v1/renda-fixa/operacoes/${id}`);
   if (response.status === 204) return true;
   else {

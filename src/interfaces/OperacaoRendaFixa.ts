@@ -5,7 +5,8 @@ export interface OperacaoRendaFixa {
   quantidade: number;
   precoUnitario: number;
   precoTotal: number;
-  rentabilidadeContratada: string;
-  vencimento: Date;
+  rentabilidade: string;
+  dataVencimento: Date;
   tipoAtivo: string;
+  tipoOperacao: string;
 }

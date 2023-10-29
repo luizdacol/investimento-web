@@ -19,6 +19,7 @@ function FormOperacoes() {
   const [rentabilidade, setRentabilidade] = useState<string>("");
   const [tipoAtivo, setTipoAtivo] = useState<string>("Tesouro Direto");
   const [vencimento, setVencimento] = useState<string>("");
+  const [tipoOperacao, setTipoOperacao] = useState<string>("Compra");
 
   useEffect(() => {
     const fetchOperacao = async () => {
@@ -31,9 +32,10 @@ function FormOperacoes() {
         setTitulo(operacao.titulo);
         setPrecoUnitario(operacao.precoUnitario.toString());
         setQuantidade(operacao.quantidade.toString());
-        setRentabilidade(operacao.rentabilidadeContratada);
+        setRentabilidade(operacao.rentabilidade);
         setTipoAtivo(operacao.tipoAtivo);
-        setVencimento(operacao.vencimento.toISOString().substring(0, 10));
+        setVencimento(operacao.dataVencimento.toISOString().substring(0, 10));
+        setTipoOperacao(operacao.tipoOperacao);
       }
     };
 
@@ -49,8 +51,9 @@ function FormOperacoes() {
       precoUnitario: +precoUnitario,
       quantidade: +quantidade,
       tipoAtivo: tipoAtivo,
-      rentabilidadeContratada: rentabilidade,
-      vencimento: new Date(vencimento),
+      rentabilidade: rentabilidade,
+      dataVencimento: new Date(vencimento),
+      tipoOperacao: tipoOperacao,
     };
 
     let status;
@@ -123,6 +126,15 @@ function FormOperacoes() {
                 options={["Tesouro Direto", "CDB"]}
                 handleOnChange={(event) => {
                   setTipoAtivo(event.target.value);
+                }}
+              ></SelectList>
+              <SelectList
+                id="tipoOperacao"
+                label="Tipo da Operação"
+                options={["Compra", "Venda"]}
+                value={tipoOperacao}
+                handleOnChange={(event) => {
+                  setTipoOperacao(event.target.value);
                 }}
               ></SelectList>
               <div className="mt-6 flex flex-row">

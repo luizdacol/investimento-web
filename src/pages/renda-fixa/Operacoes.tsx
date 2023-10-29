@@ -76,11 +76,11 @@ function Operacoes() {
                     dataLabel="PrecoTotal"
                   />
                   <Cell
-                    cellValue={operacao.rentabilidadeContratada}
+                    cellValue={operacao.rentabilidade}
                     dataLabel="Rentabilidade Contratada"
                   />
                   <DateCell
-                    cellValue={operacao.vencimento}
+                    cellValue={operacao.dataVencimento}
                     dataLabel="Vencimento"
                   />
                   <Cell cellValue={operacao.tipoAtivo} dataLabel="TipoAtivo" />
