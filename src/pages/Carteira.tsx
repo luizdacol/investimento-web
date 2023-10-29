@@ -7,6 +7,7 @@ function Carteira() {
         {/* Main Content */}
         <ConsolidadoRendaVariavel title="Ação" tipo="Ação" />
         <ConsolidadoRendaVariavel title="FII" tipo="FII" />
+        <ConsolidadoRendaVariavel title="BDR" tipo="BDR" />
       </main>
     </>
   );
