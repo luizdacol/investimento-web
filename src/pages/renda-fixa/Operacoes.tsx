@@ -21,6 +21,7 @@ function Operacoes() {
     "Preço Total",
     "Rentabilidade Contratada",
     "Vencimento",
+    "Tipo do Ativo",
     "Ações",
   ];
 
@@ -34,14 +35,14 @@ function Operacoes() {
   }, [reload]);
 
   const handleDelete = async (id: number): Promise<void> => {
-    // const status = await RendaVariavelService.deleteOperacao(id);
-    // if (status) {
-    //   setReload(true);
-    // }
+    const status = await RendaFixaService.deleteOperacao(id);
+    if (status) {
+      setReload(true);
+    }
   };
 
   const handleUpdate = async (id: number): Promise<void> => {
-    //navigate(`/renda-variavel/form-operacoes?id=${id}`);
+    navigate(`/renda-fixa/form-operacoes?id=${id}`);
   };
 
   return (
@@ -82,6 +83,7 @@ function Operacoes() {
                     cellValue={operacao.vencimento}
                     dataLabel="Vencimento"
                   />
+                  <Cell cellValue={operacao.tipoAtivo} dataLabel="TipoAtivo" />
                   <ActionCell
                     id={operacao.id}
                     handleDelete={handleDelete}

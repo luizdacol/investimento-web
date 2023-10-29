@@ -4,28 +4,27 @@ import { NavLink } from "react-router-dom";
 import SubMenu from "./SubMenu";
 import { menu } from "../../data/menus";
 
-
 type MenuListProps = {
-  menus: menu[],
-  [x: string]: any
-}
+  menus: menu[];
+  [x: string]: any;
+};
 
 function MenuList({ menus, ...props }: MenuListProps) {
   return (
     <div className="navWrapper p-4">
       <ul id="menu" className="">
-        {menus?.map((menu) =>
+        {menus?.map((menu, index) =>
           menu.submenu ? (
-            <SubMenu key={menu.label} menu={menu} props={props} />
+            <SubMenu key={menu.label + index} menu={menu} props={props} />
           ) : menu.path ? (
-            <li key={menu.label} className={``} onClick={props.toggle}>
+            <li key={menu.label + index} className={``} onClick={props.toggle}>
               <NavLink to={`${menu.path}`} className="link">
                 {menu.icon && <FontAwesomeIcon icon={menu.icon} />}
                 {menu.label}
               </NavLink>
             </li>
           ) : (
-            <li key={menu.label} className="mt-5 mb-3">
+            <li key={menu.label + index} className="mt-5 mb-3">
               <span className="text-gray-500 font-medium uppercase text-xs mx-2">
                 {menu.label} {menu.role}
               </span>

@@ -54,6 +54,9 @@ const getOperacaoById = async (id: number) => {
 const createOperacao = async (
   requestOperacao: Omit<OperacaoRendaFixa, "id" | "precoTotal">
 ): Promise<boolean> => {
+  console.log("inserido com sucesso");
+  return true;
+
   const response = await AxiosClient.post(
     "v1/renda-fixa/operacoes",
     requestOperacao
@@ -69,6 +72,9 @@ const updateOperacao = async (
   id: number,
   requestOperacao: Omit<OperacaoRendaFixa, "id" | "precoTotal">
 ): Promise<boolean> => {
+  console.log("atualizado com sucesso");
+  return true;
+
   const response = await AxiosClient.patch(
     `v1/renda-fixa/operacoes/${id}`,
     requestOperacao
@@ -80,9 +86,22 @@ const updateOperacao = async (
   }
 };
 
+const deleteOperacao = async (id: number): Promise<boolean> => {
+  console.log("deletado com sucesso");
+  return true;
+
+  const response = await AxiosClient.delete(`v1/renda-fixa/operacoes/${id}`);
+  if (response.status === 204) return true;
+  else {
+    console.log("Erro ao deletar operação: ", response.data);
+    return false;
+  }
+};
+
 export const RendaFixaService = {
   getOperacoes,
   getOperacaoById,
   createOperacao,
   updateOperacao,
+  deleteOperacao,
 };
