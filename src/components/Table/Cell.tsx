@@ -1,4 +1,5 @@
 import React from "react";
+import { useStyles } from "../../hooks/useStyles";
 
 export type CellProps<T> = {
   cellValue: T;
@@ -8,25 +9,13 @@ export type CellProps<T> = {
   options?: any;
 };
 
-function Cell({
-  cellValue,
-  dataLabel,
-  className,
-  showLabel = true,
-}: CellProps<string>) {
+function Cell({ cellValue, dataLabel, className }: CellProps<string>) {
+  const { cellDefaultStyle } = useStyles();
+
   return (
     <>
-      <td
-        data-label={dataLabel}
-        className={
-          `${
-            showLabel &&
-            "before:float-left before:text-sm before:font-bold before:content-[attr(data-label)] before:md:content-none text-right"
-          } border-b md:text-left block md:table-cell md:whitespace-nowrap text-slate-800 md:first:pl-4 md:last:pr-4 px-3 py-2 ` +
-          className
-        }
-      >
-        <span className="font-medium text-sm text-gray-900">{cellValue}</span>
+      <td data-label={dataLabel} className={cellDefaultStyle}>
+        <span className="font-medium text-xs text-gray-900">{cellValue}</span>
       </td>
     </>
   );

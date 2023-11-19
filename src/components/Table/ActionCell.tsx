@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faRemove } from "@fortawesome/free-solid-svg-icons";
+import { useStyles } from "../../hooks/useStyles";
 
 type ActionProps = {
   id: number;
@@ -9,14 +10,14 @@ type ActionProps = {
 };
 
 function ActionCell({ id, handleUpdate, handleDelete }: ActionProps) {
+  const { cellDefaultStyle } = useStyles();
+
   return (
     <>
-      <td
-        className={`border-b md:text-left block md:table-cell md:whitespace-nowrap text-slate-800 md:first:pl-4 md:last:pr-4 px-3 py-2 `}
-      >
+      <td className={cellDefaultStyle}>
         {
           <span
-            className={`text-sky-700 inline-flex py-2 px-2 rounded text-sm cursor-pointer`}
+            className={`text-sky-700 inline-flex py-1 px-2 rounded text-sm cursor-pointer`}
             onClick={(e) => {
               handleUpdate(id);
             }}
@@ -26,7 +27,7 @@ function ActionCell({ id, handleUpdate, handleDelete }: ActionProps) {
         }
         {
           <span
-            className={`text-red-700 inline-flex py-2 px-2 rounded text-sm cursor-pointer`}
+            className={`text-red-700 inline-flex py-1 px-2 rounded text-sm cursor-pointer`}
             onClick={(e) => {
               handleDelete(id);
             }}

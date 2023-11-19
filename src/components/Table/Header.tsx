@@ -15,7 +15,7 @@ function Header(props: HeaderProps) {
             <th
               scope="col"
               key={column}
-              className={`py-3 px-4 block md:table-cell font-semibold text-xs uppercase  `}
+              className={`py-1.5 px-3 text-center block md:table-cell font-semibold text-sm  `}
             >
               <span>{column}</span>
             </th>
