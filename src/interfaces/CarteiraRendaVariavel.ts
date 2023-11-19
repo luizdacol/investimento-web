@@ -1,5 +1,6 @@
 export interface CarteiraRendaVariavel {
   ticker: string;
+  tipoAtivo: string;
   quantidade: number;
   precoMedio: number;
   precoMercado: number;

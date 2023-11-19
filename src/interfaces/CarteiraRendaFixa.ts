@@ -1,5 +1,6 @@
 export interface CarteiraRendaFixa {
   titulo: string;
+  tipoAtivo: string;
   quantidade: number;
   precoMedio: number;
   precoMercado: number;

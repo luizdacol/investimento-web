@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
 import Cell from "../Table/Cell";
 import Table from "../Table/Table";
 import { CarteiraRendaVariavel } from "../../interfaces/CarteiraRendaVariavel";
 import PriceCell from "../Table/PriceCell";
-import { CarteiraService } from "../../services/CarteiraService";
 
 type CarteiraProps = {
   title: string;
-  tipo: string;
+  carteira: CarteiraRendaVariavel[];
 };
 
 function ConsolidadoRendaVariavel(props: CarteiraProps) {
@@ -25,22 +23,11 @@ function ConsolidadoRendaVariavel(props: CarteiraProps) {
     "Dividendos Provisionados",
   ];
 
-  const [carteira, setCarteira] = useState<CarteiraRendaVariavel[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await CarteiraService.getRendaVariavel(props.tipo);
-      setCarteira(data);
-    };
-
-    fetchData();
-  }, []);
-
   return (
     <div className="mainCard">
       <div className="border w-full border-gray-200 bg-white py-4 px-6 rounded-md">
         <Table headers={headers} title={props.title}>
-          {carteira.map((item, index) => (
+          {props.carteira.map((item, index) => (
             <tr
               key={index}
               className="bg-white border md:border-b block md:table-row rounded-md shadow-md md:rounded-none md:shadow-none mb-5"
