@@ -16,12 +16,12 @@ function ConsolidadoRendaVariavel(props: CarteiraProps) {
     "Preço Médio",
     "Preço Mercado",
     "Composição",
+    "Composição Carteira",
     "Preço Médio Total",
     "Preço Mercado Total",
     "Variação",
     "Dividendos Recebidos",
     "Yield On Cost",
-    "Dividendos Provisionados",
   ];
 
   return (
@@ -44,6 +44,10 @@ function ConsolidadoRendaVariavel(props: CarteiraProps) {
                 dataLabel="PreçoMercado"
               />
               <PercentCell cellValue={item.composicao} dataLabel="Composicao" />
+              <PercentCell
+                cellValue={item.composicaoTotal}
+                dataLabel="ComposicaoCarteira"
+              />
               <PriceCell
                 cellValue={item.precoMedioTotal}
                 dataLabel="PreçoMedioTotal"
@@ -65,10 +69,6 @@ function ConsolidadoRendaVariavel(props: CarteiraProps) {
                 cellValue={item.yieldOnCost}
                 dataLabel="YieldOnCost"
                 options={{ enableTextColor: true }}
-              />
-              <PriceCell
-                cellValue={item.dividendosProvisionados}
-                dataLabel="DividendosProvisionados"
               />
             </tr>
           ))}

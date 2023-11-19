@@ -16,6 +16,7 @@ function ConsolidadoRendaFixa(props: CarteiraProps) {
     "Preço Médio",
     "Preço Mercado",
     "Composição",
+    "Composição Carteira",
     "Preço Médio Total",
     "Preço Mercado Total",
     "Variação",
@@ -41,6 +42,10 @@ function ConsolidadoRendaFixa(props: CarteiraProps) {
                 dataLabel="PreçoMercado"
               />
               <PercentCell cellValue={item.composicao} dataLabel="Composicao" />
+              <PercentCell
+                cellValue={item.composicaoTotal}
+                dataLabel="ComposicaoCarteira"
+              />
               <PriceCell
                 cellValue={item.precoMedioTotal}
                 dataLabel="PreçoMedioTotal"
