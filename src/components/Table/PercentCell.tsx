@@ -1,19 +1,18 @@
 import React from "react";
+import { CellProps } from "./Cell";
 
-export type CellProps<T> = {
-  cellValue: T;
-  dataLabel: string;
-  className?: string;
-  showLabel?: boolean;
-  options?: any;
-};
-
-function Cell({
+function PercentCell({
   cellValue,
   dataLabel,
   className,
   showLabel = true,
-}: CellProps<string>) {
+  options,
+}: CellProps<number>) {
+  let textColor = "text-gray-900";
+  if (options && !!options.enableTextColor) {
+    textColor = cellValue >= 0 ? "text-green-600" : "text-red-600";
+  }
+
   return (
     <>
       <td
@@ -26,10 +25,10 @@ function Cell({
           className
         }
       >
-        <span className="font-medium text-sm text-gray-900">{cellValue}</span>
+        <span className={`font-medium text-sm ${textColor}`}>{cellValue}%</span>
       </td>
     </>
   );
 }
 
-export default Cell;
+export default PercentCell;

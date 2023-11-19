@@ -2,6 +2,7 @@ import Cell from "../Table/Cell";
 import Table from "../Table/Table";
 import PriceCell from "../Table/PriceCell";
 import { CarteiraRendaFixa } from "../../interfaces/CarteiraRendaFixa";
+import PercentCell from "../Table/PercentCell";
 
 type CarteiraProps = {
   title: string;
@@ -39,10 +40,7 @@ function ConsolidadoRendaFixa(props: CarteiraProps) {
                 cellValue={item.precoMercado}
                 dataLabel="PreçoMercado"
               />
-              <Cell
-                cellValue={item.composicao.toString()}
-                dataLabel="Composicao"
-              />
+              <PercentCell cellValue={item.composicao} dataLabel="Composicao" />
               <PriceCell
                 cellValue={item.precoMedioTotal}
                 dataLabel="PreçoMedioTotal"
@@ -51,7 +49,11 @@ function ConsolidadoRendaFixa(props: CarteiraProps) {
                 cellValue={item.precoMercadoTotal}
                 dataLabel="PreçoMercadoTotal"
               />
-              <Cell cellValue={item.variacao.toString()} dataLabel="Variacao" />
+              <PercentCell
+                cellValue={item.variacao}
+                dataLabel="Variacao"
+                options={{ enableTextColor: true }}
+              />
             </tr>
           ))}
         </Table>

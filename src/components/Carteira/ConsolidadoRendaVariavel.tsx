@@ -2,6 +2,7 @@ import Cell from "../Table/Cell";
 import Table from "../Table/Table";
 import { CarteiraRendaVariavel } from "../../interfaces/CarteiraRendaVariavel";
 import PriceCell from "../Table/PriceCell";
+import PercentCell from "../Table/PercentCell";
 
 type CarteiraProps = {
   title: string;
@@ -42,10 +43,7 @@ function ConsolidadoRendaVariavel(props: CarteiraProps) {
                 cellValue={item.precoMercado}
                 dataLabel="PreçoMercado"
               />
-              <Cell
-                cellValue={item.composicao.toString()}
-                dataLabel="Composicao"
-              />
+              <PercentCell cellValue={item.composicao} dataLabel="Composicao" />
               <PriceCell
                 cellValue={item.precoMedioTotal}
                 dataLabel="PreçoMedioTotal"
@@ -54,14 +52,19 @@ function ConsolidadoRendaVariavel(props: CarteiraProps) {
                 cellValue={item.precoMercadoTotal}
                 dataLabel="PreçoMercadoTotal"
               />
-              <Cell cellValue={item.variacao.toString()} dataLabel="Variacao" />
+              <PercentCell
+                cellValue={item.variacao}
+                dataLabel="Variacao"
+                options={{ enableTextColor: true }}
+              />
               <PriceCell
                 cellValue={item.dividendosRecebidos}
                 dataLabel="DividendosRecebidos"
               />
-              <Cell
-                cellValue={item.yieldOnCost.toString()}
+              <PercentCell
+                cellValue={item.yieldOnCost}
                 dataLabel="YieldOnCost"
+                options={{ enableTextColor: true }}
               />
               <PriceCell
                 cellValue={item.dividendosProvisionados}
