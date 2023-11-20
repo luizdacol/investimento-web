@@ -29,8 +29,7 @@ function Sidebar({ ...props }) {
   };
 
   const clearSearch = () => {
-    if(search && search.current)
-      search.current.value = "";
+    if (search && search.current) search.current.value = "";
 
     setMenus(initMenus);
     setScButton(false);

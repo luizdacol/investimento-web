@@ -6,10 +6,10 @@ type HeaderProps = {
 function Header(props: HeaderProps) {
   return (
     <>
-      <caption className="text-gray-600 bg-gray-400 font-semibold py-1.5 ">
+      <caption className="text-black bg-green-600 font-semibold py-1.5 ">
         {props.title}
       </caption>
-      <thead className="hidden bg-slate-200 md:table-header-group text-gray-600">
+      <thead className="hidden bg-green-200 md:table-header-group text-black  ">
         <tr className="block md:table-row">
           {props.headers.map((column) => (
             <th

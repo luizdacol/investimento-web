@@ -7,8 +7,10 @@ import PriceCell from "../../components/Table/PriceCell";
 import Cell from "../../components/Table/Cell";
 import ActionCell from "../../components/Table/ActionCell";
 import { useNavigate } from "react-router-dom";
+import { useStyles } from "../../hooks/useStyles";
 
 function Proventos() {
+  const { rowDefaultStyle } = useStyles();
   const [proventos, setProventos] = useState<ProventoRendaVariavel[]>([]);
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
@@ -58,10 +60,7 @@ function Proventos() {
               newItemRedirect="/renda-variavel/form-proventos"
             >
               {proventos.map((provento, index) => (
-                <tr
-                  key={index}
-                  className="bg-white border md:border-b block md:table-row rounded-md shadow-md md:rounded-none md:shadow-none mb-5"
-                >
+                <tr key={index} className={rowDefaultStyle}>
                   <DateCell cellValue={provento.dataCom} dataLabel="DataCom" />
                   <DateCell
                     cellValue={provento.dataPagamento}

@@ -7,8 +7,10 @@ import DateCell from "../../components/Table/DateCell";
 import PriceCell from "../../components/Table/PriceCell";
 import Table from "../../components/Table/Table";
 import { useNavigate } from "react-router-dom";
+import { useStyles } from "../../hooks/useStyles";
 
 function Operacoes() {
+  const { rowDefaultStyle } = useStyles();
   const [operacoes, setOperacoes] = useState<OperacaoRendaVariavel[]>([]);
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
@@ -57,10 +59,7 @@ function Operacoes() {
               newItemRedirect="/renda-variavel/form-operacoes"
             >
               {operacoes.map((operacao, index) => (
-                <tr
-                  key={index}
-                  className="bg-white border md:border-b block md:table-row rounded-md shadow-md md:rounded-none md:shadow-none mb-5"
-                >
+                <tr key={index} className={rowDefaultStyle}>
                   <DateCell cellValue={operacao.data} dataLabel="Data" />
                   <Cell cellValue={operacao.ticker} dataLabel="Ticker" />
                   <PriceCell

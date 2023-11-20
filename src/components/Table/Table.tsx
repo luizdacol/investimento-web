@@ -18,7 +18,7 @@ function Table(props: TableProps) {
         {props.newItemRedirect && (
           <Link
             to={props.newItemRedirect}
-            className="bg-emerald-600 text-gray-100 px-3 py-2 rounded-lg shadow-lg text-sm flex gap-2 items-center"
+            className="bg-green-600 text-black px-3 py-2 rounded-lg shadow-lg text-sm flex gap-2 items-center"
           >
             <div>
               <FontAwesomeIcon icon={faPlus} />

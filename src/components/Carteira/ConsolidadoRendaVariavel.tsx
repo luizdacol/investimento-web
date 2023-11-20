@@ -3,6 +3,7 @@ import Table from "../Table/Table";
 import { CarteiraRendaVariavel } from "../../interfaces/CarteiraRendaVariavel";
 import PriceCell from "../Table/PriceCell";
 import PercentCell from "../Table/PercentCell";
+import { useStyles } from "../../hooks/useStyles";
 
 type CarteiraProps = {
   title: string;
@@ -10,6 +11,7 @@ type CarteiraProps = {
 };
 
 function ConsolidadoRendaVariavel(props: CarteiraProps) {
+  const { rowDefaultStyle } = useStyles();
   const headers = [
     "Ticker",
     "Quantidade",
@@ -26,13 +28,10 @@ function ConsolidadoRendaVariavel(props: CarteiraProps) {
 
   return (
     <div className="mainCard">
-      <div className="border w-full border-gray-200 bg-white py-4 px-6 rounded-md">
+      <div className="border w-full border-gray-200 bg-white py-2 px-4 rounded-md">
         <Table headers={headers} title={props.title}>
           {props.carteira.map((item, index) => (
-            <tr
-              key={index}
-              className="bg-white border md:border-b block md:table-row rounded-md shadow-md md:rounded-none md:shadow-none mb-5"
-            >
+            <tr key={index} className={rowDefaultStyle}>
               <Cell cellValue={item.ticker} dataLabel="Ticker" />
               <Cell
                 cellValue={item.quantidade.toString()}
