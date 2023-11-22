@@ -3,15 +3,15 @@ type HeaderProps = {
   title: string;
 };
 
-function Header(props: HeaderProps) {
+function Header({ headers, title }: HeaderProps) {
   return (
     <>
       <caption className="text-black bg-green-600 font-semibold py-1.5 ">
-        {props.title}
+        {title}
       </caption>
-      <thead className="hidden bg-green-200 md:table-header-group text-black  ">
+      <thead className="hidden bg-green-200 md:table-header-group text-black">
         <tr className="block md:table-row">
-          {props.headers.map((column) => (
+          {headers.map((column) => (
             <th
               scope="col"
               key={column}
