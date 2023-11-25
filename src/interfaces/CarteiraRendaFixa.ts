@@ -9,4 +9,5 @@ export interface CarteiraRendaFixa {
   precoMedioTotal: number;
   precoMercadoTotal: number;
   variacao: number;
+  dataHoraCotacao: Date;
 }

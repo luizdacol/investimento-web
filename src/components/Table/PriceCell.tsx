@@ -5,23 +5,23 @@ import { useStyles } from "../../hooks/useStyles";
 function PriceCell({
   cellValue,
   dataLabel,
-  className,
+  title,
   showLabel = true,
 }: CellProps<number>) {
   const { cellDefaultStyle } = useStyles();
+  const finalTitle =
+    title ??
+    cellValue.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 8,
+    });
 
   return (
     <>
       <td data-label={dataLabel} className={cellDefaultStyle}>
-        <span
-          className="font-medium text-xs text-gray-900"
-          title={cellValue.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 8,
-          })}
-        >
+        <span className="font-medium text-xs text-gray-900" title={finalTitle}>
           {cellValue.toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",

@@ -14,7 +14,11 @@ const LinhaRendaVariavel = ({ item, rowClass }: LinhaProps) => {
       <Cell cellValue={item.ticker} dataLabel="Ticker" />
       <Cell cellValue={item.quantidade.toString()} dataLabel="Quantidade" />
       <PriceCell cellValue={item.precoMedio} dataLabel="PreçoMedio" />
-      <PriceCell cellValue={item.precoMercado} dataLabel="PreçoMercado" />
+      <PriceCell
+        cellValue={item.precoMercado}
+        dataLabel="PreçoMercado"
+        title={item.dataHoraCotacao.toLocaleString("pt-BR")}
+      />
       <PercentCell cellValue={item.composicao} dataLabel="Composicao" />
       <PercentCell
         cellValue={item.composicaoTotal}

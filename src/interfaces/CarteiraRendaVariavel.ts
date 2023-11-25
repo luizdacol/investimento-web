@@ -12,4 +12,5 @@ export interface CarteiraRendaVariavel {
   dividendosRecebidos: number;
   yieldOnCost: number;
   dividendosProvisionados: number;
+  dataHoraCotacao: Date;
 }

@@ -4,6 +4,7 @@ import { useStyles } from "../../hooks/useStyles";
 export type CellProps<T> = {
   cellValue: T;
   dataLabel: string;
+  title?: string;
   className?: string;
   showLabel?: boolean;
   options?: any;
