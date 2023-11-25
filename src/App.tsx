@@ -10,12 +10,14 @@ import FormOperacoesRendaVariavel from "./pages/renda-variavel/FormOperacoes";
 import FormOperacoesRendaFixa from "./pages/renda-fixa/FormOperacoes";
 import Proventos from "./pages/renda-variavel/Proventos";
 import FormProventos from "./pages/renda-variavel/FormProventos";
+import Graficos from "./pages/Graficos";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<AuthLayout />}>
         <Route path="/" element={<Carteira />}></Route>
+        <Route path="/graficos" element={<Graficos />}></Route>
         {/* Rotas renda variavel */}
         <Route
           path="/renda-variavel/operacoes"

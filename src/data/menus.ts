@@ -1,6 +1,6 @@
 import { faPage4, faWindows } from "@fortawesome/free-brands-svg-icons";
 import {
-  faTachometer,
+  faChartSimple,
   faShoppingCart,
   IconDefinition,
   faDollarSign,
@@ -20,6 +20,11 @@ const initMenu: menu[] = [
     label: "Carteira",
     path: "/",
     icon: faWallet,
+  },
+  {
+    label: "Graficos",
+    path: "/graficos",
+    icon: faChartSimple,
   },
   {
     label: "Renda Variavel",
