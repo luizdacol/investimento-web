@@ -31,7 +31,7 @@ const ComposicaoPieChart = () => {
 
   ChartJS.register(ArcElement, Tooltip, Legend, Colors, Title);
 
-  const options: ChartOptions = {
+  const options: ChartOptions<"pie"> = {
     plugins: {
       colors: {
         forceOverride: true,
