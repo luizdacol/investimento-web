@@ -1,10 +1,10 @@
-import { faPage4, faWindows } from "@fortawesome/free-brands-svg-icons";
 import {
   faChartSimple,
   faShoppingCart,
   IconDefinition,
   faDollarSign,
   faWallet,
+  faFile,
 } from "@fortawesome/free-solid-svg-icons";
 
 export type menu = {
@@ -30,6 +30,11 @@ const initMenu: menu[] = [
     label: "Renda Variavel",
   },
   {
+    label: "Ativos",
+    path: "/renda-variavel/ativos",
+    icon: faFile,
+  },
+  {
     label: "Operações",
     path: "/renda-variavel/operacoes",
     icon: faShoppingCart,
@@ -41,6 +46,11 @@ const initMenu: menu[] = [
   },
   {
     label: "Renda Fixa",
+  },
+  {
+    label: "Ativos",
+    path: "/renda-fixa/ativos",
+    icon: faFile,
   },
   {
     label: "Operações",
