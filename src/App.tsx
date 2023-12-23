@@ -12,6 +12,7 @@ import Proventos from "./pages/renda-variavel/Proventos";
 import FormProventos from "./pages/renda-variavel/FormProventos";
 import Graficos from "./pages/Graficos";
 import AtivosRendaVariavel from "./pages/renda-variavel/Ativos";
+import FormAtivosRendaVariavel from "./pages/renda-variavel/FormAtivos";
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
         <Route path="/renda-variavel/proventos" element={<Proventos />}></Route>
         <Route
           path="/renda-variavel/form-ativos"
-          element={<FormOperacoesRendaVariavel />}
+          element={<FormAtivosRendaVariavel />}
         ></Route>
         <Route
           path="/renda-variavel/form-operacoes"

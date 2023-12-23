@@ -211,6 +211,49 @@ const getAtivos = async (): Promise<AtivoRendaVariavel[]> => {
   });
 };
 
+const getAtivoById = async (id: number) => {
+  let response = await AxiosClient.get<Ativo>(`v1/renda-variavel/ativos/${id}`);
+
+  const ativo = response.data;
+
+  return {
+    id: +ativo.id,
+    ticker: ativo.ticker,
+    tipo: ativo.tipo,
+    cotacao: +ativo.cotacao,
+    segmento: ativo.segmento,
+  } as AtivoRendaVariavel;
+};
+
+const createAtivo = async (
+  requestAtivo: Omit<AtivoRendaVariavel, "id" | "cotacao">
+): Promise<boolean> => {
+  const response = await AxiosClient.post(
+    "v1/renda-variavel/ativos",
+    requestAtivo
+  );
+  if (response.status === 201) return true;
+  else {
+    console.log("Erro ao inserir ativo: ", response.data);
+    return false;
+  }
+};
+
+const updateAtivo = async (
+  id: number,
+  requestAtivo: Omit<AtivoRendaVariavel, "id" | "cotacao">
+): Promise<boolean> => {
+  const response = await AxiosClient.patch(
+    `v1/renda-variavel/ativos/${id}`,
+    requestAtivo
+  );
+  if (response.status === 200) return true;
+  else {
+    console.log("Erro ao atualizar ativo: ", response.data);
+    return false;
+  }
+};
+
 const deleteAtivo = async (id: number): Promise<boolean> => {
   const response = await AxiosClient.delete(`v1/renda-variavel/ativos/${id}`);
   if (response.status === 204) return true;
@@ -222,15 +265,18 @@ const deleteAtivo = async (id: number): Promise<boolean> => {
 
 export const RendaVariavelService = {
   getOperacoes,
-  createOperacao,
-  deleteOperacao,
-  updateOperacao,
-  getOperacaoById,
   getProventos,
-  getProventoById,
-  createProvento,
-  updateProvento,
-  deleteProvento,
   getAtivos,
+  getOperacaoById,
+  getProventoById,
+  getAtivoById,
+  createOperacao,
+  createProvento,
+  createAtivo,
+  updateOperacao,
+  updateProvento,
+  updateAtivo,
+  deleteOperacao,
+  deleteProvento,
   deleteAtivo,
 };
