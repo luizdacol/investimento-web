@@ -7,6 +7,7 @@ interface Ativo {
   id: number;
   ticker: string;
   cotacao: number;
+  dataHoraCotacao: Date;
   tipo: string;
   segmento: string;
 }
@@ -198,21 +199,26 @@ const deleteProvento = async (id: number): Promise<boolean> => {
 };
 
 const getAtivos = async (): Promise<AtivoRendaVariavel[]> => {
-  let ativos = await AxiosClient.get<Ativo[]>("v1/renda-variavel/ativos");
+  let ativos = await AxiosClient.get<AtivoRendaVariavel[]>(
+    "v1/renda-variavel/ativos"
+  );
 
-  return ativos.data.map((a) => {
+  return ativos.data.map((ativo) => {
     return {
-      id: +a.id,
-      ticker: a.ticker,
-      tipo: a.tipo,
-      cotacao: +a.cotacao,
-      segmento: a.segmento,
+      id: +ativo.id,
+      ticker: ativo.ticker,
+      tipo: ativo.tipo,
+      cotacao: +ativo.cotacao,
+      dataHoraCotacao: new Date(ativo.dataHoraCotacao),
+      segmento: ativo.segmento,
     } as AtivoRendaVariavel;
   });
 };
 
 const getAtivoById = async (id: number) => {
-  let response = await AxiosClient.get<Ativo>(`v1/renda-variavel/ativos/${id}`);
+  let response = await AxiosClient.get<AtivoRendaVariavel>(
+    `v1/renda-variavel/ativos/${id}`
+  );
 
   const ativo = response.data;
 
@@ -221,12 +227,13 @@ const getAtivoById = async (id: number) => {
     ticker: ativo.ticker,
     tipo: ativo.tipo,
     cotacao: +ativo.cotacao,
+    dataHoraCotacao: new Date(ativo.dataHoraCotacao),
     segmento: ativo.segmento,
   } as AtivoRendaVariavel;
 };
 
 const createAtivo = async (
-  requestAtivo: Omit<AtivoRendaVariavel, "id" | "cotacao">
+  requestAtivo: Omit<AtivoRendaVariavel, "id" | "cotacao" | "dataHoraCotacao">
 ): Promise<boolean> => {
   const response = await AxiosClient.post(
     "v1/renda-variavel/ativos",
@@ -241,7 +248,7 @@ const createAtivo = async (
 
 const updateAtivo = async (
   id: number,
-  requestAtivo: Omit<AtivoRendaVariavel, "id" | "cotacao">
+  requestAtivo: Omit<AtivoRendaVariavel, "id" | "cotacao" | "dataHoraCotacao">
 ): Promise<boolean> => {
   const response = await AxiosClient.patch(
     `v1/renda-variavel/ativos/${id}`,

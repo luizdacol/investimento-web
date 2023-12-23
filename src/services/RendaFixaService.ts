@@ -76,13 +76,14 @@ const deleteOperacao = async (id: number): Promise<boolean> => {
 const getAtivos = async (): Promise<AtivoRendaFixa[]> => {
   let ativos = await AxiosClient.get<AtivoRendaFixa[]>("v1/renda-fixa/ativos");
 
-  return ativos.data.map((a) => {
+  return ativos.data.map((ativo) => {
     return {
-      id: +a.id,
-      titulo: a.titulo,
-      tipo: a.tipo,
-      cotacao: +a.cotacao,
-      codigo: a.codigo,
+      id: +ativo.id,
+      titulo: ativo.titulo,
+      tipo: ativo.tipo,
+      cotacao: +ativo.cotacao,
+      dataHoraCotacao: new Date(ativo.dataHoraCotacao),
+      codigo: ativo.codigo,
     } as AtivoRendaFixa;
   });
 };
@@ -99,12 +100,13 @@ const getAtivoById = async (id: number) => {
     titulo: ativo.titulo,
     tipo: ativo.tipo,
     cotacao: +ativo.cotacao,
+    dataHoraCotacao: new Date(ativo.dataHoraCotacao),
     codigo: ativo.codigo,
   } as AtivoRendaFixa;
 };
 
 const createAtivo = async (
-  requestAtivo: Omit<AtivoRendaFixa, "id" | "cotacao">
+  requestAtivo: Omit<AtivoRendaFixa, "id" | "cotacao" | "dataHoraCotacao">
 ): Promise<boolean> => {
   const response = await AxiosClient.post("v1/renda-fixa/ativos", requestAtivo);
   if (response.status === 201) return true;
@@ -116,7 +118,7 @@ const createAtivo = async (
 
 const updateAtivo = async (
   id: number,
-  requestAtivo: Omit<AtivoRendaFixa, "id" | "cotacao">
+  requestAtivo: Omit<AtivoRendaFixa, "id" | "cotacao" | "dataHoraCotacao">
 ): Promise<boolean> => {
   const response = await AxiosClient.patch(
     `v1/renda-fixa/ativos/${id}`,

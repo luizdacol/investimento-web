@@ -36,7 +36,10 @@ function FormAtivos() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const ativo: Omit<AtivoRendaVariavel, "id" | "cotacao"> = {
+    const ativo: Omit<
+      AtivoRendaVariavel,
+      "id" | "cotacao" | "dataHoraCotacao"
+    > = {
       ticker: ticker,
       tipo: tipo,
       segmento: segmento,

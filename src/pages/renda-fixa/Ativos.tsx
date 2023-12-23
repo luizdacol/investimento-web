@@ -52,7 +52,11 @@ function Ativos() {
                 <tr key={index} className={rowDefaultStyle}>
                   <Cell cellValue={ativo.titulo} dataLabel="Titulo" />
                   <Cell cellValue={ativo.tipo} dataLabel="Tipo" />
-                  <PriceCell cellValue={ativo.cotacao} dataLabel="Cotacao" />
+                  <PriceCell
+                    cellValue={ativo.cotacao}
+                    dataLabel="Cotacao"
+                    title={ativo.dataHoraCotacao.toLocaleString("pt-BR")}
+                  />
                   <Cell cellValue={ativo.codigo} dataLabel="Codigo" />
                   <ActionCell
                     id={ativo.id}

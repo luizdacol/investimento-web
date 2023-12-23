@@ -36,7 +36,7 @@ function FormAtivos() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const ativo: Omit<AtivoRendaFixa, "id" | "cotacao"> = {
+    const ativo: Omit<AtivoRendaFixa, "id" | "cotacao" | "dataHoraCotacao"> = {
       titulo: titulo,
       tipo: tipo,
       codigo: codigo,
