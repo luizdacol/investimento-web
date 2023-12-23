@@ -19,8 +19,6 @@ function FormOperacoes() {
   const [ticker, setTicker] = useState<string>("");
   const [precoUnitario, setPrecoUnitario] = useState<string>("");
   const [quantidade, setQuantidade] = useState<string>("");
-  const [segmento, setSegmento] = useState<string>("");
-  const [tipoAtivo, setTipoAtivo] = useState<string>("Ação");
   const [tipoOperacao, setTipoOperacao] = useState<string>("Compra");
 
   useEffect(() => {
@@ -37,8 +35,6 @@ function FormOperacoes() {
         setPrecoUnitario(operacao.precoUnitario.toString());
         setQuantidade(operacao.quantidade.toString());
         setTipoOperacao(operacao.tipoOperacao);
-        setTipoAtivo(operacao.tipoAtivo);
-        setSegmento(operacao.segmento);
       }
     };
 
@@ -48,14 +44,15 @@ function FormOperacoes() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const operacao: Omit<OperacaoRendaVariavel, "id" | "precoTotal"> = {
+    const operacao: Omit<
+      OperacaoRendaVariavel,
+      "id" | "tipoAtivo" | "precoTotal"
+    > = {
       data: new Date(data),
       ticker: ticker,
       precoUnitario: +precoUnitario,
       quantidade: +quantidade,
-      tipoAtivo: tipoAtivo,
       tipoOperacao: tipoOperacao,
-      segmento: segmento,
     };
 
     let status;
@@ -116,23 +113,6 @@ function FormOperacoes() {
                   setTipoOperacao(event.target.value);
                 }}
               ></SelectList>
-              <SelectList
-                id="tipoAtivo"
-                label="Tipo do Ativo"
-                value={tipoAtivo}
-                options={["Ação", "BDR", "FII"]}
-                handleOnChange={(event) => {
-                  setTipoAtivo(event.target.value);
-                }}
-              ></SelectList>
-              <InputText
-                id="segmento"
-                label="Segmento"
-                value={segmento}
-                handleOnChange={(event) => {
-                  setSegmento(event.target.value);
-                }}
-              />
               <div className="mt-6 flex flex-row">
                 <Button buttonType="submit">
                   {!!id ? "Atualizar" : "Salvar"}

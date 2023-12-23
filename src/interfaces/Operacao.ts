@@ -7,5 +7,4 @@ export interface OperacaoRendaVariavel {
   precoTotal: number;
   tipoOperacao: string;
   tipoAtivo: string;
-  segmento: string;
 }
