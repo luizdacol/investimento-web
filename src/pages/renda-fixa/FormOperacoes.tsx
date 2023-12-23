@@ -5,6 +5,9 @@ import { RendaFixaService } from "../../services/RendaFixaService";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import InputDate from "../../components/Form/InputDate";
 import { OperacaoRendaFixa } from "../../interfaces/OperacaoRendaFixa";
+import Button from "../../components/Form/Button";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function FormOperacoes() {
   const today = new Date().toISOString().substring(0, 10);
@@ -17,7 +20,7 @@ function FormOperacoes() {
   const [precoUnitario, setPrecoUnitario] = useState<string>("");
   const [quantidade, setQuantidade] = useState<string>("");
   const [rentabilidade, setRentabilidade] = useState<string>("");
-  const [tipoAtivo, setTipoAtivo] = useState<string>("Tesouro Direto");
+  const [tipoAtivo, setTipoAtivo] = useState<string>("TesouroDireto");
   const [vencimento, setVencimento] = useState<string>("");
   const [tipoOperacao, setTipoOperacao] = useState<string>("Compra");
 
@@ -61,7 +64,9 @@ function FormOperacoes() {
     else status = await RendaFixaService.createOperacao(operacao);
 
     if (status) {
-      navigate("/renda-fixa/operacoes");
+      toast.success("Operação cadastrada com sucesso");
+    } else {
+      toast.error("Erro ao cadastrar operação");
     }
   };
 
@@ -123,7 +128,7 @@ function FormOperacoes() {
                 id="tipoAtivo"
                 label="Tipo do Ativo"
                 value={tipoAtivo}
-                options={["Tesouro Direto", "CDB"]}
+                options={["TesouroDireto", "CDB"]}
                 handleOnChange={(event) => {
                   setTipoAtivo(event.target.value);
                 }}
@@ -138,15 +143,32 @@ function FormOperacoes() {
                 }}
               ></SelectList>
               <div className="mt-6 flex flex-row">
-                <button
-                  className="bg-emerald-600 text-gray-100 px-3 py-2 rounded-lg shadow-lg text-sm"
-                  type="submit"
-                >
+                <Button buttonType="submit">
                   {!!id ? "Atualizar" : "Salvar"}
-                </button>
+                </Button>
+                <Button
+                  buttonType="button"
+                  handleOnClick={() => navigate("/renda-fixa/operacoes")}
+                >
+                  {"Cancelar"}
+                </Button>
               </div>
             </form>
           </div>
+        </div>
+        <div>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={1500}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
         </div>
       </main>
     </>
