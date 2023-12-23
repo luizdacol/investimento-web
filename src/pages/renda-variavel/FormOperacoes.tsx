@@ -5,6 +5,9 @@ import { RendaVariavelService } from "../../services/RendaVariavelService";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import InputDate from "../../components/Form/InputDate";
 import { OperacaoRendaVariavel } from "../../interfaces/Operacao";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Button from "../../components/Form/Button";
 
 function FormOperacoes() {
   const today = new Date().toISOString().substring(0, 10);
@@ -60,7 +63,9 @@ function FormOperacoes() {
     else status = await RendaVariavelService.createOperacao(operacao);
 
     if (status) {
-      navigate("/renda-variavel/operacoes");
+      toast.success("Operação cadastrada com sucesso");
+    } else {
+      toast.error("Erro ao cadastrar operação");
     }
   };
 
@@ -129,15 +134,32 @@ function FormOperacoes() {
                 }}
               />
               <div className="mt-6 flex flex-row">
-                <button
-                  className="bg-emerald-600 text-gray-100 px-3 py-2 rounded-lg shadow-lg text-sm"
-                  type="submit"
-                >
+                <Button buttonType="submit">
                   {!!id ? "Atualizar" : "Salvar"}
-                </button>
+                </Button>
+                <Button
+                  buttonType="button"
+                  handleOnClick={() => navigate("/renda-variavel/operacoes")}
+                >
+                  {"Cancelar"}
+                </Button>
               </div>
             </form>
           </div>
+        </div>
+        <div>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={1500}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
         </div>
       </main>
     </>
