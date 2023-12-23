@@ -13,6 +13,8 @@ import FormProventos from "./pages/renda-variavel/FormProventos";
 import Graficos from "./pages/Graficos";
 import AtivosRendaVariavel from "./pages/renda-variavel/Ativos";
 import FormAtivosRendaVariavel from "./pages/renda-variavel/FormAtivos";
+import AtivosRendaFixa from "./pages/renda-fixa/Ativos";
+import FormAtivosRendaFixa from "./pages/renda-fixa/FormAtivos";
 
 function App() {
   return (
@@ -43,17 +45,14 @@ function App() {
           element={<FormProventos />}
         ></Route>
         {/* Rotas renda fixa */}
-        <Route
-          path="/renda-fixa/ativos"
-          element={<OperacoesRendaFixa />}
-        ></Route>
+        <Route path="/renda-fixa/ativos" element={<AtivosRendaFixa />}></Route>
         <Route
           path="/renda-fixa/operacoes"
           element={<OperacoesRendaFixa />}
         ></Route>
         <Route
           path="/renda-fixa/form-ativos"
-          element={<FormOperacoesRendaFixa />}
+          element={<FormAtivosRendaFixa />}
         ></Route>
         <Route
           path="/renda-fixa/form-operacoes"

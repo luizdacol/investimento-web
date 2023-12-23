@@ -1,5 +1,6 @@
 import { AxiosClient } from "../providers/AxiosClient";
 import { OperacaoRendaFixa } from "../interfaces/OperacaoRendaFixa";
+import { AtivoRendaFixa } from "../interfaces/AtivoRendaFixa";
 
 const getOperacoes = async () => {
   let operacoes = await AxiosClient.get<OperacaoRendaFixa[]>(
@@ -72,10 +73,80 @@ const deleteOperacao = async (id: number): Promise<boolean> => {
   }
 };
 
+const getAtivos = async (): Promise<AtivoRendaFixa[]> => {
+  let ativos = await AxiosClient.get<AtivoRendaFixa[]>("v1/renda-fixa/ativos");
+
+  return ativos.data.map((a) => {
+    return {
+      id: +a.id,
+      titulo: a.titulo,
+      tipo: a.tipo,
+      cotacao: +a.cotacao,
+      codigo: a.codigo,
+    } as AtivoRendaFixa;
+  });
+};
+
+const getAtivoById = async (id: number) => {
+  let response = await AxiosClient.get<AtivoRendaFixa>(
+    `v1/renda-fixa/ativos/${id}`
+  );
+
+  const ativo = response.data;
+
+  return {
+    id: +ativo.id,
+    titulo: ativo.titulo,
+    tipo: ativo.tipo,
+    cotacao: +ativo.cotacao,
+    codigo: ativo.codigo,
+  } as AtivoRendaFixa;
+};
+
+const createAtivo = async (
+  requestAtivo: Omit<AtivoRendaFixa, "id" | "cotacao">
+): Promise<boolean> => {
+  const response = await AxiosClient.post("v1/renda-fixa/ativos", requestAtivo);
+  if (response.status === 201) return true;
+  else {
+    console.log("Erro ao inserir ativo: ", response.data);
+    return false;
+  }
+};
+
+const updateAtivo = async (
+  id: number,
+  requestAtivo: Omit<AtivoRendaFixa, "id" | "cotacao">
+): Promise<boolean> => {
+  const response = await AxiosClient.patch(
+    `v1/renda-fixa/ativos/${id}`,
+    requestAtivo
+  );
+  if (response.status === 200) return true;
+  else {
+    console.log("Erro ao atualizar ativo: ", response.data);
+    return false;
+  }
+};
+
+const deleteAtivo = async (id: number): Promise<boolean> => {
+  const response = await AxiosClient.delete(`v1/renda-fixa/ativos/${id}`);
+  if (response.status === 204) return true;
+  else {
+    console.log("Erro ao deletar ativo: ", response.data);
+    return false;
+  }
+};
+
 export const RendaFixaService = {
   getOperacoes,
+  getAtivos,
   getOperacaoById,
+  getAtivoById,
   createOperacao,
+  createAtivo,
   updateOperacao,
+  updateAtivo,
   deleteOperacao,
+  deleteAtivo,
 };
