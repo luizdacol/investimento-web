@@ -36,7 +36,7 @@ const getOperacaoById = async (id: number) => {
 };
 
 const createOperacao = async (
-  requestOperacao: Omit<OperacaoRendaFixa, "id" | "precoTotal">
+  requestOperacao: Omit<OperacaoRendaFixa, "id" | "tipoAtivo" | "precoTotal">
 ): Promise<boolean> => {
   const response = await AxiosClient.post(
     "v1/renda-fixa/operacoes",
@@ -51,7 +51,7 @@ const createOperacao = async (
 
 const updateOperacao = async (
   id: number,
-  requestOperacao: Omit<OperacaoRendaFixa, "id" | "precoTotal">
+  requestOperacao: Omit<OperacaoRendaFixa, "id" | "tipoAtivo" | "precoTotal">
 ): Promise<boolean> => {
   const response = await AxiosClient.patch(
     `v1/renda-fixa/operacoes/${id}`,

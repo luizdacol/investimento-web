@@ -20,7 +20,6 @@ function FormOperacoes() {
   const [precoUnitario, setPrecoUnitario] = useState<string>("");
   const [quantidade, setQuantidade] = useState<string>("");
   const [rentabilidade, setRentabilidade] = useState<string>("");
-  const [tipoAtivo, setTipoAtivo] = useState<string>("TesouroDireto");
   const [vencimento, setVencimento] = useState<string>("");
   const [tipoOperacao, setTipoOperacao] = useState<string>("Compra");
 
@@ -36,7 +35,6 @@ function FormOperacoes() {
         setPrecoUnitario(operacao.precoUnitario.toString());
         setQuantidade(operacao.quantidade.toString());
         setRentabilidade(operacao.rentabilidade);
-        setTipoAtivo(operacao.tipoAtivo);
         setVencimento(operacao.dataVencimento.toISOString().substring(0, 10));
         setTipoOperacao(operacao.tipoOperacao);
       }
@@ -48,16 +46,16 @@ function FormOperacoes() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const operacao: Omit<OperacaoRendaFixa, "id" | "precoTotal"> = {
-      data: new Date(data),
-      titulo: titulo,
-      precoUnitario: +precoUnitario,
-      quantidade: +quantidade,
-      tipoAtivo: tipoAtivo,
-      rentabilidade: rentabilidade,
-      dataVencimento: new Date(vencimento),
-      tipoOperacao: tipoOperacao,
-    };
+    const operacao: Omit<OperacaoRendaFixa, "id" | "tipoAtivo" | "precoTotal"> =
+      {
+        data: new Date(data),
+        titulo: titulo,
+        precoUnitario: +precoUnitario,
+        quantidade: +quantidade,
+        rentabilidade: rentabilidade,
+        dataVencimento: new Date(vencimento),
+        tipoOperacao: tipoOperacao,
+      };
 
     let status;
     if (!!id) status = await RendaFixaService.updateOperacao(+id, operacao);
@@ -124,15 +122,6 @@ function FormOperacoes() {
                   setVencimento(event.target.value);
                 }}
               />
-              <SelectList
-                id="tipoAtivo"
-                label="Tipo do Ativo"
-                value={tipoAtivo}
-                options={["TesouroDireto", "CDB"]}
-                handleOnChange={(event) => {
-                  setTipoAtivo(event.target.value);
-                }}
-              ></SelectList>
               <SelectList
                 id="tipoOperacao"
                 label="Tipo da Operação"
