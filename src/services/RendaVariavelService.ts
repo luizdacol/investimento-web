@@ -1,3 +1,4 @@
+import { AtivoRendaVariavel } from "../interfaces/AtivoRendaVariavel";
 import { OperacaoRendaVariavel } from "../interfaces/Operacao";
 import { ProventoRendaVariavel } from "../interfaces/Provento";
 import { AxiosClient } from "../providers/AxiosClient";
@@ -5,6 +6,7 @@ import { AxiosClient } from "../providers/AxiosClient";
 interface Ativo {
   id: number;
   ticker: string;
+  cotacao: number;
   tipo: string;
   segmento: string;
 }
@@ -195,6 +197,29 @@ const deleteProvento = async (id: number): Promise<boolean> => {
   }
 };
 
+const getAtivos = async (): Promise<AtivoRendaVariavel[]> => {
+  let ativos = await AxiosClient.get<Ativo[]>("v1/renda-variavel/ativos");
+
+  return ativos.data.map((a) => {
+    return {
+      id: +a.id,
+      ticker: a.ticker,
+      tipo: a.tipo,
+      cotacao: +a.cotacao,
+      segmento: a.segmento,
+    } as AtivoRendaVariavel;
+  });
+};
+
+const deleteAtivo = async (id: number): Promise<boolean> => {
+  const response = await AxiosClient.delete(`v1/renda-variavel/ativos/${id}`);
+  if (response.status === 204) return true;
+  else {
+    console.log("Erro ao deletar ativo: ", response.data);
+    return false;
+  }
+};
+
 export const RendaVariavelService = {
   getOperacoes,
   createOperacao,
@@ -206,4 +231,6 @@ export const RendaVariavelService = {
   createProvento,
   updateProvento,
   deleteProvento,
+  getAtivos,
+  deleteAtivo,
 };
