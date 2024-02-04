@@ -109,7 +109,7 @@ function FormOperacoes() {
               <SelectList
                 id="tipoOperacao"
                 label="Tipo da Operação"
-                options={["Compra", "Venda"]}
+                options={["Compra", "Venda", "Desdobramento", "Bonificação"]}
                 value={tipoOperacao}
                 handleOnChange={(event) => {
                   setTipoOperacao(event.target.value);
