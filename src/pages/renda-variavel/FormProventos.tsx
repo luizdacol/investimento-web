@@ -8,11 +8,13 @@ import { ProventoRendaVariavel } from "../../interfaces/Provento";
 import Button from "../../components/Form/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useFormat } from "../../hooks/useFormat";
 
 function FormProventos() {
   const today = new Date().toISOString().substring(0, 10);
   const [urlParams] = useSearchParams();
   const navigate = useNavigate();
+  const { formatPrice } = useFormat();
 
   const [id, setId] = useState<string>();
   const [dataCom, setDataCom] = useState<string>(today);
@@ -51,7 +53,7 @@ function FormProventos() {
       dataCom: new Date(dataCom),
       dataPagamento: new Date(dataPagamento),
       ticker: ticker,
-      valorBruto: +valorBruto,
+      valorBruto: formatPrice(valorBruto),
       tipo: tipo,
     };
 

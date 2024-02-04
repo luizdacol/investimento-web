@@ -8,11 +8,13 @@ import { OperacaoRendaVariavel } from "../../interfaces/Operacao";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Button from "../../components/Form/Button";
+import { useFormat } from "../../hooks/useFormat";
 
 function FormOperacoes() {
   const today = new Date().toISOString().substring(0, 10);
   const [urlParams] = useSearchParams();
   const navigate = useNavigate();
+  const { formatPrice } = useFormat();
 
   const [id, setId] = useState<string>();
   const [data, setData] = useState<string>(today);
@@ -50,7 +52,7 @@ function FormOperacoes() {
     > = {
       data: new Date(data),
       ticker: ticker,
-      precoUnitario: +precoUnitario,
+      precoUnitario: formatPrice(precoUnitario),
       quantidade: +quantidade,
       tipoOperacao: tipoOperacao,
     };
