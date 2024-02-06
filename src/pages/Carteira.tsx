@@ -44,41 +44,23 @@ function Carteira() {
         {/* Main Content */}
         <ConsolidadoRendaVariavel
           title="Ação"
-          carteira={
-            carteira.filter(
-              (c) => c.tipoAtivo === "Ação"
-            ) as CarteiraRendaVariavel[]
-          }
+          initialCarteira={carteira as CarteiraRendaVariavel[]}
         />
         <ConsolidadoRendaVariavel
           title="FII"
-          carteira={
-            carteira.filter(
-              (c) => c.tipoAtivo === "FII"
-            ) as CarteiraRendaVariavel[]
-          }
+          initialCarteira={carteira as CarteiraRendaVariavel[]}
         />
         <ConsolidadoRendaVariavel
           title="BDR"
-          carteira={
-            carteira.filter(
-              (c) => c.tipoAtivo === "BDR"
-            ) as CarteiraRendaVariavel[]
-          }
+          initialCarteira={carteira as CarteiraRendaVariavel[]}
         />
         <ConsolidadoRendaFixa
           title="Tesouro Direto"
-          carteira={
-            carteira.filter(
-              (c) => c.tipoAtivo === "TesouroDireto"
-            ) as CarteiraRendaFixa[]
-          }
+          initialCarteira={carteira as CarteiraRendaFixa[]}
         />
         <ConsolidadoRendaFixa
           title="CDB"
-          carteira={
-            carteira.filter((c) => c.tipoAtivo === "CDB") as CarteiraRendaFixa[]
-          }
+          initialCarteira={carteira as CarteiraRendaFixa[]}
         />
       </main>
     </>

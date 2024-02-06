@@ -8,23 +8,25 @@ import Cell from "../../components/Table/Cell";
 import ActionCell from "../../components/Table/ActionCell";
 import { useNavigate } from "react-router-dom";
 import { useStyles } from "../../hooks/useStyles";
+import { useSort } from "../../hooks/useSort";
 
 function Proventos() {
   const { rowDefaultStyle } = useStyles();
+  const { sort } = useSort();
   const [proventos, setProventos] = useState<ProventoRendaVariavel[]>([]);
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
 
   const headers = [
-    "Data Com",
-    "Data Pagamento",
-    "Ticker",
-    "Valor Bruto",
-    "Valor Liquido",
-    "Posição",
-    "Valor total",
-    "Tipo",
-    "Ações",
+    { key: "dataCom", label: "Data Com" },
+    { key: "dataPagamento", label: "Data Pagamento" },
+    { key: "ticker", label: "Ticker" },
+    { key: "valorBruto", label: "Valor Bruto" },
+    { key: "valorLiquido", label: "Valor Liquido" },
+    { key: "posicao", label: "Posição" },
+    { key: "valorTotal", label: "Valor total" },
+    { key: "tipo", label: "Tipo" },
+    { key: undefined, label: "Ações" },
   ];
 
   useEffect(() => {
@@ -48,6 +50,13 @@ function Proventos() {
     navigate(`/renda-variavel/form-proventos?id=${id}`);
   };
 
+  const handleSort = (property: string, order: string) => {
+    const keyProperty = property as keyof ProventoRendaVariavel;
+    const sortedOperation = sort(proventos, keyProperty, order);
+
+    setProventos(sortedOperation);
+  };
+
   return (
     <>
       <main className="h-full">
@@ -58,6 +67,7 @@ function Proventos() {
               headers={headers}
               title="Proventos"
               newItemRedirect="/renda-variavel/form-proventos"
+              handleSort={handleSort}
             >
               {proventos.map((provento, index) => (
                 <tr key={index} className={rowDefaultStyle}>

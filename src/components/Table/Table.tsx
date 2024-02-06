@@ -8,11 +8,12 @@ import { CarteiraRendaFixa } from "../../interfaces/CarteiraRendaFixa";
 import { CarteiraRendaVariavel } from "../../interfaces/CarteiraRendaVariavel";
 
 type TableProps = {
-  headers: string[];
+  headers: { key?: string; label: string }[];
   itemFooter?: CarteiraRendaFixa | CarteiraRendaVariavel;
   title: string;
   children: ReactNode;
   newItemRedirect?: string;
+  handleSort?: (property: string, order: string) => void;
 };
 
 function Table({
@@ -21,6 +22,7 @@ function Table({
   title,
   children,
   newItemRedirect,
+  handleSort,
 }: TableProps) {
   return (
     <div className="overflow-x-auto space-y-2">
@@ -41,7 +43,11 @@ function Table({
         <table
           className={`block md:table w-full text-sm text-left text-gray-500`}
         >
-          <Header headers={headers} title={title}></Header>
+          <Header
+            headers={headers}
+            title={title}
+            handleSort={handleSort}
+          ></Header>
           <tbody className="block md:table-row-group">{children}</tbody>
           {itemFooter && <Footer item={itemFooter} />}
         </table>

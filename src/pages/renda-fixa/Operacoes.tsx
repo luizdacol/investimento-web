@@ -8,23 +8,25 @@ import PriceCell from "../../components/Table/PriceCell";
 import Table from "../../components/Table/Table";
 import { useNavigate } from "react-router-dom";
 import { useStyles } from "../../hooks/useStyles";
+import { useSort } from "../../hooks/useSort";
 
 function Operacoes() {
   const { rowDefaultStyle } = useStyles();
+  const { sort } = useSort();
   const [operacoes, setOperacoes] = useState<OperacaoRendaFixa[]>([]);
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
 
   const headers = [
-    "Data",
-    "Titulo",
-    "Quantidade",
-    "Preço Unitario",
-    "Preço Total",
-    "Rentabilidade Contratada",
-    "Vencimento",
-    "Tipo do Ativo",
-    "Ações",
+    { key: "data", label: "Data" },
+    { key: "titulo", label: "Titulo" },
+    { key: "quantidade", label: "Quantidade" },
+    { key: "precoUnitario", label: "Preço Unitario" },
+    { key: "precoTotal", label: "Preço Total" },
+    { key: "rentabilidade", label: "Rentabilidade Contratada" },
+    { key: "dataVencimento", label: "Vencimento" },
+    { key: "tipoAtivo", label: "Tipo do Ativo" },
+    { key: undefined, label: "Ações" },
   ];
 
   useEffect(() => {
@@ -47,6 +49,13 @@ function Operacoes() {
     navigate(`/renda-fixa/form-operacoes?id=${id}`);
   };
 
+  const handleSort = (property: string, order: string) => {
+    const keyProperty = property as keyof OperacaoRendaFixa;
+    const sortedOperation = sort(operacoes, keyProperty, order);
+
+    setOperacoes(sortedOperation);
+  };
+
   return (
     <>
       <main className="h-full">
@@ -57,6 +66,7 @@ function Operacoes() {
               headers={headers}
               title="Operações"
               newItemRedirect="/renda-fixa/form-operacoes"
+              handleSort={handleSort}
             >
               {operacoes.map((operacao, index) => (
                 <tr key={index} className={rowDefaultStyle}>

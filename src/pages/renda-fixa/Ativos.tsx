@@ -7,14 +7,22 @@ import Table from "../../components/Table/Table";
 import { useNavigate } from "react-router-dom";
 import { useStyles } from "../../hooks/useStyles";
 import { AtivoRendaFixa } from "../../interfaces/AtivoRendaFixa";
+import { useSort } from "../../hooks/useSort";
 
 function Ativos() {
   const { rowDefaultStyle } = useStyles();
+  const { sort } = useSort();
   const [ativos, setAtivos] = useState<AtivoRendaFixa[]>([]);
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
 
-  const headers = ["Titulo", "Tipo", "Cotação", "Codigo", "Ações"];
+  const headers = [
+    { key: "titulo", label: "Titulo" },
+    { key: "tipo", label: "Tipo" },
+    { key: "cotacao", label: "Cotação" },
+    { key: "codigo", label: "Codigo" },
+    { key: undefined, label: "Ações" },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +45,13 @@ function Ativos() {
     navigate(`/renda-fixa/form-ativos?id=${id}`);
   };
 
+  const handleSort = (property: string, order: string) => {
+    const keyProperty = property as keyof AtivoRendaFixa;
+    const sortedAtivo = sort(ativos, keyProperty, order);
+
+    setAtivos(sortedAtivo);
+  };
+
   return (
     <>
       <main className="h-full">
@@ -47,6 +62,7 @@ function Ativos() {
               headers={headers}
               title="Ativos"
               newItemRedirect="/renda-fixa/form-ativos"
+              handleSort={handleSort}
             >
               {ativos.map((ativo, index) => (
                 <tr key={index} className={rowDefaultStyle}>
