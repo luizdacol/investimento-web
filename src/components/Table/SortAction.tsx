@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type SortActionProps = {
   sortKey: string;
-  handleSort?: (property: string, order: string) => void;
+  handleSort: (property: string, order: string) => void;
+  cleanChoosenSortKey: (choosenSortKey: string) => void;
+  choosenSortKey: string;
 };
 
-function SortAction({ sortKey, handleSort }: SortActionProps) {
+function SortAction({
+  sortKey,
+  handleSort,
+  cleanChoosenSortKey,
+  choosenSortKey,
+}: SortActionProps) {
   const enableStyle = "text-black text-lg";
   const disableStyle = "text-gray-400";
 
@@ -21,10 +28,13 @@ function SortAction({ sortKey, handleSort }: SortActionProps) {
       selectedSort === sortState.DESC ? sortState.NONE : selectedSort + 1;
     setSort(newState);
 
-    if (handleSort) {
-      handleSort(sortKey, sortState[newState]);
-    }
+    cleanChoosenSortKey(sortKey);
+    handleSort(sortKey, sortState[newState]);
   };
+
+  useEffect(() => {
+    if (sortKey !== choosenSortKey) setSort(sortState.NONE);
+  }, [choosenSortKey, sortKey]);
 
   return (
     <>

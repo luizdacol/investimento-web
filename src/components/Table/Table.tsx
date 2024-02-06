@@ -13,7 +13,7 @@ type TableProps = {
   title: string;
   children: ReactNode;
   newItemRedirect?: string;
-  handleSort?: (property: string, order: string) => void;
+  handleSort: (property: string, order: string) => void;
 };
 
 function Table({

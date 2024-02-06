@@ -1,12 +1,18 @@
+import { useState } from "react";
 import SortAction from "./SortAction";
 
 type HeaderProps = {
   headers?: { key?: string; label: string }[];
   title: string;
-  handleSort?: (property: string, order: string) => void;
+  handleSort: (property: string, order: string) => void;
 };
 
 function Header({ headers, title, handleSort }: HeaderProps) {
+  const [choosenSortKey, setChoosenSortKey] = useState("");
+  const handleClean = (propertySort: string) => {
+    setChoosenSortKey(propertySort);
+  };
+
   return (
     <>
       <caption className="text-black bg-green-600 font-semibold py-1.5 ">
@@ -22,7 +28,12 @@ function Header({ headers, title, handleSort }: HeaderProps) {
             >
               <span>{header.label}</span>
               {header.key && (
-                <SortAction handleSort={handleSort} sortKey={header.key} />
+                <SortAction
+                  handleSort={handleSort}
+                  cleanChoosenSortKey={handleClean}
+                  sortKey={header.key}
+                  choosenSortKey={choosenSortKey}
+                />
               )}
             </th>
           ))}
