@@ -5,6 +5,7 @@ import {
   faDollarSign,
   faWallet,
   faFile,
+  faChartPie,
 } from "@fortawesome/free-solid-svg-icons";
 
 export type menu = {
@@ -23,7 +24,15 @@ const initMenu: menu[] = [
   },
   {
     label: "Graficos",
-    path: "/graficos",
+  },
+  {
+    label: "Composição Carteira",
+    path: "/graficos/composicao-carteira",
+    icon: faChartPie,
+  },
+  {
+    label: "Proventos",
+    path: "/graficos/proventos",
     icon: faChartSimple,
   },
   {

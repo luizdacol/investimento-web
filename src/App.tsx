@@ -10,18 +10,24 @@ import FormOperacoesRendaVariavel from "./pages/renda-variavel/FormOperacoes";
 import FormOperacoesRendaFixa from "./pages/renda-fixa/FormOperacoes";
 import Proventos from "./pages/renda-variavel/Proventos";
 import FormProventos from "./pages/renda-variavel/FormProventos";
-import Graficos from "./pages/Graficos";
 import AtivosRendaVariavel from "./pages/renda-variavel/Ativos";
 import FormAtivosRendaVariavel from "./pages/renda-variavel/FormAtivos";
 import AtivosRendaFixa from "./pages/renda-fixa/Ativos";
 import FormAtivosRendaFixa from "./pages/renda-fixa/FormAtivos";
+import ComposicaoCarteira from "./pages/graficos/ComposicaoCarteira";
+import ProventosChart from "./pages/graficos/Proventos";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<AuthLayout />}>
         <Route path="/" element={<Carteira />}></Route>
-        <Route path="/graficos" element={<Graficos />}></Route>
+        {/* Rotas graficos */}
+        <Route
+          path="/graficos/composicao-carteira"
+          element={<ComposicaoCarteira />}
+        ></Route>
+        <Route path="/graficos/proventos" element={<ProventosChart />}></Route>
         {/* Rotas renda variavel */}
         <Route
           path="/renda-variavel/ativos"
