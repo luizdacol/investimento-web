@@ -15,7 +15,7 @@ function Cell({ cellValue, dataLabel, className }: CellProps<string>) {
 
   return (
     <>
-      <td data-label={dataLabel} className={cellDefaultStyle}>
+      <td data-label={dataLabel} className={className ?? cellDefaultStyle}>
         <span className="font-medium text-xs text-gray-900">{cellValue}</span>
       </td>
     </>
