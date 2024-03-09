@@ -5,8 +5,8 @@ import {
   BarElement,
   ChartOptions,
 } from "chart.js";
-import { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
+import { SetStateAction, useEffect, useRef, useState } from "react";
+import { Bar, getElementAtEvent } from "react-chartjs-2";
 import { ProventosChart } from "../../interfaces/Graficos/ProventosChart";
 import { GraficosService } from "../../services/GraficosService";
 
@@ -18,7 +18,11 @@ const mapAtivoLabel: [TipoAtivo, string][] = [
   ["carteira", "Carteira"],
 ];
 
-const ProventosBarChart = () => {
+type ChartProps = {
+  setSelectedMonth: React.Dispatch<SetStateAction<string>>;
+};
+
+const ProventosBarChart = ({ setSelectedMonth }: ChartProps) => {
   const calcularData = (quantidadeMeses: number): Date => {
     const today = new Date();
     return new Date(today.getFullYear(), today.getMonth() - quantidadeMeses, 1);
@@ -27,6 +31,7 @@ const ProventosBarChart = () => {
   const [proventos, setProventos] = useState<ProventosChart[]>([]);
   const [tipoAtivo, setTipoAtivo] = useState<TipoAtivo>("carteira");
   const [dataInicio, setDataInicio] = useState<Date>(calcularData(12));
+  const chartRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +52,8 @@ const ProventosBarChart = () => {
 
   ChartJS.register(CategoryScale, LinearScale, BarElement);
   const options: ChartOptions<"bar"> = {
+    responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       colors: {
         forceOverride: true,
@@ -90,6 +97,23 @@ const ProventosBarChart = () => {
     ],
   };
 
+  const onClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!chartRef.current) {
+      return;
+    }
+
+    const chartInstance = chartRef.current as ChartJS;
+
+    const element = getElementAtEvent(chartInstance, event);
+    if (!element || element.length === 0) return;
+
+    const selectedMonth = (chartInstance.boxes[3] as CategoryScale).ticks[
+      element[0].index
+    ].label as string;
+
+    setSelectedMonth(selectedMonth);
+  };
+
   return (
     <>
       <div className="border w-full h-full border-gray-200 bg-white py-2 px-4 rounded-md">
@@ -123,7 +147,9 @@ const ProventosBarChart = () => {
             );
           })}
         </div>
-        <Bar data={data} options={options} />
+        <div className="h-96">
+          <Bar data={data} options={options} onClick={onClick} ref={chartRef} />
+        </div>
       </div>
     </>
   );
