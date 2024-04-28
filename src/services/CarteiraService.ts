@@ -2,12 +2,16 @@ import { CarteiraRendaFixa } from "../interfaces/CarteiraRendaFixa";
 import { CarteiraRendaVariavel } from "../interfaces/CarteiraRendaVariavel";
 import { AxiosClient } from "../providers/AxiosClient";
 
-const getConsolidado = async (): Promise<
-  (CarteiraRendaVariavel | CarteiraRendaFixa)[]
-> => {
+const getConsolidado = async (
+  dataDeCorte: Date
+): Promise<(CarteiraRendaVariavel | CarteiraRendaFixa)[]> => {
   let carteira = await AxiosClient.get<
     (CarteiraRendaVariavel | CarteiraRendaFixa)[]
-  >("v1/carteira");
+  >("v1/carteira", {
+    params: {
+      dataDeCorte,
+    },
+  });
 
   return carteira.data.map((c) => {
     return {

@@ -4,30 +4,44 @@ import ConsolidadoRendaVariavel from "../components/Carteira/ConsolidadoRendaVar
 import { CarteiraService } from "../services/CarteiraService";
 import { CarteiraRendaVariavel } from "../interfaces/CarteiraRendaVariavel";
 import { CarteiraRendaFixa } from "../interfaces/CarteiraRendaFixa";
-import { faRotate } from "@fortawesome/free-solid-svg-icons";
+import { faCalendar, faRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Carteira() {
   const [priceUpdated, setPriceUpdated] = useState<boolean>(true);
+  const [display, setDisplay] = useState<string>("hidden");
+  const [dataDeCorte, setDataDeCorte] = useState<Date>(new Date());
   const [carteira, setCarteira] = useState<
     (CarteiraRendaFixa | CarteiraRendaVariavel)[]
   >([]);
 
   useEffect(() => {
-    if (!priceUpdated) return;
-
     const fetchData = async () => {
-      const data = await CarteiraService.getConsolidado();
+      console.log(dataDeCorte);
+      const data = await CarteiraService.getConsolidado(dataDeCorte);
       setCarteira(data);
     };
 
     fetchData();
-    setPriceUpdated(false);
-  }, [priceUpdated]);
+  }, [priceUpdated, dataDeCorte]);
 
   const atualizaCotacao = async () => {
     await CarteiraService.updatePrices();
-    setPriceUpdated(true);
+    setPriceUpdated(!priceUpdated);
+  };
+
+  const toogleDisplayInput = () => {
+    if (display === "hidden") {
+      setDisplay("");
+    } else {
+      setDisplay("hidden");
+      setDataDeCorte(new Date());
+    }
+  };
+
+  const changeDate = (valor: string) => {
+    const valorAsDate = valor ? new Date(valor) : new Date();
+    setDataDeCorte(valorAsDate);
   };
 
   return (
@@ -38,6 +52,17 @@ function Carteira() {
           onClick={() => atualizaCotacao()}
         >
           <FontAwesomeIcon icon={faRotate} />
+        </button>
+        <input
+          type="date"
+          className={display}
+          onBlur={(e) => changeDate(e.target.value)}
+        ></input>
+        <button
+          className="bg-green-600 text-white px-3 py-2 rounded-lg shadow-lg text-lg flex items-center"
+          onClick={() => toogleDisplayInput()}
+        >
+          <FontAwesomeIcon icon={faCalendar} />
         </button>
       </div>
       <main className="h-full">
