@@ -20,11 +20,12 @@ function Operacoes() {
   const headers = [
     { key: "data", label: "Data" },
     { key: "titulo", label: "Titulo" },
-    { key: "quantidade", label: "Quantidade" },
     { key: "precoUnitario", label: "Preço Unitario" },
+    { key: "quantidade", label: "Quantidade" },
     { key: "precoTotal", label: "Preço Total" },
-    { key: "rentabilidade", label: "Rentabilidade Contratada" },
+    { key: "rentabilidade", label: "Rentabilidade" },
     { key: "dataVencimento", label: "Vencimento" },
+    { key: "tipoOperacao", label: "Tipo Operação" },
     { key: "tipoAtivo", label: "Tipo do Ativo" },
     { key: undefined, label: "Ações" },
   ];
@@ -72,13 +73,14 @@ function Operacoes() {
                 <tr key={index} className={rowDefaultStyle}>
                   <DateCell cellValue={operacao.data} dataLabel="Data" />
                   <Cell cellValue={operacao.titulo} dataLabel="Titulo" />
-                  <Cell
-                    cellValue={operacao.quantidade.toString()}
-                    dataLabel="Quantidade"
-                  />
+
                   <PriceCell
                     cellValue={operacao.precoUnitario}
                     dataLabel="PrecoUnitario"
+                  />
+                  <Cell
+                    cellValue={operacao.quantidade.toString()}
+                    dataLabel="Quantidade"
                   />
                   <PriceCell
                     cellValue={operacao.precoTotal}
@@ -91,6 +93,10 @@ function Operacoes() {
                   <DateCell
                     cellValue={operacao.dataVencimento}
                     dataLabel="Vencimento"
+                  />
+                  <Cell
+                    cellValue={operacao.tipoOperacao}
+                    dataLabel="TipoOperacao"
                   />
                   <Cell cellValue={operacao.tipoAtivo} dataLabel="TipoAtivo" />
                   <ActionCell
