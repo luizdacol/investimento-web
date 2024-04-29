@@ -1,6 +1,7 @@
 import { AtivoRendaVariavel } from "../interfaces/AtivoRendaVariavel";
 import { OperacaoRendaVariavel } from "../interfaces/Operacao";
 import { ProventoRendaVariavel } from "../interfaces/Provento";
+import { TaxasImpostosRendaVariavel } from "../interfaces/TaxasImpostosRendaVariavel";
 import { AxiosClient } from "../providers/AxiosClient";
 
 interface Ativo {
@@ -276,6 +277,21 @@ const deleteAtivo = async (id: number): Promise<boolean> => {
   }
 };
 
+const getTaxasImpostos = async (): Promise<TaxasImpostosRendaVariavel[]> => {
+  const taxasImpostos = await AxiosClient.get<TaxasImpostosRendaVariavel[]>(
+    `v1/renda-variavel/operacoes/taxas-impostos`
+  );
+  return taxasImpostos.data.map((item) => {
+    return {
+      data: new Date(item.data),
+      valorTotal: +item.valorTotal,
+      emolumentos: +item.emolumentos,
+      taxaLiquidacao: +item.taxaLiquidacao,
+      total: +item.total,
+    } as TaxasImpostosRendaVariavel;
+  });
+};
+
 export const RendaVariavelService = {
   getOperacoes,
   getProventos,
@@ -283,6 +299,7 @@ export const RendaVariavelService = {
   getOperacaoById,
   getProventoById,
   getAtivoById,
+  getTaxasImpostos,
   createOperacao,
   createProvento,
   createAtivo,
