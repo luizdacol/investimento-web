@@ -71,7 +71,7 @@ const ProventosBarChart = ({ setSelectedMonth }: ChartProps) => {
     },
     scales: {
       y: {
-        max: 2000,
+        max: 3000,
       },
     },
   };
