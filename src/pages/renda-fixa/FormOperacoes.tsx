@@ -53,7 +53,7 @@ function FormOperacoes() {
         data: new Date(data),
         titulo: titulo,
         precoUnitario: formatPrice(precoUnitario),
-        quantidade: +quantidade,
+        quantidade: formatPrice(quantidade),
         rentabilidade: rentabilidade,
         dataVencimento: new Date(vencimento),
         tipoOperacao: tipoOperacao,
