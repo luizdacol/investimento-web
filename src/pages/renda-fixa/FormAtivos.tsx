@@ -7,15 +7,18 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Button from "../../components/Form/Button";
 import { AtivoRendaFixa } from "../../interfaces/AtivoRendaFixa";
+import { useFormat } from "../../hooks/useFormat";
 
 function FormAtivos() {
   const [urlParams] = useSearchParams();
   const navigate = useNavigate();
+  const { formatPrice } = useFormat();
 
   const [id, setId] = useState<string>();
   const [titulo, setTitulo] = useState<string>("");
   const [codigo, setCodigo] = useState<string>("");
   const [tipo, setTipo] = useState<string>("TesouroDireto");
+  const [cotacao, setCotacao] = useState<string>("");
 
   useEffect(() => {
     const fetchAtivo = async () => {
@@ -24,6 +27,7 @@ function FormAtivos() {
         const operacao = await RendaFixaService.getAtivoById(+ativoId);
 
         setId(ativoId);
+        setCotacao(operacao.cotacao.toString());
         setTitulo(operacao.titulo);
         setTipo(operacao.tipo);
         setCodigo(operacao.codigo);
@@ -36,10 +40,12 @@ function FormAtivos() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const ativo: Omit<AtivoRendaFixa, "id" | "cotacao" | "dataHoraCotacao"> = {
+    const ativo: Omit<AtivoRendaFixa, "id"> = {
       titulo: titulo,
       tipo: tipo,
       codigo: codigo,
+      cotacao: formatPrice(cotacao),
+      dataHoraCotacao: new Date(),
     };
 
     let status;
@@ -65,6 +71,14 @@ function FormAtivos() {
                 value={titulo}
                 handleOnChange={(event) => {
                   setTitulo(event.target.value);
+                }}
+              />
+              <InputText
+                id="cotacao"
+                label="Cotação"
+                value={cotacao}
+                handleOnChange={(event) => {
+                  setCotacao(event.target.value);
                 }}
               />
               <SelectList
