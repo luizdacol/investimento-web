@@ -110,7 +110,12 @@ function FormProventos() {
                 id="tipo"
                 label="Tipo"
                 value={tipo}
-                options={["Dividendo", "JCP", "Restituição de Capital"]}
+                options={[
+                  "Dividendo",
+                  "JCP",
+                  "Restituição de Capital",
+                  "Rendimento Tributado",
+                ]}
                 handleOnChange={(event) => {
                   setTipo(event.target.value);
                 }}
