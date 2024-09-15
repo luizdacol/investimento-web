@@ -1,100 +1,86 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  Colors,
-  ChartOptions,
-  Title,
-} from "chart.js";
-import { Pie, getElementAtEvent } from "react-chartjs-2";
+import { useEffect, useState } from "react";
 import { GraficosService } from "../../services/GraficosService";
-import { ComposicaoChart } from "../../interfaces/Graficos/ComposicaoChart";
+import { ComposicaoV2Chart } from "../../interfaces/Graficos/ComposicaoChart";
+import { PieChart, Pie, Tooltip, Cell } from "recharts";
 
-const ComposicaoPieChart = () => {
-  const [composicao, setComposicao] = useState<ComposicaoChart[]>([]);
-  const [labels, setLabels] = useState<string[]>([]);
-  const [dados, setDados] = useState<number[]>([]);
-  const chartRef = useRef();
+type Props = {
+  categoria: string;
+};
+
+const ComposicaoPieChart = ({ categoria }: Props) => {
+  const [composicao, setComposicao] = useState<ComposicaoV2Chart[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await GraficosService.getComposicao();
+      const response = await GraficosService.getComposicaoPorCategoria(
+        categoria
+      );
       setComposicao(response);
-      setLabels(response.find((c) => c.tipo === "Carteira")?.labels ?? []);
-      setDados(response.find((c) => c.tipo === "Carteira")?.data ?? []);
     };
 
     fetchData();
-  }, []);
+  }, [categoria]);
 
-  ChartJS.register(ArcElement, Tooltip, Legend, Colors, Title);
+  const renderCustomizedLabel = (param: any) => {
+    const RADIAN = Math.PI / 180;
+    const radius =
+      param.innerRadius + (param.outerRadius - param.innerRadius) * 0.5;
+    const x = param.cx + radius * Math.cos(-param.midAngle * RADIAN);
+    const y = param.cy + radius * Math.sin(-param.midAngle * RADIAN);
 
-  const options: ChartOptions<"pie"> = {
-    plugins: {
-      colors: {
-        forceOverride: true,
-      },
-      title: {
-        display: true,
-        text: "Composição Carteira",
-      },
-      tooltip: {
-        mode: "dataset",
-        callbacks: {
-          label(tooltipItem) {
-            return `${tooltipItem.label}: ${tooltipItem.formattedValue}%`;
-          },
-        },
-      },
-      legend: {
-        position: "bottom",
-        align: "start",
-        labels: {
-          boxWidth: 20,
-        },
-      },
-    },
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor={x > param.cx ? "start" : "end"}
+        dominantBaseline="central"
+        fontSize={14}
+      >
+        <tspan x={x} dy="1em">{`${param.name}`}</tspan>
+        <tspan x={x} dy="1em">{`${param.value}%`}</tspan>
+      </text>
+    );
   };
 
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        data: dados,
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const toogleTipo = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!chartRef.current) {
-      return;
-    }
-
-    const element = getElementAtEvent(chartRef.current, event)[0];
-    if (!element) return;
-
-    let selectedLabel = labels[element.index];
-    const isTipo = composicao.some((c) => c.tipo === selectedLabel);
-    if (!isTipo) selectedLabel = "Carteira";
-
-    setLabels(composicao.find((c) => c.tipo === selectedLabel)?.labels ?? []);
-    setDados(composicao.find((c) => c.tipo === selectedLabel)?.data ?? []);
-  };
+  const COLORS = [
+    "#FF8042",
+    "#0088FE",
+    "#FFBB28",
+    "#00C49F",
+    "#E74C3C",
+    "#A569BD",
+    "#C8E309",
+    "#979A9A",
+    "#7B241C",
+    "#154360",
+    "#145A32",
+    "#7E5109",
+    "#490066",
+  ];
 
   return (
-    <>
-      <div className="border w-1/3 h-2/3 border-gray-200 bg-white py-2 px-4 rounded-md">
+    <div className="border w-1/3 h-2/3 border-gray-200 bg-white py-2 px-4 rounded-md mr-1">
+      <span>Composição {categoria}</span>
+      <PieChart width={400} height={400}>
         <Pie
-          data={data}
-          options={options}
-          ref={chartRef}
-          onClick={toogleTipo}
-        />
-      </div>
-    </>
+          dataKey="value"
+          isAnimationActive={false}
+          data={composicao}
+          cx="50%"
+          cy="50%"
+          outerRadius="100%"
+          fill="#8884d8"
+          label={renderCustomizedLabel}
+          labelLine={false}
+        >
+          {composicao.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index]} />
+          ))}
+        </Pie>
+        <Tooltip />
+      </PieChart>
+    </div>
   );
 };
 

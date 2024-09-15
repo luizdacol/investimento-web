@@ -1,18 +1,16 @@
 import ComposicaoPieChart from "../../components/Graficos/ComposicaoPieChart";
-import NewComposicaoPieChart from "../../components/Graficos/NewComposicaoPieChart";
 
 function ComposicaoCarteira() {
   return (
     <>
       <main className="h-full">
         <div className="mainCard">
-          <ComposicaoPieChart />
+          <ComposicaoPieChart categoria="Carteira" />
         </div>
-        <div className="mainCard">
-          <NewComposicaoPieChart categoria="carteira" />
-          {/* <NewComposicaoPieChart categoria="FII" />
-          <NewComposicaoPieChart categoria="Ação" />
-          <NewComposicaoPieChart categoria="TesouroDireto" /> */}
+        <div className="mainCard flex">
+          <ComposicaoPieChart categoria="FII" />
+          <ComposicaoPieChart categoria="Ação" />
+          <ComposicaoPieChart categoria="TesouroDireto" />
         </div>
       </main>
     </>
