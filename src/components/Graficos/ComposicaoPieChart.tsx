@@ -61,15 +61,30 @@ const ComposicaoPieChart = ({ categoria }: Props) => {
 
   return (
     <div className="border w-1/3 h-2/3 border-gray-200 bg-white py-2 px-4 rounded-md mr-1">
-      <span>Composição {categoria}</span>
       <PieChart width={400} height={400}>
+        <text
+          x="50%"
+          y="2%"
+          fill="black"
+          textAnchor="middle"
+          dominantBaseline="central"
+        >
+          <tspan
+            fontSize="14"
+            fontFamily="sans-serif"
+            fontWeight="bold"
+            fill="#727575"
+          >
+            Composição {categoria}
+          </tspan>
+        </text>
         <Pie
           dataKey="value"
           isAnimationActive={false}
           data={composicao}
           cx="50%"
-          cy="50%"
-          outerRadius="100%"
+          cy="52%"
+          outerRadius="95%"
           fill="#8884d8"
           label={renderCustomizedLabel}
           labelLine={false}
