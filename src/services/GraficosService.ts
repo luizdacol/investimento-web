@@ -1,4 +1,7 @@
-import { ComposicaoChart } from "../interfaces/Graficos/ComposicaoChart";
+import {
+  ComposicaoChart,
+  ComposicaoV2Chart,
+} from "../interfaces/Graficos/ComposicaoChart";
 import { ProventoComposicaoChart } from "../interfaces/Graficos/ProventoComposicaoChart";
 import { ProventosChart } from "../interfaces/Graficos/ProventosChart";
 import { AxiosClient } from "../providers/AxiosClient";
@@ -6,6 +9,16 @@ import { AxiosClient } from "../providers/AxiosClient";
 const getComposicao = async (): Promise<ComposicaoChart[]> => {
   const composicao = await AxiosClient.get<ComposicaoChart[]>(
     "v1/graficos/composicao"
+  );
+
+  return composicao.data;
+};
+
+const getComposicaoPorCategoria = async (
+  categoria: string
+): Promise<ComposicaoV2Chart[]> => {
+  const composicao = await AxiosClient.get<ComposicaoV2Chart[]>(
+    `v1/graficos/composicao/${categoria}`
   );
 
   return composicao.data;
@@ -42,6 +55,7 @@ const getProventosComposicao = async (
 };
 
 export const GraficosService = {
+  getComposicaoPorCategoria,
   getComposicao,
   getProventos,
   getProventosComposicao,
