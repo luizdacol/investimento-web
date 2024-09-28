@@ -1,11 +1,11 @@
-import NewProventosBarChart from "../../components/Graficos/NewProventosBarChart";
+import ProventosBarChart from "../../components/Graficos/ProventosBarChart";
 
 function Proventos() {
   return (
     <>
       <main className="h-full">
         <div className="mainCard">
-          <NewProventosBarChart />
+          <ProventosBarChart />
         </div>
       </main>
     </>

@@ -7,6 +7,7 @@ import {
   Legend,
   ResponsiveContainer,
   Tooltip,
+  TooltipProps,
   XAxis,
   YAxis,
 } from "recharts";
@@ -14,7 +15,7 @@ import { ProventosChart } from "../../interfaces/Graficos/ProventosChart";
 import { GraficosService } from "../../services/GraficosService";
 import { ProventoComposicaoChart } from "../../interfaces/Graficos/ProventoComposicaoChart";
 
-const NewProventosBarChart = () => {
+const ProventosBarChart = () => {
   const [proventos, setProventos] = useState<ProventosChart[]>([]);
   const [brushIndex, setBrushIndex] = useState<{
     start?: number;
@@ -64,6 +65,47 @@ const NewProventosBarChart = () => {
     setSelectedMonth(dados.data);
   };
 
+  const TooltipByCategory = (props: any) => {
+    if (props.active && props.payload && props.payload.length) {
+      const payload = props.payload[0].payload;
+      const payloadKeys = Object.keys(payload).filter(
+        (k) => k !== "data" && k !== "carteira"
+      );
+
+      const colors: Record<string, string> = {
+        acao: "text-red-600",
+        fii: "text-yellow-500",
+        bdr: "text-violet-700",
+      };
+
+      return (
+        <div className="bg-white p-2.5">
+          <p className="underline decoration-double underline-offset-4 pb-2">
+            {props.label}
+          </p>
+          <ul>
+            {payloadKeys.map(
+              (key) =>
+                payload[key] > 0 && (
+                  <li
+                    key={key}
+                    className={`block ${colors[key]}`}
+                  >{`${key}: ${payload[key].toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}`}</li>
+                )
+            )}
+          </ul>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <>
       <div className="flex space-x-2">
@@ -106,18 +148,7 @@ const NewProventosBarChart = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="data" />
               <YAxis />
-              <Tooltip
-                formatter={(value, name, props) => {
-                  if (value === 0) return [];
-                  return value.toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  });
-                }}
-              />
-              <Legend />
+              <Tooltip content={<TooltipByCategory />} />
               <Brush
                 dataKey="data"
                 height={30}
@@ -131,21 +162,9 @@ const NewProventosBarChart = () => {
                 }}
               />
               <Bar
-                dataKey="acao"
-                fill="#E74C3C"
-                stackId="a"
-                onClick={handleClickBar}
-              />
-              <Bar
-                dataKey="fii"
-                fill="#FFA500"
-                stackId="a"
-                onClick={handleClickBar}
-              />
-              <Bar
-                dataKey="bdr"
-                fill="#4682B4"
-                stackId="a"
+                dataKey="carteira"
+                fill="#5dade2"
+                //stackId="a"
                 onClick={handleClickBar}
                 label={{
                   position: "top",
@@ -198,4 +217,4 @@ const NewProventosBarChart = () => {
   );
 };
 
-export default NewProventosBarChart;
+export default ProventosBarChart;
