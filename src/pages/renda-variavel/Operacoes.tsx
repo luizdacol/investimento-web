@@ -31,7 +31,6 @@ function Operacoes() {
   useEffect(() => {
     const fetchData = async () => {
       const data = await RendaVariavelService.getOperacoes();
-      console.log(data);
       setOperacoes(data);
       setReload(false);
     };

@@ -17,7 +17,6 @@ function Carteira() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(dataDeCorte);
       const data = await CarteiraService.getConsolidado(dataDeCorte);
       setCarteira(data);
     };

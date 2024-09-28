@@ -40,8 +40,6 @@ function TaxasImpostos() {
     setTaxasImpostos(sortedAtivo);
   };
 
-  console.log(taxasImpostos);
-
   return (
     <>
       <main className="h-full">
