@@ -4,6 +4,7 @@ import {
 } from "../interfaces/Graficos/ComposicaoChart";
 import { ProventoComposicaoChart } from "../interfaces/Graficos/ProventoComposicaoChart";
 import { ProventosChart } from "../interfaces/Graficos/ProventosChart";
+import { YieldOnCostMensalChart } from "../interfaces/Graficos/YieldOnCostMonthly";
 import { AxiosClient } from "../providers/AxiosClient";
 
 const getComposicao = async (): Promise<ComposicaoChart[]> => {
@@ -54,9 +55,18 @@ const getProventosComposicao = async (
   return proventoComposicao.data;
 };
 
+const getYieldOnCostMensal = async (): Promise<YieldOnCostMensalChart[]> => {
+  const yieldOnCost = await AxiosClient.get<YieldOnCostMensalChart[]>(
+    "v1/graficos/proventos/yield"
+  );
+
+  return yieldOnCost.data;
+};
+
 export const GraficosService = {
   getComposicaoPorCategoria,
   getComposicao,
   getProventos,
   getProventosComposicao,
+  getYieldOnCostMensal,
 };

@@ -1,4 +1,5 @@
 import ProventosBarChart from "../../components/Graficos/ProventosBarChart";
+import YieldOnCostLineChart from "../../components/Graficos/YieldOnCostLineChart";
 
 function Proventos() {
   return (
@@ -6,6 +7,9 @@ function Proventos() {
       <main className="h-full">
         <div className="mainCard">
           <ProventosBarChart />
+        </div>
+        <div className="mainCard">
+          <YieldOnCostLineChart />
         </div>
       </main>
     </>
