@@ -32,31 +32,41 @@ const YieldOnCostLineChart = () => {
   }, []);
 
   return (
-    <LineChart width={1300} height={600} data={yieldOnCostMensal}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="data" type="category" allowDuplicatedCategory={false} />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      {yieldOnCostMensal.length &&
-        Object.keys(yieldOnCostMensal[0])
-          .filter((k) => k !== "data")
-          .map((yoc) => (
-            <Line type="monotone" dataKey={yoc} name={yoc} key={yoc} />
-          ))}
-      <Brush
-        dataKey="data"
-        height={30}
-        stroke="#5dade2"
-        startIndex={brushIndex.start}
-        endIndex={brushIndex.end}
-        onDragEnd={(p) => {
-          if ("startIndex" in p) {
-            setBrushIndex({ start: p.startIndex, end: p.endIndex });
-          }
-        }}
-      />
-    </LineChart>
+    <>
+      <div className="flex space-x-2">
+        <div className="border w-4/5 h-[34rem] border-gray-200 bg-white py-2 px-4 rounded-md flex">
+          <LineChart width={1300} height={600} data={yieldOnCostMensal}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="data"
+              type="category"
+              allowDuplicatedCategory={false}
+            />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {yieldOnCostMensal.length &&
+              Object.keys(yieldOnCostMensal[0])
+                .filter((k) => k !== "data")
+                .map((yoc) => (
+                  <Line type="monotone" dataKey={yoc} name={yoc} key={yoc} />
+                ))}
+            <Brush
+              dataKey="data"
+              height={30}
+              stroke="#5dade2"
+              startIndex={brushIndex.start}
+              endIndex={brushIndex.end}
+              onDragEnd={(p) => {
+                if ("startIndex" in p) {
+                  setBrushIndex({ start: p.startIndex, end: p.endIndex });
+                }
+              }}
+            />
+          </LineChart>
+        </div>
+      </div>
+    </>
   );
 };
 

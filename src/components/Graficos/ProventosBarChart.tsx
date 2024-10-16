@@ -4,10 +4,8 @@ import {
   BarChart,
   Brush,
   CartesianGrid,
-  Legend,
   ResponsiveContainer,
   Tooltip,
-  TooltipProps,
   XAxis,
   YAxis,
 } from "recharts";
