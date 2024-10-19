@@ -3,6 +3,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer tailwind-base, primereact, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
 .adminLayout {
   @apply flex md:h-screen h-[calc(100vh-4rem)] overflow-hidden bg-slate-100;
 }
