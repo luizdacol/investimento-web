@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { YieldOnCostMensalChart } from "../../interfaces/Graficos/YieldOnCostMonthly";
+import { YieldOnCostChart } from "../../interfaces/Graficos/YieldOnCostMonthly";
 import { GraficosService } from "../../services/GraficosService";
 import {
   LineChart,
@@ -11,29 +11,30 @@ import {
   Line,
   Brush,
   ResponsiveContainer,
+  LabelList,
 } from "recharts";
 import { MultiSelect } from "primereact/multiselect";
+import { SelectButton } from "primereact/selectbutton";
 
 const YieldOnCostLineChart = () => {
-  const [yieldOnCostMensal, setYieldOnCostMensal] = useState<
-    YieldOnCostMensalChart[]
-  >([]);
+  const [yieldOnCost, setYieldOnCost] = useState<YieldOnCostChart[]>([]);
   const [brushIndex, setBrushIndex] = useState<{
     start?: number;
     end?: number;
   }>({ start: 0, end: 10 });
 
   const [selectedTickers, setSelectedTickers] = useState<string[]>([]);
+  const [period, setPeriod] = useState<string>("Mensal");
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await GraficosService.getYieldOnCostMensal();
-      setYieldOnCostMensal(response);
+      const response = await GraficosService.getYieldOnCost(period);
+      setYieldOnCost(response);
       setBrushIndex({ start: response.length - 13, end: response.length - 1 });
     };
 
     fetchData();
-  }, []);
+  }, [period]);
 
   const COLORS = [
     "#0088FE",
@@ -51,37 +52,60 @@ const YieldOnCostLineChart = () => {
     "#490066",
   ];
 
+  const CustomizedLabel = (props: any) => {
+    return (
+      <text
+        x={props.x}
+        y={props.y}
+        dy={-4}
+        fill={props.color}
+        fontSize={10}
+        textAnchor="middle"
+      >
+        {props.value}%
+      </text>
+    );
+  };
+
   return (
     <>
       <div className="border h-[40rem] border-gray-200 bg-white py-2 px-4 rounded-md space-y-2">
-        <MultiSelect
-          value={selectedTickers}
-          onChange={(e) => setSelectedTickers(e.value)}
-          filter
-          resetFilterOnHide
-          showClear
-          showSelectAll={false}
-          options={
-            yieldOnCostMensal.length
-              ? Object.keys(yieldOnCostMensal[0])
-                  .filter((k) => k !== "data")
-                  .sort()
-                  .map((yoc) => {
-                    return { label: yoc, value: yoc };
-                  })
-              : []
-          }
-          display="chip"
-          placeholder="Ativos"
-          maxSelectedLabels={7}
-          itemClassName="text-xs"
-          className="w-1/2 text-xs ml-16"
-        />
+        <div className="flex space-x-6">
+          <MultiSelect
+            value={selectedTickers}
+            onChange={(e) => setSelectedTickers(e.value)}
+            filter
+            resetFilterOnHide
+            showClear
+            showSelectAll={false}
+            options={
+              yieldOnCost.length
+                ? Object.keys(yieldOnCost[0])
+                    .filter((k) => k !== "data")
+                    .sort()
+                    .map((yoc) => {
+                      return { label: yoc, value: yoc };
+                    })
+                : []
+            }
+            display="chip"
+            placeholder="Ativos"
+            maxSelectedLabels={7}
+            itemClassName="text-xs"
+            className="w-1/2 text-xs ml-16"
+          />
+          <SelectButton
+            className="text-xs"
+            value={period}
+            onChange={(e) => setPeriod(e.value)}
+            options={["Mensal", "Anual"]}
+          />
+        </div>
         <ResponsiveContainer width="100%" height="90%">
           <LineChart
             width={1300}
             height={600}
-            data={yieldOnCostMensal}
+            data={yieldOnCost}
             margin={{
               top: 20,
               right: 20,
@@ -110,12 +134,13 @@ const YieldOnCostLineChart = () => {
               dataKey="data"
               type="category"
               allowDuplicatedCategory={false}
+              padding={{ left: 20 }}
             />
             <YAxis />
             <Tooltip formatter={(value, name, props) => `${value}%`} />
             <Legend />
-            {yieldOnCostMensal.length &&
-              Object.keys(yieldOnCostMensal[0])
+            {yieldOnCost.length &&
+              Object.keys(yieldOnCost[0])
                 .filter((k) => selectedTickers.includes(k))
                 .map((yoc, index) => (
                   <Line
@@ -123,8 +148,13 @@ const YieldOnCostLineChart = () => {
                     dataKey={yoc}
                     name={yoc}
                     key={yoc}
+                    dot={{ fill: COLORS[index] }}
                     stroke={COLORS[index]}
-                  />
+                  >
+                    <LabelList
+                      content={<CustomizedLabel color={COLORS[index]} />}
+                    />
+                  </Line>
                 ))}
             <Brush
               dataKey="data"

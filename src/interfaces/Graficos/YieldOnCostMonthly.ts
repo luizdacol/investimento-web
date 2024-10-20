@@ -1,4 +1,4 @@
-export interface YieldOnCostMensalChart {
+export interface YieldOnCostChart {
   data: string;
   [ticker: string]: string | number;
 }
