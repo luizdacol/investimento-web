@@ -43,6 +43,8 @@ function ConsolidadoRendaFixa({ initialCarteira, title }: CarteiraProps) {
     setCarteira(sortedCarteira);
   };
 
+  if (carteira.length === 0) return null;
+
   return (
     <div className="mainCard">
       <div className="border w-full border-gray-200 bg-white py-2 px-4 rounded-md">
