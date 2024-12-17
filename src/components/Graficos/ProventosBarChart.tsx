@@ -189,6 +189,7 @@ const ProventosBarChart = () => {
               <div className="border-b border-black text-base mb-2">{tipo}</div>
               {proventoComposicao?.details
                 .filter((d) => d.tipo === tipo)
+                .sort((a, b) => a.ativo.localeCompare(b.ativo))
                 .map((d) => (
                   <div
                     key={d.ativo}
