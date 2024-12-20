@@ -75,6 +75,10 @@ function Carteira() {
           initialCarteira={carteira as CarteiraRendaVariavel[]}
         />
         <ConsolidadoRendaVariavel
+          title="ETF"
+          initialCarteira={carteira as CarteiraRendaVariavel[]}
+        />
+        <ConsolidadoRendaVariavel
           title="BDR"
           initialCarteira={carteira as CarteiraRendaVariavel[]}
         />

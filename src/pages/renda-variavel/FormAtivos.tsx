@@ -74,7 +74,7 @@ function FormAtivos() {
                 id="tipo"
                 label="Tipo"
                 value={tipo}
-                options={["Ação", "BDR", "FII"]}
+                options={["Ação", "BDR", "FII", "ETF"]}
                 handleOnChange={(event) => {
                   setTipo(event.target.value);
                 }}
