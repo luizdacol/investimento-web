@@ -1,5 +1,5 @@
 import ProventosBarChart from "../../components/Graficos/ProventosBarChart";
-import YieldOnCostLineChart from "../../components/Graficos/YieldOnCostLineChart";
+import YieldOnCostLineChart from "../../components/Graficos/EvolucaoProventosLineChart";
 
 function Proventos() {
   return (

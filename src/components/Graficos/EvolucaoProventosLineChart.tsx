@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { YieldOnCostChart } from "../../interfaces/Graficos/YieldOnCostMonthly";
+import { EvolucaoProventosChart } from "../../interfaces/Graficos/EvolucaoProventosChart";
 import { GraficosService } from "../../services/GraficosService";
 import {
   LineChart,
@@ -16,8 +16,10 @@ import {
 import { MultiSelect } from "primereact/multiselect";
 import { SelectButton } from "primereact/selectbutton";
 
-const YieldOnCostLineChart = () => {
-  const [yieldOnCost, setYieldOnCost] = useState<YieldOnCostChart[]>([]);
+const EvolucaoProventosLineChart = () => {
+  const [evolucaoProvento, setEvolucaoProvento] = useState<
+    EvolucaoProventosChart[]
+  >([]);
   const [brushIndex, setBrushIndex] = useState<{
     start?: number;
     end?: number;
@@ -29,8 +31,8 @@ const YieldOnCostLineChart = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await GraficosService.getYieldOnCost(period, info);
-      setYieldOnCost(response);
+      const response = await GraficosService.getEvolucaoProventos(period, info);
+      setEvolucaoProvento(response);
       setBrushIndex({ start: response.length - 13, end: response.length - 1 });
     };
 
@@ -84,12 +86,12 @@ const YieldOnCostLineChart = () => {
             showClear
             showSelectAll={false}
             options={
-              yieldOnCost.length
-                ? Object.keys(yieldOnCost[0])
+              evolucaoProvento.length
+                ? Object.keys(evolucaoProvento[0])
                     .filter((k) => k !== "data")
                     .sort()
-                    .map((yoc) => {
-                      return { label: yoc, value: yoc };
+                    .map((chave) => {
+                      return { label: chave, value: chave };
                     })
                 : []
             }
@@ -116,7 +118,7 @@ const YieldOnCostLineChart = () => {
           <LineChart
             width={1300}
             height={600}
-            data={yieldOnCost}
+            data={evolucaoProvento}
             margin={{
               top: 20,
               right: 20,
@@ -150,15 +152,15 @@ const YieldOnCostLineChart = () => {
             <YAxis />
             <Tooltip formatter={(value, name, props) => formatarValor(value)} />
             <Legend />
-            {yieldOnCost.length &&
-              Object.keys(yieldOnCost[0])
+            {evolucaoProvento.length &&
+              Object.keys(evolucaoProvento[0])
                 .filter((k) => selectedTickers.includes(k))
-                .map((yoc, index) => (
+                .map((chave, index) => (
                   <Line
                     type="monotone"
-                    dataKey={yoc}
-                    name={yoc}
-                    key={yoc}
+                    dataKey={chave}
+                    name={chave}
+                    key={chave}
                     dot={{ fill: COLORS[index] }}
                     stroke={COLORS[index]}
                   >
@@ -186,4 +188,4 @@ const YieldOnCostLineChart = () => {
   );
 };
 
-export default YieldOnCostLineChart;
+export default EvolucaoProventosLineChart;
