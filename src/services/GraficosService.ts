@@ -55,10 +55,14 @@ const getProventosComposicao = async (
   return proventoComposicao.data;
 };
 
-const getYieldOnCost = async (periodo: string): Promise<YieldOnCostChart[]> => {
+const getYieldOnCost = async (
+  periodo: string,
+  info: string
+): Promise<YieldOnCostChart[]> => {
   const tipoPeriodo = periodo === "Anual" ? 2 : 1;
+  const tipoInformacao = info === "YOC" ? 1 : info === "PM" ? 2 : 3;
   const yieldOnCost = await AxiosClient.get<YieldOnCostChart[]>(
-    `v1/graficos/proventos/yield?periodo=${tipoPeriodo}`
+    `v1/graficos/proventos/evolucao?periodo=${tipoPeriodo}&informacao=${tipoInformacao}`
   );
 
   return yieldOnCost.data;

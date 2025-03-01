@@ -25,16 +25,17 @@ const YieldOnCostLineChart = () => {
 
   const [selectedTickers, setSelectedTickers] = useState<string[]>([]);
   const [period, setPeriod] = useState<string>("Mensal");
+  const [info, setInfo] = useState<string>("YOC");
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await GraficosService.getYieldOnCost(period);
+      const response = await GraficosService.getYieldOnCost(period, info);
       setYieldOnCost(response);
       setBrushIndex({ start: response.length - 13, end: response.length - 1 });
     };
 
     fetchData();
-  }, [period]);
+  }, [period, info]);
 
   const COLORS = [
     "#0088FE",
@@ -52,6 +53,10 @@ const YieldOnCostLineChart = () => {
     "#490066",
   ];
 
+  const formatarValor = (valor: any) => {
+    return `${valor}${info === "YOC" ? "%" : ""}`;
+  };
+
   const CustomizedLabel = (props: any) => {
     return (
       <text
@@ -62,7 +67,7 @@ const YieldOnCostLineChart = () => {
         fontSize={10}
         textAnchor="middle"
       >
-        {props.value}%
+        {formatarValor(props.value)}
       </text>
     );
   };
@@ -99,6 +104,12 @@ const YieldOnCostLineChart = () => {
             value={period}
             onChange={(e) => setPeriod(e.value)}
             options={["Mensal", "Anual"]}
+          />
+          <SelectButton
+            className="text-xs"
+            value={info}
+            onChange={(e) => setInfo(e.value)}
+            options={["YOC", "PM", "Valor"]}
           />
         </div>
         <ResponsiveContainer width="100%" height="90%">
@@ -137,7 +148,7 @@ const YieldOnCostLineChart = () => {
               padding={{ left: 20 }}
             />
             <YAxis />
-            <Tooltip formatter={(value, name, props) => `${value}%`} />
+            <Tooltip formatter={(value, name, props) => formatarValor(value)} />
             <Legend />
             {yieldOnCost.length &&
               Object.keys(yieldOnCost[0])
