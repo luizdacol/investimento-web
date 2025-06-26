@@ -22,11 +22,17 @@ const getConsolidado = async (
 };
 
 const updatePrices = async (): Promise<boolean> => {
+  const cotacaoRendaFixa = AxiosClient.patch<boolean>(
+    "v1/renda-fixa/ativos/update-prices"
+  );
   const cotacaoRendaVariavel = AxiosClient.patch<boolean>(
     "v1/renda-variavel/ativos/update-prices"
   );
 
-  const cotacaoAtualizada = await Promise.all([cotacaoRendaVariavel]);
+  const cotacaoAtualizada = await Promise.all([
+    cotacaoRendaFixa,
+    cotacaoRendaVariavel,
+  ]);
 
   return cotacaoAtualizada.some((c) => !!c);
 };
