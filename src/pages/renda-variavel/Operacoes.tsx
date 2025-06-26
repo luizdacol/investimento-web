@@ -9,21 +9,18 @@ import Table from "../../components/Table/Table";
 import { useNavigate } from "react-router-dom";
 import { useStyles } from "../../hooks/useStyles";
 import { useSort } from "../../hooks/useSort";
-import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
+import { Paginator } from "primereact/paginator";
 import { PaginatedDto } from "../../interfaces/PaginatedDto";
+import { usePaginator } from "../../hooks/usePaginator";
 
 function Operacoes() {
   const { rowDefaultStyle } = useStyles();
   const { sort } = useSort();
-  const [take, setTake] = useState<number>(50);
-  const [skip, setSkip] = useState<number>(0);
+  const { take, skip, initialPaginatedObject, onPageChange } = usePaginator();
 
   const [operacoes, setOperacoes] = useState<
     PaginatedDto<OperacaoRendaVariavel>
-  >({
-    content: [],
-    metadata: { skip: 0, take: 0, totalRecords: 0 },
-  });
+  >(initialPaginatedObject);
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
 
@@ -65,11 +62,6 @@ function Operacoes() {
     const sortedOperation = sort(operacoes.content, keyProperty, order);
 
     setOperacoes({ content: sortedOperation, metadata: operacoes?.metadata });
-  };
-
-  const onPageChange = (event: PaginatorPageChangeEvent) => {
-    setSkip(event.first);
-    setTake(event.rows);
   };
 
   return (
