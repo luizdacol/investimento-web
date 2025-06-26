@@ -9,11 +9,17 @@ import ActionCell from "../../components/Table/ActionCell";
 import { useNavigate } from "react-router-dom";
 import { useStyles } from "../../hooks/useStyles";
 import { useSort } from "../../hooks/useSort";
+import { usePaginator } from "../../hooks/usePaginator";
+import { PaginatedDto } from "../../interfaces/PaginatedDto";
+import { Paginator } from "primereact/paginator";
 
 function Proventos() {
   const { rowDefaultStyle } = useStyles();
   const { sort } = useSort();
-  const [proventos, setProventos] = useState<ProventoRendaVariavel[]>([]);
+  const { take, skip, initialPaginatedObject, onPageChange } = usePaginator();
+  const [proventos, setProventos] = useState<
+    PaginatedDto<ProventoRendaVariavel>
+  >(initialPaginatedObject);
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
 
@@ -31,13 +37,13 @@ function Proventos() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await RendaVariavelService.getProventos();
+      const data = await RendaVariavelService.getProventos(take, skip);
       setProventos(data);
       setReload(false);
     };
 
     fetchData();
-  }, [reload]);
+  }, [reload, skip, take]);
 
   const handleDelete = async (id: number): Promise<void> => {
     const status = await RendaVariavelService.deleteProvento(id);
@@ -52,9 +58,9 @@ function Proventos() {
 
   const handleSort = (property: string, order: string) => {
     const keyProperty = property as keyof ProventoRendaVariavel;
-    const sortedOperation = sort(proventos, keyProperty, order);
+    const sortedOperation = sort(proventos.content, keyProperty, order);
 
-    setProventos(sortedOperation);
+    setProventos({ content: sortedOperation, metadata: proventos?.metadata });
   };
 
   return (
@@ -69,7 +75,7 @@ function Proventos() {
               newItemRedirect="/renda-variavel/form-proventos"
               handleSort={handleSort}
             >
-              {proventos.map((provento, index) => (
+              {proventos.content.map((provento, index) => (
                 <tr key={index} className={rowDefaultStyle}>
                   <DateCell cellValue={provento.dataCom} dataLabel="DataCom" />
                   <DateCell
@@ -102,6 +108,19 @@ function Proventos() {
                 </tr>
               ))}
             </Table>
+            {proventos.content && (
+              <Paginator
+                first={skip}
+                rows={take}
+                totalRecords={proventos.metadata.totalRecords}
+                rowsPerPageOptions={[50, 100, 200]}
+                onPageChange={onPageChange}
+                template={{
+                  layout:
+                    "FirstPageLink PageLinks LastPageLink RowsPerPageDropdown",
+                }}
+              />
+            )}
           </div>
         </div>
       </main>

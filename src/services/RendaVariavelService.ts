@@ -131,24 +131,36 @@ const getOperacaoById = async (id: number) => {
   } as OperacaoRendaVariavel;
 };
 
-const getProventos = async (): Promise<ProventoRendaVariavel[]> => {
-  let proventos = await AxiosClient.get<Provento[]>(
-    "v1/renda-variavel/proventos"
+const getProventos = async (
+  take: number,
+  skip: number
+): Promise<PaginatedDto<ProventoRendaVariavel>> => {
+  let proventos = await AxiosClient.get<PaginatedDto<Provento>>(
+    "v1/renda-variavel/proventos",
+    {
+      params: {
+        skip,
+        take,
+      },
+    }
   );
-
-  return proventos.data.map((provento) => {
-    return {
-      id: +provento.id,
-      dataCom: new Date(provento.dataCom),
-      dataPagamento: new Date(provento.dataPagamento),
-      tipo: provento.tipo,
-      valorTotal: +provento.valorTotal,
-      valorBruto: +provento.valorBruto,
-      valorLiquido: +provento.valorLiquido,
-      posicao: +provento.posicao,
-      ticker: provento.ativo.ticker,
-    } as ProventoRendaVariavel;
-  });
+  const retorno: PaginatedDto<ProventoRendaVariavel> = {
+    metadata: proventos.data.metadata,
+    content: proventos.data.content.map((provento) => {
+      return {
+        id: +provento.id,
+        dataCom: new Date(provento.dataCom),
+        dataPagamento: new Date(provento.dataPagamento),
+        tipo: provento.tipo,
+        valorTotal: +provento.valorTotal,
+        valorBruto: +provento.valorBruto,
+        valorLiquido: +provento.valorLiquido,
+        posicao: +provento.posicao,
+        ticker: provento.ativo.ticker,
+      } as ProventoRendaVariavel;
+    }),
+  };
+  return retorno;
 };
 
 const getProventoById = async (id: number) => {
