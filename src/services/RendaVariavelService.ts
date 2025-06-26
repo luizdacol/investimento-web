@@ -1,5 +1,6 @@
 import { AtivoRendaVariavel } from "../interfaces/AtivoRendaVariavel";
 import { OperacaoRendaVariavel } from "../interfaces/Operacao";
+import { PaginatedDto } from "../interfaces/PaginatedDto";
 import { ProventoRendaVariavel } from "../interfaces/Provento";
 import { TaxasImpostosRendaVariavel } from "../interfaces/TaxasImpostosRendaVariavel";
 import { AxiosClient } from "../providers/AxiosClient";
@@ -35,23 +36,34 @@ interface Provento {
   tipo: string;
 }
 
-const getOperacoes = async () => {
-  let operacoes = await AxiosClient.get<Operacao[]>(
-    "v1/renda-variavel/operacoes"
+const getOperacoes = async (take: number, skip: number) => {
+  let operacoes = await AxiosClient.get<PaginatedDto<Operacao>>(
+    "v1/renda-variavel/operacoes",
+    {
+      params: {
+        skip,
+        take,
+      },
+    }
   );
 
-  return operacoes.data.map((op) => {
-    return {
-      id: +op.id,
-      data: new Date(op.data),
-      tipoOperacao: op.tipo,
-      precoTotal: +op.precoTotal,
-      precoUnitario: +op.precoUnitario,
-      quantidade: +op.quantidade,
-      ticker: op.ativo.ticker,
-      tipoAtivo: op.ativo.tipo,
-    } as OperacaoRendaVariavel;
-  });
+  const retorno: PaginatedDto<OperacaoRendaVariavel> = {
+    metadata: operacoes.data.metadata,
+    content: operacoes.data.content.map((op) => {
+      return {
+        id: +op.id,
+        data: new Date(op.data),
+        tipoOperacao: op.tipo,
+        precoTotal: +op.precoTotal,
+        precoUnitario: +op.precoUnitario,
+        quantidade: +op.quantidade,
+        ticker: op.ativo.ticker,
+        tipoAtivo: op.ativo.tipo,
+      } as OperacaoRendaVariavel;
+    }),
+  };
+
+  return retorno;
 };
 
 const createOperacao = async (

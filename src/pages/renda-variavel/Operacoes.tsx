@@ -9,11 +9,21 @@ import Table from "../../components/Table/Table";
 import { useNavigate } from "react-router-dom";
 import { useStyles } from "../../hooks/useStyles";
 import { useSort } from "../../hooks/useSort";
+import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
+import { PaginatedDto } from "../../interfaces/PaginatedDto";
 
 function Operacoes() {
   const { rowDefaultStyle } = useStyles();
   const { sort } = useSort();
-  const [operacoes, setOperacoes] = useState<OperacaoRendaVariavel[]>([]);
+  const [take, setTake] = useState<number>(50);
+  const [skip, setSkip] = useState<number>(0);
+
+  const [operacoes, setOperacoes] = useState<
+    PaginatedDto<OperacaoRendaVariavel>
+  >({
+    content: [],
+    metadata: { skip: 0, take: 0, totalRecords: 0 },
+  });
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
 
@@ -30,13 +40,14 @@ function Operacoes() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await RendaVariavelService.getOperacoes();
+      const data = await RendaVariavelService.getOperacoes(take, skip);
+
       setOperacoes(data);
       setReload(false);
     };
 
     fetchData();
-  }, [reload]);
+  }, [reload, skip, take]);
 
   const handleDelete = async (id: number): Promise<void> => {
     const status = await RendaVariavelService.deleteOperacao(id);
@@ -51,9 +62,14 @@ function Operacoes() {
 
   const handleSort = (property: string, order: string) => {
     const keyProperty = property as keyof OperacaoRendaVariavel;
-    const sortedOperation = sort(operacoes, keyProperty, order);
+    const sortedOperation = sort(operacoes.content, keyProperty, order);
 
-    setOperacoes(sortedOperation);
+    setOperacoes({ content: sortedOperation, metadata: operacoes?.metadata });
+  };
+
+  const onPageChange = (event: PaginatorPageChangeEvent) => {
+    setSkip(event.first);
+    setTake(event.rows);
   };
 
   return (
@@ -68,7 +84,7 @@ function Operacoes() {
               newItemRedirect="/renda-variavel/form-operacoes"
               handleSort={handleSort}
             >
-              {operacoes.map((operacao, index) => (
+              {operacoes.content.map((operacao, index) => (
                 <tr key={index} className={rowDefaultStyle}>
                   <DateCell cellValue={operacao.data} dataLabel="Data" />
                   <Cell cellValue={operacao.ticker} dataLabel="Ticker" />
@@ -97,6 +113,19 @@ function Operacoes() {
                 </tr>
               ))}
             </Table>
+            {operacoes.content && (
+              <Paginator
+                first={skip}
+                rows={take}
+                totalRecords={operacoes.metadata.totalRecords}
+                rowsPerPageOptions={[50, 100, 200]}
+                onPageChange={onPageChange}
+                template={{
+                  layout:
+                    "FirstPageLink PageLinks LastPageLink RowsPerPageDropdown",
+                }}
+              />
+            )}
           </div>
         </div>
       </main>
