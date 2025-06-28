@@ -1,9 +1,8 @@
-import Table from "../Table/Table";
 import { CarteiraRendaFixa } from "../../interfaces/CarteiraRendaFixa";
-import LinhaRendaFixa from "./LinhaRendaFixa";
-import { useStyles } from "../../hooks/useStyles";
-import { useSort } from "../../hooks/useSort";
 import { useEffect, useState } from "react";
+import { Column } from "primereact/column";
+import { DataTable } from "primereact/datatable";
+import { useTable } from "../../hooks/useTable";
 
 type CarteiraProps = {
   title: string;
@@ -11,10 +10,8 @@ type CarteiraProps = {
 };
 
 function ConsolidadoRendaFixa({ initialCarteira, title }: CarteiraProps) {
-  const { rowDefaultStyle } = useStyles();
-  const { sort } = useSort();
-
   const [carteira, setCarteira] = useState<CarteiraRendaFixa[]>([]);
+  const { formatPriceCell, formatPercentCell, formatHeader } = useTable();
 
   useEffect(() => {
     setCarteira(
@@ -22,25 +19,57 @@ function ConsolidadoRendaFixa({ initialCarteira, title }: CarteiraProps) {
     );
   }, [initialCarteira]);
 
-  const headers = [
-    { key: "titulo", label: "Titulo" },
-    { key: "quantidade", label: "Quantidade" },
-    { key: "precoMedio", label: "Preço Médio" },
-    { key: "precoMercado", label: "Preço Mercado" },
-    { key: "composicao", label: "Composição" },
-    { key: "composicaoTotal", label: "Composição Carteira" },
-    { key: "precoMedioTotal", label: "Preço Médio Total" },
-    { key: "precoMercadoTotal", label: "Preço Mercado Total" },
-    { key: "variacao", label: "Variação" },
+  const columns = [
+    { field: "titulo", title: "Titulo" },
+    { field: "quantidade", title: "Quantidade" },
+    {
+      field: "precoMedio",
+      title: "Preço Médio",
+      content: (op: CarteiraRendaFixa) => formatPriceCell(op.precoMedio),
+    },
+    {
+      field: "precoMercado",
+      title: "Preço Mercado",
+      content: (op: CarteiraRendaFixa) => formatPriceCell(op.precoMercado),
+    },
+    {
+      field: "composicao",
+      title: "Composição",
+      content: (op: CarteiraRendaFixa) => formatPercentCell(op.composicao),
+    },
+    {
+      field: "composicaoTotal",
+      title: "Composição Carteira",
+      content: (op: CarteiraRendaFixa) => formatPercentCell(op.composicaoTotal),
+    },
+    {
+      field: "precoMedioTotal",
+      title: "Preço Médio Total",
+      content: (op: CarteiraRendaFixa) => formatPriceCell(op.precoMedioTotal),
+    },
+    {
+      field: "precoMercadoTotal",
+      title: "Preço Mercado Total",
+      content: (op: CarteiraRendaFixa) => formatPriceCell(op.precoMercadoTotal),
+    },
+    {
+      field: "variacao",
+      title: "Variação",
+      content: (op: CarteiraRendaFixa) => formatPercentCell(op.variacao, true),
+    },
   ];
 
-  const itemFooter = carteira.find((i) => i.titulo === "Total");
-
-  const handleSort = (property: string, order: string) => {
-    const keyProperty = property as keyof CarteiraRendaFixa;
-    const sortedCarteira = sort(carteira, keyProperty, order);
-
-    setCarteira(sortedCarteira);
+  const formatFooter = (column: any) => {
+    const itemFooter = carteira.find((i) => i.titulo === "Total");
+    if ("content" in column) {
+      return <div className="text-xs">{column.content(itemFooter)}</div>;
+    }
+    return (
+      <div className="text-xs">
+        {itemFooter &&
+          (itemFooter[column.field as keyof CarteiraRendaFixa] as string)}
+      </div>
+    );
   };
 
   if (carteira.length === 0) return null;
@@ -48,22 +77,32 @@ function ConsolidadoRendaFixa({ initialCarteira, title }: CarteiraProps) {
   return (
     <div className="mainCard">
       <div className="border w-full border-gray-200 bg-white py-2 px-4 rounded-md">
-        <Table
-          headers={headers}
-          itemFooter={itemFooter}
-          title={title}
-          handleSort={handleSort}
+        <DataTable
+          value={carteira.filter((i) => i.titulo !== "Total")}
+          header={formatHeader(title)}
+          size="small"
+          stripedRows
+          sortMode="multiple"
+          removableSort
+          paginatorTemplate={{
+            layout: "FirstPageLink PageLinks LastPageLink RowsPerPageDropdown",
+          }}
         >
-          {carteira
-            .filter((i) => i.titulo !== "Total")
-            .map((item, index) => (
-              <LinhaRendaFixa
-                key={index}
-                item={item}
-                rowClass={rowDefaultStyle}
-              />
-            ))}
-        </Table>
+          {columns.map((column, index) => (
+            <Column
+              key={column.field}
+              field={column.field}
+              header={column.title}
+              footer={formatFooter(column)}
+              body={column.content}
+              sortable
+              alignHeader="center"
+              headerClassName="text-sm"
+              align="center"
+              bodyClassName="text-xs"
+            />
+          ))}
+        </DataTable>
       </div>
     </div>
   );

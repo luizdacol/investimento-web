@@ -61,6 +61,17 @@ export const useTable = () => {
     );
   };
 
+  const formatPercentCell = (
+    value: number,
+    enableTextColor: boolean = false
+  ) => {
+    let textColor = "text-gray-900";
+    if (!!enableTextColor) {
+      textColor = value >= 0 ? "text-green-600" : "text-red-600";
+    }
+    return <span className={`${textColor}`}>{value}%</span>;
+  };
+
   const formatHeader = (title: string, linkToAddItem: string = "") => {
     return (
       <div className="flex flex-wrap gap-2 ">
@@ -86,6 +97,7 @@ export const useTable = () => {
     formatHeader,
     formatDateCell,
     formatPriceCell,
+    formatPercentCell,
     formatActionCell,
   };
 };
