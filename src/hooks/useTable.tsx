@@ -14,7 +14,7 @@ export const useTable = () => {
     );
   };
 
-  const formatPriceCell = (price: number) => {
+  const formatPriceCell = (price: number, title?: string) => {
     const defineCurrencyOptions = (
       maximumFractionDigits: number = 2
     ): Intl.NumberFormatOptions => {
@@ -26,8 +26,9 @@ export const useTable = () => {
       };
     };
 
+    title ??= price.toLocaleString("pt-BR", defineCurrencyOptions(8));
     return (
-      <span title={price.toLocaleString("pt-BR", defineCurrencyOptions(8))}>
+      <span title={title}>
         {price.toLocaleString("pt-BR", defineCurrencyOptions())}
       </span>
     );
