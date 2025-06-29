@@ -6,7 +6,11 @@ import { usePaginator } from "../../hooks/usePaginator";
 import { PaginatedDto } from "../../interfaces/PaginatedDto";
 import { Paginator } from "primereact/paginator";
 import { Column } from "primereact/column";
-import { DataTable } from "primereact/datatable";
+import {
+  DataTable,
+  DataTableSortMeta,
+  DataTableStateEvent,
+} from "primereact/datatable";
 import { useTable } from "../../hooks/useTable";
 
 function Proventos() {
@@ -18,6 +22,8 @@ function Proventos() {
   >(initialPaginatedObject);
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
+  const [multiSort, setMultiSort] = useState<DataTableSortMeta[]>([]);
+  const [sortBy, setSortBy] = useState<string[]>([]);
 
   const columns = [
     {
@@ -31,7 +37,7 @@ function Proventos() {
       content: (prov: ProventoRendaVariavel) =>
         formatDateCell(prov.dataPagamento),
     },
-    { field: "ticker", title: "Ticker" },
+    { field: "ticker", title: "Ticker", backField: "ativo.ticker" },
     {
       field: "valorBruto",
       title: "Valor Bruto",
@@ -63,13 +69,13 @@ function Proventos() {
   useEffect(() => {
     console.log(take);
     const fetchData = async () => {
-      const data = await RendaVariavelService.getProventos(take, skip);
+      const data = await RendaVariavelService.getProventos(take, skip, sortBy);
       setProventos(data);
       setReload(false);
     };
 
     fetchData();
-  }, [reload, skip, take]);
+  }, [reload, skip, take, sortBy]);
 
   const handleDelete = async (id: number): Promise<void> => {
     const status = await RendaVariavelService.deleteProvento(id);
@@ -80,6 +86,21 @@ function Proventos() {
 
   const handleUpdate = async (id: number): Promise<void> => {
     navigate(`/renda-variavel/form-proventos?id=${id}`);
+  };
+
+  const mapBackField = (field: string) => {
+    const column = columns.find((c) => c["field"] === field);
+    return column && "backField" in column ? column["backField"] : field;
+  };
+
+  const handleSort = (evento: DataTableStateEvent) => {
+    const stateEvent = evento.multiSortMeta ?? [];
+    const sortByParsed = stateEvent.map((s) => {
+      return `${mapBackField(s.field)}|${s.order === 1 ? "ASC" : "DESC"}`;
+    });
+
+    setSortBy(sortByParsed);
+    setMultiSort(stateEvent);
   };
 
   return (
@@ -96,12 +117,10 @@ function Proventos() {
               )}
               size="small"
               stripedRows
+              onSort={handleSort}
               sortMode="multiple"
+              multiSortMeta={multiSort}
               removableSort
-              paginatorTemplate={{
-                layout:
-                  "FirstPageLink PageLinks LastPageLink RowsPerPageDropdown",
-              }}
             >
               {columns.map((column, index) => (
                 <Column

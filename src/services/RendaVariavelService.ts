@@ -134,7 +134,8 @@ const getOperacaoById = async (id: number) => {
 
 const getProventos = async (
   take: number,
-  skip: number
+  skip: number,
+  sortBy: string[]
 ): Promise<PaginatedDto<ProventoRendaVariavel>> => {
   let proventos = await AxiosClient.get<PaginatedDto<Provento>>(
     "v1/renda-variavel/proventos",
@@ -142,6 +143,7 @@ const getProventos = async (
       params: {
         skip,
         take,
+        sortBy,
       },
     }
   );
