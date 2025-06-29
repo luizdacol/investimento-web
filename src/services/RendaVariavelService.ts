@@ -36,7 +36,12 @@ interface Provento {
   tipo: string;
 }
 
-const getOperacoes = async (take: number, skip: number, sortBy: string[]) => {
+const getOperacoes = async (
+  take: number,
+  skip: number,
+  sortBy: string[],
+  filterBy: string[]
+) => {
   let operacoes = await AxiosClient.get<PaginatedDto<Operacao>>(
     "v1/renda-variavel/operacoes",
     {
@@ -44,6 +49,7 @@ const getOperacoes = async (take: number, skip: number, sortBy: string[]) => {
         skip,
         take,
         sortBy,
+        filterBy,
       },
     }
   );

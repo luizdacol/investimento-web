@@ -7,11 +7,16 @@ import { PaginatedDto } from "../../interfaces/PaginatedDto";
 import { usePaginator } from "../../hooks/usePaginator";
 import {
   DataTable,
+  DataTableFilterMeta,
+  DataTableFilterMetaData,
   DataTableSortMeta,
   DataTableStateEvent,
 } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useTable } from "../../hooks/useTable";
+import { FilterMatchMode } from "primereact/api";
+import { MultiSelect } from "primereact/multiselect";
+import { AtivoRendaVariavel } from "../../interfaces/AtivoRendaVariavel";
 
 function Operacoes() {
   const { take, skip, initialPaginatedObject, onPageChange } = usePaginator();
@@ -23,8 +28,16 @@ function Operacoes() {
   >(initialPaginatedObject);
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
+  const [ativos, setAtivos] = useState<AtivoRendaVariavel[]>([]);
   const [multiSort, setMultiSort] = useState<DataTableSortMeta[]>([]);
   const [sortBy, setSortBy] = useState<string[]>([]);
+  const [filterBy, setFilterBy] = useState<string[]>([]);
+  const [filters, setFilters] = useState<DataTableFilterMeta>({
+    ticker: {
+      value: null,
+      matchMode: FilterMatchMode.IN,
+    },
+  });
 
   const columns = [
     {
@@ -32,7 +45,12 @@ function Operacoes() {
       title: "Data",
       content: (op: OperacaoRendaVariavel) => formatDateCell(op.data),
     },
-    { field: "ticker", title: "Ticker", backField: "ativo.ticker" },
+    {
+      field: "ticker",
+      title: "Ticker",
+      backField: "ativo.ticker",
+      filter: true,
+    },
     {
       field: "precoUnitario",
       title: "Preço Unitario",
@@ -61,14 +79,22 @@ function Operacoes() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await RendaVariavelService.getOperacoes(take, skip, sortBy);
+      const data = await RendaVariavelService.getOperacoes(
+        take,
+        skip,
+        sortBy,
+        filterBy
+      );
+
+      const ativos = await RendaVariavelService.getAtivos();
 
       setOperacoes(data);
+      setAtivos(ativos);
       setReload(false);
     };
 
     fetchData();
-  }, [reload, skip, take, sortBy]);
+  }, [reload, skip, take, sortBy, filterBy]);
 
   const handleDelete = async (id: number): Promise<void> => {
     const status = await RendaVariavelService.deleteOperacao(id);
@@ -91,6 +117,33 @@ function Operacoes() {
     setMultiSort(stateEvent);
   };
 
+  const handleFilter = (evento: DataTableStateEvent) => {
+    const filters = Object.keys(evento.filters).map((field) => {
+      const filter = evento.filters[field] as DataTableFilterMetaData;
+      const value = (filter.value as string[]) ?? [];
+
+      if (value.length === 0) return "";
+
+      return `${mapBackField(field)}|${filter.matchMode}|${value.join(",")}`;
+    });
+
+    setFilterBy(filters.filter((f) => !!f));
+    setFilters(evento.filters);
+  };
+
+  const tickerFilterTemplate = (options: any) => {
+    return (
+      <MultiSelect
+        value={options.value}
+        options={ativos.map((a) => a.ticker)}
+        onChange={(e) => options.filterCallback(e.value)}
+        placeholder="Selecione o ativo"
+        className="p-column-filter text-xs"
+        itemClassName="text-xs"
+      />
+    );
+  };
+
   return (
     <>
       <main className="h-full">
@@ -109,6 +162,9 @@ function Operacoes() {
               sortMode="multiple"
               multiSortMeta={multiSort}
               removableSort
+              filters={filters}
+              filterDisplay="menu"
+              onFilter={handleFilter}
             >
               {columns.map((column, index) => (
                 <Column
@@ -116,6 +172,9 @@ function Operacoes() {
                   field={column.field}
                   header={column.title}
                   body={column.content}
+                  filter={column.filter}
+                  showFilterMatchModes={false}
+                  filterElement={tickerFilterTemplate}
                   sortable
                   alignHeader="center"
                   headerClassName="text-sm"
