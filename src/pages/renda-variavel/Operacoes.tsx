@@ -5,7 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { Paginator } from "primereact/paginator";
 import { PaginatedDto } from "../../interfaces/PaginatedDto";
 import { usePaginator } from "../../hooks/usePaginator";
-import { DataTable } from "primereact/datatable";
+import {
+  DataTable,
+  DataTableSortMeta,
+  DataTableStateEvent,
+} from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useTable } from "../../hooks/useTable";
 
@@ -19,6 +23,8 @@ function Operacoes() {
   >(initialPaginatedObject);
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
+  const [multiSort, setMultiSort] = useState<DataTableSortMeta[]>([]);
+  const [sortBy, setSortBy] = useState<string[]>([]);
 
   const columns = [
     {
@@ -26,7 +32,7 @@ function Operacoes() {
       title: "Data",
       content: (op: OperacaoRendaVariavel) => formatDateCell(op.data),
     },
-    { field: "ticker", title: "Ticker" },
+    { field: "ticker", title: "Ticker", backField: "ativo.ticker" },
     {
       field: "precoUnitario",
       title: "Preço Unitario",
@@ -38,8 +44,8 @@ function Operacoes() {
       title: "Preço Total",
       content: (op: OperacaoRendaVariavel) => formatPriceCell(op.precoTotal),
     },
-    { field: "tipoOperacao", title: "Tipo de Operação" },
-    { field: "tipoAtivo", title: "Tipo de Ativo" },
+    { field: "tipoOperacao", title: "Tipo de Operação", backField: "tipo" },
+    { field: "tipoAtivo", title: "Tipo de Ativo", backField: "ativo.tipo" },
     {
       field: undefined,
       title: "Ações",
@@ -48,16 +54,21 @@ function Operacoes() {
     },
   ];
 
+  const mapBackField = (field: string) => {
+    const column = columns.find((c) => c["field"] === field);
+    return column && "backField" in column ? column["backField"] : field;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
-      const data = await RendaVariavelService.getOperacoes(take, skip);
+      const data = await RendaVariavelService.getOperacoes(take, skip, sortBy);
 
       setOperacoes(data);
       setReload(false);
     };
 
     fetchData();
-  }, [reload, skip, take]);
+  }, [reload, skip, take, sortBy]);
 
   const handleDelete = async (id: number): Promise<void> => {
     const status = await RendaVariavelService.deleteOperacao(id);
@@ -68,6 +79,16 @@ function Operacoes() {
 
   const handleUpdate = async (id: number): Promise<void> => {
     navigate(`/renda-variavel/form-operacoes?id=${id}`);
+  };
+
+  const handleSort = (evento: DataTableStateEvent) => {
+    const stateEvent = evento.multiSortMeta ?? [];
+    const sortByParsed = stateEvent.map((s) => {
+      return `${mapBackField(s.field)}|${s.order === 1 ? "ASC" : "DESC"}`;
+    });
+
+    setSortBy(sortByParsed);
+    setMultiSort(stateEvent);
   };
 
   return (
@@ -82,14 +103,12 @@ function Operacoes() {
                 "Operações",
                 "/renda-variavel/form-operacoes"
               )}
+              onSort={handleSort}
               size="small"
               stripedRows
               sortMode="multiple"
+              multiSortMeta={multiSort}
               removableSort
-              paginatorTemplate={{
-                layout:
-                  "FirstPageLink PageLinks LastPageLink RowsPerPageDropdown",
-              }}
             >
               {columns.map((column, index) => (
                 <Column
