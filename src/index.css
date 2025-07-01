@@ -64,3 +64,9 @@
   scrollbar-width: none;
   /* Firefox */
 }
+
+/* Corrige o alinhamento do header quando há filtro */
+th.p-sortable-column.p-align-center
+  div.p-column-filter.p-fluid.p-column-filter-menu {
+  margin-left: unset;
+}
