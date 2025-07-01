@@ -9,6 +9,7 @@ import Button from "../../components/Form/Button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useFormat } from "../../hooks/useFormat";
+import { TipoProvento } from "../../data/enums";
 
 function FormProventos() {
   const today = new Date().toISOString().substring(0, 10);
@@ -110,12 +111,7 @@ function FormProventos() {
                 id="tipo"
                 label="Tipo"
                 value={tipo}
-                options={[
-                  "Dividendo",
-                  "JCP",
-                  "Restituição de Capital",
-                  "Rendimento Tributado",
-                ]}
+                options={Object.values(TipoProvento)}
                 handleOnChange={(event) => {
                   setTipo(event.target.value);
                 }}

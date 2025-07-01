@@ -6,12 +6,14 @@ import { usePaginator } from "../../hooks/usePaginator";
 import { PaginatedDto } from "../../interfaces/PaginatedDto";
 import { Paginator } from "primereact/paginator";
 import { Column } from "primereact/column";
-import {
-  DataTable,
-  DataTableSortMeta,
-  DataTableStateEvent,
-} from "primereact/datatable";
+import { DataTable, DataTableFilterMeta } from "primereact/datatable";
 import { useTable } from "../../hooks/useTable";
+import { FilterMatchMode } from "primereact/api";
+import { useFilterAndSort } from "../../hooks/useFilterAndSort";
+import DateFilterTemplate from "../../components/FilterTemplates/DateFilterTemplate";
+import MultiSelectFilterTemplate from "../../components/FilterTemplates/MultiSelectFilterTemplate";
+import { AtivoRendaVariavel } from "../../interfaces/AtivoRendaVariavel";
+import { TipoProvento } from "../../data/enums";
 
 function Proventos() {
   const { take, skip, initialPaginatedObject, onPageChange } = usePaginator();
@@ -22,22 +24,58 @@ function Proventos() {
   >(initialPaginatedObject);
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
-  const [multiSort, setMultiSort] = useState<DataTableSortMeta[]>([]);
-  const [sortBy, setSortBy] = useState<string[]>([]);
+  const [ativos, setAtivos] = useState<AtivoRendaVariavel[]>([]);
+
+  const [filters, setFilters] = useState<DataTableFilterMeta>({
+    dataCom: {
+      value: null,
+      matchMode: FilterMatchMode.BETWEEN,
+    },
+    dataPagamento: {
+      value: null,
+      matchMode: FilterMatchMode.BETWEEN,
+    },
+    ticker: {
+      value: null,
+      matchMode: FilterMatchMode.IN,
+    },
+    tipo: {
+      value: null,
+      matchMode: FilterMatchMode.IN,
+    },
+  });
 
   const columns = [
     {
       field: "dataCom",
       title: "Data Com",
       content: (prov: ProventoRendaVariavel) => formatDateCell(prov.dataCom),
+      filter: true,
+      filterElement: DateFilterTemplate,
     },
     {
       field: "dataPagamento",
       title: "Data Pagamento",
       content: (prov: ProventoRendaVariavel) =>
         formatDateCell(prov.dataPagamento),
+      filter: true,
+      filterElement: DateFilterTemplate,
     },
-    { field: "ticker", title: "Ticker", backField: "ativo.ticker" },
+    {
+      field: "ticker",
+      title: "Ticker",
+      backField: "ativo.ticker",
+      filter: true,
+      filterElement: (options: any) => {
+        return (
+          <MultiSelectFilterTemplate
+            placeholder="Selecione o ativo"
+            options={options}
+            items={ativos.map((a) => a.ticker)}
+          />
+        );
+      },
+    },
     {
       field: "valorBruto",
       title: "Valor Bruto",
@@ -57,7 +95,20 @@ function Proventos() {
       content: (prov: ProventoRendaVariavel) =>
         formatPriceCell(prov.valorTotal),
     },
-    { field: "tipo", title: "Tipo" },
+    {
+      field: "tipo",
+      title: "Tipo",
+      filter: true,
+      filterElement: (options: any) => {
+        return (
+          <MultiSelectFilterTemplate
+            placeholder="Selecione o tipo"
+            options={options}
+            items={Object.values(TipoProvento)}
+          />
+        );
+      },
+    },
     {
       field: undefined,
       title: "Ações",
@@ -66,16 +117,23 @@ function Proventos() {
     },
   ];
 
+  const { handleSort, sortBy, dataTableSortMeta, handleFilter, filterBy } =
+    useFilterAndSort(columns);
+
   useEffect(() => {
-    console.log(take);
     const fetchData = async () => {
-      const data = await RendaVariavelService.getProventos(take, skip, sortBy);
+      const [data, ativos] = await Promise.all([
+        RendaVariavelService.getProventos(take, skip, sortBy, filterBy),
+        RendaVariavelService.getAtivos(),
+      ]);
+
       setProventos(data);
+      setAtivos(ativos);
       setReload(false);
     };
 
     fetchData();
-  }, [reload, skip, take, sortBy]);
+  }, [reload, skip, take, sortBy, filterBy]);
 
   const handleDelete = async (id: number): Promise<void> => {
     const status = await RendaVariavelService.deleteProvento(id);
@@ -86,21 +144,6 @@ function Proventos() {
 
   const handleUpdate = async (id: number): Promise<void> => {
     navigate(`/renda-variavel/form-proventos?id=${id}`);
-  };
-
-  const mapBackField = (field: string) => {
-    const column = columns.find((c) => c["field"] === field);
-    return column && "backField" in column ? column["backField"] : field;
-  };
-
-  const handleSort = (evento: DataTableStateEvent) => {
-    const stateEvent = evento.multiSortMeta ?? [];
-    const sortByParsed = stateEvent.map((s) => {
-      return `${mapBackField(s.field)}|${s.order === 1 ? "ASC" : "DESC"}`;
-    });
-
-    setSortBy(sortByParsed);
-    setMultiSort(stateEvent);
   };
 
   return (
@@ -119,8 +162,14 @@ function Proventos() {
               stripedRows
               onSort={handleSort}
               sortMode="multiple"
-              multiSortMeta={multiSort}
+              multiSortMeta={dataTableSortMeta}
               removableSort
+              filters={filters}
+              filterDisplay="menu"
+              onFilter={(e) => {
+                handleFilter(e);
+                setFilters(e.filters);
+              }}
             >
               {columns.map((column, index) => (
                 <Column
@@ -128,6 +177,9 @@ function Proventos() {
                   field={column.field}
                   header={column.title}
                   body={column.content}
+                  filter={column.filter}
+                  showFilterMatchModes={false}
+                  filterElement={column.filterElement}
                   sortable
                   alignHeader="center"
                   headerClassName="text-sm"

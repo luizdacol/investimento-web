@@ -5,3 +5,10 @@ export enum TipoOperacaoRV {
   BONIFICACAO = "Bonificação",
   AMORTIZACAO = "Amortização",
 }
+
+export enum TipoProvento {
+  DIVIDENDO = "Dividendo",
+  JCP = "JCP",
+  RESTITUICAO_CAPITAL = "Restituição de Capital",
+  RENDIMENTO_TRIBUTADO = "Rendimento Tributado",
+}
