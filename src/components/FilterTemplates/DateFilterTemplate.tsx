@@ -32,6 +32,8 @@ function DateFilterTemplate(options: any) {
           ?.at(0)
           ?.toLocaleDateString("pt-BR", { timeZone: "UTC" })}
         handleOnBlur={(e) => {
+          if (!e.target.value) return;
+
           const [dia, mes, ano] = e.target.value?.split("/");
           const data = `${ano}-${mes}-${dia}`;
 
@@ -49,6 +51,8 @@ function DateFilterTemplate(options: any) {
           ?.at(1)
           ?.toLocaleDateString("pt-BR", { timeZone: "UTC" })}
         handleOnBlur={(e) => {
+          if (!e.target.value) return;
+
           const [dia, mes, ano] = e.target.value?.split("/");
           const data = `${ano}-${mes}-${dia}`;
 
