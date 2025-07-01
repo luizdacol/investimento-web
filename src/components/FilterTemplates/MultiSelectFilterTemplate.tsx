@@ -1,22 +1,24 @@
 import { MultiSelect } from "primereact/multiselect";
 
-function TickerFilterTemplate({
+function MultiSelectFilterTemplate({
   options,
-  tickers,
+  items,
+  placeholder,
 }: {
   options: any;
-  tickers: string[];
+  items: string[];
+  placeholder: string;
 }) {
   return (
     <MultiSelect
       value={options.value}
-      options={tickers}
+      options={items}
       onChange={(e) => options.filterCallback(e.value)}
-      placeholder="Selecione o ativo"
+      placeholder={placeholder}
       className="p-column-filter text-xs"
       itemClassName="text-xs"
     />
   );
 }
 
-export default TickerFilterTemplate;
+export default MultiSelectFilterTemplate;

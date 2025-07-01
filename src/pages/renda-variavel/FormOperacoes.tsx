@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Button from "../../components/Form/Button";
 import { useFormat } from "../../hooks/useFormat";
+import { TipoOperacaoRV } from "../../data/enums";
 
 function FormOperacoes() {
   const today = new Date().toISOString().substring(0, 10);
@@ -109,13 +110,7 @@ function FormOperacoes() {
               <SelectList
                 id="tipoOperacao"
                 label="Tipo da Operação"
-                options={[
-                  "Compra",
-                  "Venda",
-                  "Desdobramento",
-                  "Bonificação",
-                  "Amortização",
-                ]}
+                options={Object.values(TipoOperacaoRV)}
                 value={tipoOperacao}
                 handleOnChange={(event) => {
                   setTipoOperacao(event.target.value);

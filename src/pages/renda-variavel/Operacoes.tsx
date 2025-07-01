@@ -11,8 +11,9 @@ import { useTable } from "../../hooks/useTable";
 import { FilterMatchMode } from "primereact/api";
 import { AtivoRendaVariavel } from "../../interfaces/AtivoRendaVariavel";
 import DateFilterTemplate from "../../components/FilterTemplates/DateFilterTemplate";
-import TickerFilterTemplate from "../../components/FilterTemplates/TickerFilterTemplate";
+import MultiSelectFilterTemplate from "../../components/FilterTemplates/MultiSelectFilterTemplate";
 import { useFilterAndSort } from "../../hooks/useFilterAndSort";
+import { TipoOperacaoRV } from "../../data/enums";
 
 function Operacoes() {
   const { take, skip, initialPaginatedObject, onPageChange } = usePaginator();
@@ -35,6 +36,10 @@ function Operacoes() {
       value: null,
       matchMode: FilterMatchMode.BETWEEN,
     },
+    tipoOperacao: {
+      value: null,
+      matchMode: FilterMatchMode.IN,
+    },
   });
 
   const columns = [
@@ -52,9 +57,10 @@ function Operacoes() {
       filter: true,
       filterElement: (options: any) => {
         return (
-          <TickerFilterTemplate
+          <MultiSelectFilterTemplate
+            placeholder="Selecione o ativo"
             options={options}
-            tickers={ativos.map((a) => a.ticker)}
+            items={ativos.map((a) => a.ticker)}
           />
         );
       },
@@ -70,7 +76,21 @@ function Operacoes() {
       title: "Preço Total",
       content: (op: OperacaoRendaVariavel) => formatPriceCell(op.precoTotal),
     },
-    { field: "tipoOperacao", title: "Tipo de Operação", backField: "tipo" },
+    {
+      field: "tipoOperacao",
+      title: "Tipo de Operação",
+      backField: "tipo",
+      filter: true,
+      filterElement: (options: any) => {
+        return (
+          <MultiSelectFilterTemplate
+            placeholder="Selecione a operação"
+            options={options}
+            items={Object.values(TipoOperacaoRV)}
+          />
+        );
+      },
+    },
     { field: "tipoAtivo", title: "Tipo de Ativo", backField: "ativo.tipo" },
     {
       field: undefined,
