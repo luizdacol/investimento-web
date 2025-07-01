@@ -15,8 +15,9 @@ import {
 import { Column } from "primereact/column";
 import { useTable } from "../../hooks/useTable";
 import { FilterMatchMode } from "primereact/api";
-import { MultiSelect } from "primereact/multiselect";
 import { AtivoRendaVariavel } from "../../interfaces/AtivoRendaVariavel";
+import DateFilterTemplate from "../../components/FilterTemplates/DateFilterTemplate";
+import TickerFilterTemplate from "../../components/FilterTemplates/TickerFilterTemplate";
 
 function Operacoes() {
   const { take, skip, initialPaginatedObject, onPageChange } = usePaginator();
@@ -37,6 +38,10 @@ function Operacoes() {
       value: null,
       matchMode: FilterMatchMode.IN,
     },
+    data: {
+      value: null,
+      matchMode: FilterMatchMode.BETWEEN,
+    },
   });
 
   const columns = [
@@ -44,12 +49,22 @@ function Operacoes() {
       field: "data",
       title: "Data",
       content: (op: OperacaoRendaVariavel) => formatDateCell(op.data),
+      filter: true,
+      filterElement: DateFilterTemplate,
     },
     {
       field: "ticker",
       title: "Ticker",
       backField: "ativo.ticker",
       filter: true,
+      filterElement: (options: any) => {
+        return (
+          <TickerFilterTemplate
+            options={options}
+            tickers={ativos.map((a) => a.ticker)}
+          />
+        );
+      },
     },
     {
       field: "precoUnitario",
@@ -79,14 +94,10 @@ function Operacoes() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await RendaVariavelService.getOperacoes(
-        take,
-        skip,
-        sortBy,
-        filterBy
-      );
-
-      const ativos = await RendaVariavelService.getAtivos();
+      const [data, ativos] = await Promise.all([
+        RendaVariavelService.getOperacoes(take, skip, sortBy, filterBy),
+        RendaVariavelService.getAtivos(),
+      ]);
 
       setOperacoes(data);
       setAtivos(ativos);
@@ -117,6 +128,19 @@ function Operacoes() {
     setMultiSort(stateEvent);
   };
 
+  const parseDateValues = (value: any[]) => {
+    const datas = value.map((v) => new Date(v));
+    if (datas.every((d) => isNaN(d.getTime()))) return value;
+
+    return datas.map((d) => {
+      if (isNaN(d.getTime())) {
+        return "";
+      } else {
+        return d.toLocaleDateString("en-CA", { timeZone: "UTC" });
+      }
+    });
+  };
+
   const handleFilter = (evento: DataTableStateEvent) => {
     const filters = Object.keys(evento.filters).map((field) => {
       const filter = evento.filters[field] as DataTableFilterMetaData;
@@ -124,24 +148,15 @@ function Operacoes() {
 
       if (value.length === 0) return "";
 
-      return `${mapBackField(field)}|${filter.matchMode}|${value.join(",")}`;
+      const parsedValues = parseDateValues(value);
+
+      return `${mapBackField(field)}|${filter.matchMode}|${parsedValues.join(
+        ","
+      )}`;
     });
 
     setFilterBy(filters.filter((f) => !!f));
     setFilters(evento.filters);
-  };
-
-  const tickerFilterTemplate = (options: any) => {
-    return (
-      <MultiSelect
-        value={options.value}
-        options={ativos.map((a) => a.ticker)}
-        onChange={(e) => options.filterCallback(e.value)}
-        placeholder="Selecione o ativo"
-        className="p-column-filter text-xs"
-        itemClassName="text-xs"
-      />
-    );
   };
 
   return (
@@ -174,7 +189,7 @@ function Operacoes() {
                   body={column.content}
                   filter={column.filter}
                   showFilterMatchModes={false}
-                  filterElement={tickerFilterTemplate}
+                  filterElement={column.filterElement}
                   sortable
                   alignHeader="center"
                   headerClassName="text-sm"
