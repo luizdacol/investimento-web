@@ -5,19 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { Paginator } from "primereact/paginator";
 import { PaginatedDto } from "../../interfaces/PaginatedDto";
 import { usePaginator } from "../../hooks/usePaginator";
-import {
-  DataTable,
-  DataTableFilterMeta,
-  DataTableFilterMetaData,
-  DataTableSortMeta,
-  DataTableStateEvent,
-} from "primereact/datatable";
+import { DataTable, DataTableFilterMeta } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useTable } from "../../hooks/useTable";
 import { FilterMatchMode } from "primereact/api";
 import { AtivoRendaVariavel } from "../../interfaces/AtivoRendaVariavel";
 import DateFilterTemplate from "../../components/FilterTemplates/DateFilterTemplate";
 import TickerFilterTemplate from "../../components/FilterTemplates/TickerFilterTemplate";
+import { useFilterAndSort } from "../../hooks/useFilterAndSort";
 
 function Operacoes() {
   const { take, skip, initialPaginatedObject, onPageChange } = usePaginator();
@@ -30,9 +25,7 @@ function Operacoes() {
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
   const [ativos, setAtivos] = useState<AtivoRendaVariavel[]>([]);
-  const [multiSort, setMultiSort] = useState<DataTableSortMeta[]>([]);
-  const [sortBy, setSortBy] = useState<string[]>([]);
-  const [filterBy, setFilterBy] = useState<string[]>([]);
+
   const [filters, setFilters] = useState<DataTableFilterMeta>({
     ticker: {
       value: null,
@@ -87,10 +80,8 @@ function Operacoes() {
     },
   ];
 
-  const mapBackField = (field: string) => {
-    const column = columns.find((c) => c["field"] === field);
-    return column && "backField" in column ? column["backField"] : field;
-  };
+  const { handleSort, sortBy, dataTableSortMeta, handleFilter, filterBy } =
+    useFilterAndSort(columns);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,47 +109,6 @@ function Operacoes() {
     navigate(`/renda-variavel/form-operacoes?id=${id}`);
   };
 
-  const handleSort = (evento: DataTableStateEvent) => {
-    const stateEvent = evento.multiSortMeta ?? [];
-    const sortByParsed = stateEvent.map((s) => {
-      return `${mapBackField(s.field)}|${s.order === 1 ? "ASC" : "DESC"}`;
-    });
-
-    setSortBy(sortByParsed);
-    setMultiSort(stateEvent);
-  };
-
-  const parseDateValues = (value: any[]) => {
-    const datas = value.map((v) => new Date(v));
-    if (datas.every((d) => isNaN(d.getTime()))) return value;
-
-    return datas.map((d) => {
-      if (isNaN(d.getTime())) {
-        return "";
-      } else {
-        return d.toLocaleDateString("en-CA", { timeZone: "UTC" });
-      }
-    });
-  };
-
-  const handleFilter = (evento: DataTableStateEvent) => {
-    const filters = Object.keys(evento.filters).map((field) => {
-      const filter = evento.filters[field] as DataTableFilterMetaData;
-      const value = (filter.value as string[]) ?? [];
-
-      if (value.length === 0) return "";
-
-      const parsedValues = parseDateValues(value);
-
-      return `${mapBackField(field)}|${filter.matchMode}|${parsedValues.join(
-        ","
-      )}`;
-    });
-
-    setFilterBy(filters.filter((f) => !!f));
-    setFilters(evento.filters);
-  };
-
   return (
     <>
       <main className="h-full">
@@ -175,11 +125,14 @@ function Operacoes() {
               size="small"
               stripedRows
               sortMode="multiple"
-              multiSortMeta={multiSort}
+              multiSortMeta={dataTableSortMeta}
               removableSort
               filters={filters}
               filterDisplay="menu"
-              onFilter={handleFilter}
+              onFilter={(e) => {
+                handleFilter(e);
+                setFilters(e.filters);
+              }}
             >
               {columns.map((column, index) => (
                 <Column
