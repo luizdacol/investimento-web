@@ -72,6 +72,19 @@ const initMenu: menu[] = [
     path: "/renda-fixa/operacoes",
     icon: faShoppingCart,
   },
+  {
+    label: "Criptomoedas",
+  },
+  {
+    label: "Ativos",
+    path: "/criptomoedas/ativos",
+    icon: faFile,
+  },
+  {
+    label: "Operações",
+    path: "/criptomoedas/operacoes",
+    icon: faShoppingCart,
+  },
 ];
 
 export default initMenu;

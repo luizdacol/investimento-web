@@ -17,6 +17,10 @@ import FormAtivosRendaFixa from "./pages/renda-fixa/FormAtivos";
 import ComposicaoCarteira from "./pages/graficos/ComposicaoCarteira";
 import ProventosChart from "./pages/graficos/Proventos";
 import TaxasImpostos from "./pages/renda-variavel/TaxasImpostos";
+import AtivosCriptomoedas from "./pages/criptomoedas/Ativos";
+import FormAtivosCriptomoedas from "./pages/criptomoedas/FormAtivos";
+import OperacoesCriptomoedas from "./pages/criptomoedas/Operacoes";
+import FormOperacoesCriptomoedas from "./pages/criptomoedas/FormOperacoes";
 
 function App() {
   return (
@@ -68,6 +72,23 @@ function App() {
         <Route
           path="/renda-fixa/form-operacoes"
           element={<FormOperacoesRendaFixa />}
+        ></Route>
+        {/* Rotas criptomoedas */}
+        <Route
+          path="/criptomoedas/ativos"
+          element={<AtivosCriptomoedas />}
+        ></Route>
+        <Route
+          path="/criptomoedas/operacoes"
+          element={<OperacoesCriptomoedas />}
+        ></Route>
+        <Route
+          path="/criptomoedas/form-ativos"
+          element={<FormAtivosCriptomoedas />}
+        ></Route>
+        <Route
+          path="/criptomoedas/form-operacoes"
+          element={<FormOperacoesCriptomoedas />}
         ></Route>
       </Route>
     </Routes>
