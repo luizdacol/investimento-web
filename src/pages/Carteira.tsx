@@ -6,13 +6,15 @@ import { CarteiraRendaVariavel } from "../interfaces/CarteiraRendaVariavel";
 import { CarteiraRendaFixa } from "../interfaces/CarteiraRendaFixa";
 import { faCalendar, faRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ConsolidadoCriptomoeda from "../components/Carteira/ConsolidadoCriptomoeda";
+import { CarteiraCriptomoeda } from "../interfaces/Criptomoedas/CarteiraCriptomoeda";
 
 function Carteira() {
   const [priceUpdated, setPriceUpdated] = useState<boolean>(true);
   const [display, setDisplay] = useState<string>("hidden");
   const [dataDeCorte, setDataDeCorte] = useState<Date>(new Date());
   const [carteira, setCarteira] = useState<
-    (CarteiraRendaFixa | CarteiraRendaVariavel)[]
+    (CarteiraRendaFixa | CarteiraRendaVariavel | CarteiraCriptomoeda)[]
   >([]);
 
   useEffect(() => {
@@ -89,6 +91,10 @@ function Carteira() {
         <ConsolidadoRendaFixa
           title="CDB"
           initialCarteira={carteira as CarteiraRendaFixa[]}
+        />
+        <ConsolidadoCriptomoeda
+          title="Criptomoeda"
+          initialCarteira={carteira as CarteiraCriptomoeda[]}
         />
       </main>
     </>
