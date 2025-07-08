@@ -28,10 +28,14 @@ const updatePrices = async (): Promise<boolean> => {
   const cotacaoRendaVariavel = AxiosClient.patch<boolean>(
     "v1/renda-variavel/ativos/update-prices"
   );
+  const cotacaoCriptomoedas = AxiosClient.patch<boolean>(
+    "v1/criptomoedas/ativos/update-prices"
+  );
 
   const cotacaoAtualizada = await Promise.all([
     cotacaoRendaFixa,
     cotacaoRendaVariavel,
+    cotacaoCriptomoedas,
   ]);
 
   return cotacaoAtualizada.some((c) => !!c);
