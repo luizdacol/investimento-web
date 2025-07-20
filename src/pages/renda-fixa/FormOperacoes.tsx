@@ -22,7 +22,6 @@ function FormOperacoes() {
   const [precoUnitario, setPrecoUnitario] = useState<string>("");
   const [quantidade, setQuantidade] = useState<string>("");
   const [rentabilidade, setRentabilidade] = useState<string>("");
-  const [vencimento, setVencimento] = useState<string>("");
   const [tipoOperacao, setTipoOperacao] = useState<string>("Compra");
 
   useEffect(() => {
@@ -37,7 +36,6 @@ function FormOperacoes() {
         setPrecoUnitario(operacao.precoUnitario.toString());
         setQuantidade(operacao.quantidade.toString());
         setRentabilidade(operacao.rentabilidade);
-        setVencimento(operacao.dataVencimento.toISOString().substring(0, 10));
         setTipoOperacao(operacao.tipoOperacao);
       }
     };
@@ -55,7 +53,6 @@ function FormOperacoes() {
         precoUnitario: formatPrice(precoUnitario),
         quantidade: formatPrice(quantidade),
         rentabilidade: rentabilidade,
-        dataVencimento: new Date(vencimento),
         tipoOperacao: tipoOperacao,
       };
 
@@ -114,14 +111,6 @@ function FormOperacoes() {
                 value={rentabilidade}
                 handleOnChange={(event) => {
                   setRentabilidade(event.target.value);
-                }}
-              />
-              <InputDate
-                id="vencimento"
-                label="Vencimento"
-                value={vencimento}
-                handleOnChange={(event) => {
-                  setVencimento(event.target.value);
                 }}
               />
               <SelectList

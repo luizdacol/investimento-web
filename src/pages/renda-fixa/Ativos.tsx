@@ -10,11 +10,17 @@ function Ativos() {
   const [ativos, setAtivos] = useState<AtivoRendaFixa[]>([]);
   const [reload, setReload] = useState<Boolean>(false);
   const navigate = useNavigate();
-  const { formatPriceCell, formatActionCell, formatHeader } = useTable();
+  const { formatDateCell, formatPriceCell, formatActionCell, formatHeader } =
+    useTable();
 
   const columns = [
     { field: "titulo", title: "Titulo" },
     { field: "tipo", title: "Tipo" },
+    {
+      field: "dataVencimento",
+      title: "Vencimento",
+      content: (ativo: AtivoRendaFixa) => formatDateCell(ativo.dataVencimento),
+    },
     {
       field: "cotacao",
       title: "Cotação",

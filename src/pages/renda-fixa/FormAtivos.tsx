@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Button from "../../components/Form/Button";
 import { AtivoRendaFixa } from "../../interfaces/AtivoRendaFixa";
 import { useFormat } from "../../hooks/useFormat";
+import InputDate from "../../components/Form/InputDate";
 
 function FormAtivos() {
   const [urlParams] = useSearchParams();
@@ -19,6 +20,7 @@ function FormAtivos() {
   const [codigo, setCodigo] = useState<string>("");
   const [tipo, setTipo] = useState<string>("TesouroDireto");
   const [cotacao, setCotacao] = useState<string>("");
+  const [vencimento, setVencimento] = useState<string>("");
 
   useEffect(() => {
     const fetchAtivo = async () => {
@@ -29,6 +31,7 @@ function FormAtivos() {
         setId(ativoId);
         setCotacao(operacao.cotacao.toString());
         setTitulo(operacao.titulo);
+        setVencimento(operacao.dataVencimento.toISOString().substring(0, 10));
         setTipo(operacao.tipo);
         setCodigo(operacao.codigo);
       }
@@ -43,6 +46,7 @@ function FormAtivos() {
     const ativo: Omit<AtivoRendaFixa, "id"> = {
       titulo: titulo,
       tipo: tipo,
+      dataVencimento: new Date(vencimento),
       codigo: codigo,
       cotacao: formatPrice(cotacao),
       dataHoraCotacao: new Date(),
@@ -90,6 +94,14 @@ function FormAtivos() {
                   setTipo(event.target.value);
                 }}
               ></SelectList>
+              <InputDate
+                id="vencimento"
+                label="Vencimento"
+                value={vencimento}
+                handleOnChange={(event) => {
+                  setVencimento(event.target.value);
+                }}
+              />
               <InputText
                 id="codigo"
                 label="Codigo"

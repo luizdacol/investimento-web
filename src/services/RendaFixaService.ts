@@ -10,7 +10,6 @@ const getOperacoes = async () => {
     return {
       ...op,
       data: new Date(op.data),
-      dataVencimento: new Date(op.dataVencimento),
       precoTotal: +op.precoTotal,
       precoUnitario: +op.precoUnitario,
       quantidade: +op.quantidade,
@@ -28,7 +27,6 @@ const getOperacaoById = async (id: number) => {
   return {
     ...op,
     data: new Date(op.data),
-    dataVencimento: new Date(op.dataVencimento),
     precoTotal: +op.precoTotal,
     precoUnitario: +op.precoUnitario,
     quantidade: +op.quantidade,
@@ -81,6 +79,7 @@ const getAtivos = async (): Promise<AtivoRendaFixa[]> => {
       id: +ativo.id,
       titulo: ativo.titulo,
       tipo: ativo.tipo,
+      dataVencimento: new Date(ativo.dataVencimento),
       cotacao: +ativo.cotacao,
       dataHoraCotacao: new Date(ativo.dataHoraCotacao),
       codigo: ativo.codigo,
@@ -99,6 +98,7 @@ const getAtivoById = async (id: number) => {
     id: +ativo.id,
     titulo: ativo.titulo,
     tipo: ativo.tipo,
+    dataVencimento: new Date(ativo.dataVencimento),
     cotacao: +ativo.cotacao,
     dataHoraCotacao: new Date(ativo.dataHoraCotacao),
     codigo: ativo.codigo,

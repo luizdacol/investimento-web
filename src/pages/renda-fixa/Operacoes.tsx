@@ -32,11 +32,6 @@ function Operacoes() {
       content: (op: OperacaoRendaFixa) => formatPriceCell(op.precoTotal),
     },
     { field: "rentabilidade", title: "Rentabilidade" },
-    {
-      field: "dataVencimento",
-      title: "Vencimento",
-      content: (op: OperacaoRendaFixa) => formatDateCell(op.dataVencimento),
-    },
     { field: "tipoOperacao", title: "Tipo Operação" },
     { field: "tipoAtivo", title: "Tipo do Ativo" },
     {
