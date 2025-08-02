@@ -21,6 +21,7 @@ import AtivosCriptomoedas from "./pages/criptomoedas/Ativos";
 import FormAtivosCriptomoedas from "./pages/criptomoedas/FormAtivos";
 import OperacoesCriptomoedas from "./pages/criptomoedas/Operacoes";
 import FormOperacoesCriptomoedas from "./pages/criptomoedas/FormOperacoes";
+import LucrosPrejuizos from "./pages/renda-variavel/LucrosPrejuizos";
 
 function App() {
   return (
@@ -54,6 +55,10 @@ function App() {
         <Route
           path="/renda-variavel/form-proventos"
           element={<FormProventos />}
+        ></Route>
+        <Route
+          path="/renda-variavel/lucros-prejuizos"
+          element={<LucrosPrejuizos />}
         ></Route>
         <Route
           path="/renda-variavel/taxas-impostos"
