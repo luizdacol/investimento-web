@@ -1,4 +1,5 @@
 import { AtivoRendaVariavel } from "../interfaces/AtivoRendaVariavel";
+import { LucrosPrejuizosRendaVariavel } from "../interfaces/LucrosPrejuizosRendaVariavel";
 import { OperacaoRendaVariavel } from "../interfaces/Operacao";
 import { PaginatedDto } from "../interfaces/PaginatedDto";
 import { ProventoRendaVariavel } from "../interfaces/Provento";
@@ -327,6 +328,29 @@ const getTaxasImpostos = async (): Promise<TaxasImpostosRendaVariavel[]> => {
   });
 };
 
+const getLucrosPrejuizos = async (): Promise<
+  LucrosPrejuizosRendaVariavel[]
+> => {
+  const lucrosPrejuizos = await AxiosClient.get<LucrosPrejuizosRendaVariavel[]>(
+    `v1/renda-variavel/operacoes/lucros-prejuizos`
+  );
+  return lucrosPrejuizos.data.map((item) => {
+    return {
+      classeAtivo: item.classeAtivo,
+      saldoParaCompensar: item.saldoParaCompensar,
+      balancoMensal: item.balancoMensal.map((balanco) => {
+        return {
+          id: +balanco.id,
+          data: new Date(balanco.data),
+          prejuizo: +balanco.prejuizo,
+          lucro: +balanco.lucro,
+          prejuizoCompensado: +balanco.prejuizoCompensado,
+        };
+      }),
+    } as LucrosPrejuizosRendaVariavel;
+  });
+};
+
 export const RendaVariavelService = {
   getOperacoes,
   getProventos,
@@ -344,4 +368,5 @@ export const RendaVariavelService = {
   deleteOperacao,
   deleteProvento,
   deleteAtivo,
+  getLucrosPrejuizos,
 };
