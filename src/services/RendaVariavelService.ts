@@ -351,6 +351,21 @@ const getLucrosPrejuizos = async (): Promise<
   });
 };
 
+const updatePrejuizoCompensado = async (
+  id: number,
+  prejuizoCompensado: number
+): Promise<Boolean> => {
+  const response = await AxiosClient.patch(
+    `v1/renda-variavel/operacoes/lucros-prejuizos/${id}`,
+    { prejuizoCompensado }
+  );
+  if (response.status === 200) return true;
+  else {
+    console.log("Erro ao atualizar prejuizo compensado: ", response.data);
+    return false;
+  }
+};
+
 export const RendaVariavelService = {
   getOperacoes,
   getProventos,
@@ -369,4 +384,5 @@ export const RendaVariavelService = {
   deleteProvento,
   deleteAtivo,
   getLucrosPrejuizos,
+  updatePrejuizoCompensado,
 };

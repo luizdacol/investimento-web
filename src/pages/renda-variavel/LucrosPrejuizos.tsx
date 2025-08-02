@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { RendaVariavelService } from "../../services/RendaVariavelService";
 import { LucrosPrejuizosRendaVariavel } from "../../interfaces/LucrosPrejuizosRendaVariavel";
 import TabelaLucrosPrejuizos from "../../components/LucrosPrejuizos/TabelaLucrosPrejuizos";
+import { ToastContainer, toast } from "react-toastify";
 
 function LucrosPrejuizos() {
   const [lucrosPrejuizos, setLucrosPrejuizos] = useState<
@@ -19,6 +20,22 @@ function LucrosPrejuizos() {
     fetchData();
   }, [reload]);
 
+  const updatePrejuizoCompensado = async (
+    id: number,
+    prejuizoCompensado: number
+  ) => {
+    const status = await RendaVariavelService.updatePrejuizoCompensado(
+      id,
+      prejuizoCompensado
+    );
+    if (status) {
+      toast.success("Compensação atualizada com sucesso");
+    } else {
+      toast.error("Erro ao atualizar compensação");
+    }
+    setReload(true);
+  };
+
   return (
     <>
       <main className="h-full">
@@ -29,8 +46,23 @@ function LucrosPrejuizos() {
             classeAtivo={lp.classeAtivo}
             saldoParaCompensar={lp.saldoParaCompensar}
             balancoMensal={lp.balancoMensal}
+            handlePrejuizoCompensado={updatePrejuizoCompensado}
           />
         ))}
+        <div>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={1500}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        </div>
       </main>
     </>
   );

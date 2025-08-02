@@ -1,18 +1,24 @@
 import { BalancoMensal } from "../../interfaces/LucrosPrejuizosRendaVariavel";
-import { Column } from "primereact/column";
+import { Column, ColumnEditorOptions } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { useTable } from "../../hooks/useTable";
+import { InputNumber } from "primereact/inputnumber";
 
 type LucrosPrejuizosProps = {
   classeAtivo: string;
   saldoParaCompensar: number;
   balancoMensal: BalancoMensal[];
+  handlePrejuizoCompensado: (
+    id: number,
+    prejuizoCompensado: number
+  ) => Promise<void>;
 };
 
 function TabelaLucrosPrejuizos({
   classeAtivo,
   saldoParaCompensar,
   balancoMensal,
+  handlePrejuizoCompensado,
 }: LucrosPrejuizosProps) {
   const { formatDateCell, formatPriceCell, formatHeader } = useTable();
 
@@ -37,15 +43,36 @@ function TabelaLucrosPrejuizos({
     },
     {
       field: "prejuizoCompensado",
-      title: "Compensado",
+      title: "Prejuizo Compensado",
       content: (balanco: BalancoMensal) =>
         formatPriceCell(balanco.prejuizoCompensado),
-    },
-    {
-      field: undefined,
-      title: "Ações",
+      editor: (options: ColumnEditorOptions) => priceEditor(options),
+      onCellEditComplete: (e: any) => updatePrejuizoCompensado(e),
     },
   ];
+
+  const updatePrejuizoCompensado = (e: any) => {
+    let { newRowData, rowData, originalEvent: event } = e;
+    if (newRowData.prejuizoCompensado !== rowData.prejuizoCompensado) {
+      handlePrejuizoCompensado(newRowData.id, newRowData.prejuizoCompensado);
+    }
+    event.preventDefault();
+  };
+
+  const priceEditor = (options: any) => {
+    return (
+      <InputNumber
+        value={options.value}
+        onValueChange={(e) => options.editorCallback(e.value)}
+        onKeyDown={(e) => e.stopPropagation()}
+        size={5}
+        inputClassName="text-xs h-[1rem]"
+        mode="currency"
+        currency="BRL"
+        locale="pt-BR"
+      />
+    );
+  };
 
   return (
     <>
@@ -58,6 +85,7 @@ function TabelaLucrosPrejuizos({
             stripedRows
             sortMode="multiple"
             removableSort
+            editMode="cell"
             paginatorTemplate={{
               layout:
                 "FirstPageLink PageLinks LastPageLink RowsPerPageDropdown",
@@ -74,6 +102,8 @@ function TabelaLucrosPrejuizos({
                 headerClassName="text-sm"
                 align="center"
                 bodyClassName="text-xs"
+                onCellEditComplete={column.onCellEditComplete}
+                editor={column.editor}
               />
             ))}
           </DataTable>
