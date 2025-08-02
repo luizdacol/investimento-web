@@ -7,6 +7,7 @@ import {
   faFile,
   faChartPie,
   faUserSecret,
+  faScaleBalanced,
 } from "@fortawesome/free-solid-svg-icons";
 
 export type menu = {
@@ -53,6 +54,11 @@ const initMenu: menu[] = [
     label: "Proventos",
     path: "/renda-variavel/proventos",
     icon: faDollarSign,
+  },
+  {
+    label: "Lucros e Prejuizos",
+    path: "/renda-variavel/lucros-prejuizos",
+    icon: faScaleBalanced,
   },
   {
     label: "Taxas e Impostos",
