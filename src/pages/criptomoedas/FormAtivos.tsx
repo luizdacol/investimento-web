@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Button from "../../components/Form/Button";
 import { useFormat } from "../../hooks/useFormat";
 import { AtivoCriptomoeda } from "../../interfaces/Criptomoedas/AtivoCriptomoeda";
+import { ClasseAtivo } from "../../data/enums";
+import SelectList from "../../components/Form/SelectList";
 
 function FormAtivos() {
   const [urlParams] = useSearchParams();
@@ -15,6 +17,7 @@ function FormAtivos() {
 
   const [id, setId] = useState<string>();
   const [nome, setNome] = useState<string>("");
+  const [classe, setClasse] = useState<string>(ClasseAtivo.CRIPTOMOEDA);
   const [codigo, setCodigo] = useState<string>("");
   const [cotacao, setCotacao] = useState<string>("");
 
@@ -22,12 +25,13 @@ function FormAtivos() {
     const fetchAtivo = async () => {
       const ativoId = urlParams.get("id");
       if (!!ativoId) {
-        const operacao = await CriptomoedaService.getAtivoById(+ativoId);
+        const ativo = await CriptomoedaService.getAtivoById(+ativoId);
 
         setId(ativoId);
-        setCotacao(operacao.cotacao.toString());
-        setNome(operacao.nome);
-        setCodigo(operacao.codigo);
+        setCotacao(ativo.cotacao.toString());
+        setNome(ativo.nome);
+        setClasse(ativo.classe);
+        setCodigo(ativo.codigo);
       }
     };
 
@@ -40,6 +44,7 @@ function FormAtivos() {
     const ativo: Omit<AtivoCriptomoeda, "id"> = {
       codigo: codigo,
       nome: nome,
+      classe: classe,
       cotacao: formatPrice(cotacao),
       dataHoraCotacao: new Date(),
     };
@@ -77,6 +82,15 @@ function FormAtivos() {
                   setNome(event.target.value);
                 }}
               />
+              <SelectList
+                id="classe"
+                label="Classe"
+                value={classe}
+                options={Object.values(ClasseAtivo)}
+                handleOnChange={(event) => {
+                  setClasse(event.target.value);
+                }}
+              ></SelectList>
               <InputText
                 id="cotacao"
                 label="Cotação"

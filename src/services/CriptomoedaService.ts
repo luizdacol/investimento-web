@@ -122,6 +122,7 @@ const getAtivos = async (): Promise<AtivoCriptomoeda[]> => {
       id: +ativo.id,
       codigo: ativo.codigo,
       nome: ativo.nome,
+      classe: ativo.classe,
       cotacao: +ativo.cotacao,
       dataHoraCotacao: new Date(ativo.dataHoraCotacao),
     } as AtivoCriptomoeda;
@@ -139,6 +140,7 @@ const getAtivoById = async (id: number) => {
     id: +ativo.id,
     codigo: ativo.codigo,
     nome: ativo.nome,
+    classe: ativo.classe,
     cotacao: +ativo.cotacao,
     dataHoraCotacao: new Date(ativo.dataHoraCotacao),
   } as AtivoCriptomoeda;

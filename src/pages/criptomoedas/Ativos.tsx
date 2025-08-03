@@ -15,6 +15,7 @@ function Ativos() {
   const columns = [
     { field: "codigo", title: "Codigo" },
     { field: "nome", title: "Nome" },
+    { field: "classe", title: "Classe" },
     {
       field: "cotacao",
       title: "Cotação",
