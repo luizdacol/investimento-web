@@ -9,6 +9,7 @@ import Button from "../../components/Form/Button";
 import { AtivoRendaFixa } from "../../interfaces/AtivoRendaFixa";
 import { useFormat } from "../../hooks/useFormat";
 import InputDate from "../../components/Form/InputDate";
+import { ClasseAtivo, TipoAtivoRF } from "../../data/enums";
 
 function FormAtivos() {
   const [urlParams] = useSearchParams();
@@ -18,7 +19,8 @@ function FormAtivos() {
   const [id, setId] = useState<string>();
   const [titulo, setTitulo] = useState<string>("");
   const [codigo, setCodigo] = useState<string>("");
-  const [tipo, setTipo] = useState<string>("TesouroDireto");
+  const [tipo, setTipo] = useState<string>(TipoAtivoRF.TESOURO_DIRETO);
+  const [classe, setClasse] = useState<string>(ClasseAtivo.TESOURO_DIRETO);
   const [cotacao, setCotacao] = useState<string>("");
   const [vencimento, setVencimento] = useState<string>("");
 
@@ -33,6 +35,7 @@ function FormAtivos() {
         setTitulo(operacao.titulo);
         setVencimento(operacao.dataVencimento.toISOString().substring(0, 10));
         setTipo(operacao.tipo);
+        setClasse(operacao.classe);
         setCodigo(operacao.codigo);
       }
     };
@@ -46,6 +49,7 @@ function FormAtivos() {
     const ativo: Omit<AtivoRendaFixa, "id"> = {
       titulo: titulo,
       tipo: tipo,
+      classe: classe,
       dataVencimento: new Date(vencimento),
       codigo: codigo,
       cotacao: formatPrice(cotacao),
@@ -92,6 +96,15 @@ function FormAtivos() {
                 options={["TesouroDireto", "CDB"]}
                 handleOnChange={(event) => {
                   setTipo(event.target.value);
+                }}
+              ></SelectList>
+              <SelectList
+                id="classe"
+                label="Classe"
+                value={classe}
+                options={Object.values(ClasseAtivo)}
+                handleOnChange={(event) => {
+                  setClasse(event.target.value);
                 }}
               ></SelectList>
               <InputDate

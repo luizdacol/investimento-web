@@ -5,5 +5,6 @@ export interface AtivoRendaFixa {
   cotacao: number;
   dataHoraCotacao: Date;
   tipo: string;
+  classe: string;
   codigo: string;
 }
