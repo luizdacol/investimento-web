@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Button from "../../components/Form/Button";
 import { AtivoRendaVariavel } from "../../interfaces/AtivoRendaVariavel";
+import { ClasseAtivo, TipoAtivoRV } from "../../data/enums";
 
 function FormAtivos() {
   const [urlParams] = useSearchParams();
@@ -15,18 +16,20 @@ function FormAtivos() {
   const [id, setId] = useState<string>();
   const [ticker, setTicker] = useState<string>("");
   const [segmento, setSegmento] = useState<string>("");
-  const [tipo, setTipo] = useState<string>("Ação");
+  const [tipo, setTipo] = useState<string>(TipoAtivoRV.ACAO);
+  const [classe, setClasse] = useState<string>(ClasseAtivo.BOLSA_BRASILEIRA);
 
   useEffect(() => {
     const fetchAtivo = async () => {
       const ativoId = urlParams.get("id");
       if (!!ativoId) {
-        const operacao = await RendaVariavelService.getAtivoById(+ativoId);
+        const ativo = await RendaVariavelService.getAtivoById(+ativoId);
 
         setId(ativoId);
-        setTicker(operacao.ticker);
-        setTipo(operacao.tipo);
-        setSegmento(operacao.segmento);
+        setTicker(ativo.ticker);
+        setTipo(ativo.tipo);
+        setClasse(ativo.classe);
+        setSegmento(ativo.segmento);
       }
     };
 
@@ -42,6 +45,7 @@ function FormAtivos() {
     > = {
       ticker: ticker,
       tipo: tipo,
+      classe: classe,
       segmento: segmento,
     };
 
@@ -77,6 +81,15 @@ function FormAtivos() {
                 options={["Ação", "BDR", "FII", "ETF"]}
                 handleOnChange={(event) => {
                   setTipo(event.target.value);
+                }}
+              ></SelectList>
+              <SelectList
+                id="classe"
+                label="Classe"
+                value={classe}
+                options={Object.values(ClasseAtivo)}
+                handleOnChange={(event) => {
+                  setClasse(event.target.value);
                 }}
               ></SelectList>
               <InputText

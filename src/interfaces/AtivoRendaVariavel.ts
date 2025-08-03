@@ -4,5 +4,6 @@ export interface AtivoRendaVariavel {
   cotacao: number;
   dataHoraCotacao: Date;
   tipo: string;
+  classe: string;
   segmento: string;
 }
