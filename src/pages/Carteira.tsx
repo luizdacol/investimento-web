@@ -8,6 +8,7 @@ import { faCalendar, faRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ConsolidadoCriptomoeda from "../components/Carteira/ConsolidadoCriptomoeda";
 import { CarteiraCriptomoeda } from "../interfaces/Criptomoedas/CarteiraCriptomoeda";
+import { ClasseAtivo } from "../data/enums";
 
 function Carteira() {
   const [priceUpdated, setPriceUpdated] = useState<boolean>(true);
@@ -16,6 +17,13 @@ function Carteira() {
   const [carteira, setCarteira] = useState<
     (CarteiraRendaFixa | CarteiraRendaVariavel | CarteiraCriptomoeda)[]
   >([]);
+  const classesRendaVariavel = [
+    ClasseAtivo.BOLSA_AMERICANA,
+    ClasseAtivo.BOLSA_BRASILEIRA,
+    ClasseAtivo.FUNDO_IMOBILIARIO,
+  ];
+  const classesRendaFixa = [ClasseAtivo.CDB, ClasseAtivo.TESOURO_DIRETO];
+  const classesCripto = [ClasseAtivo.CRIPTOMOEDA];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,34 +76,34 @@ function Carteira() {
       </div>
       <main className="h-full">
         {/* Main Content */}
-        <ConsolidadoRendaVariavel
-          title="Ação"
-          initialCarteira={carteira as CarteiraRendaVariavel[]}
-        />
-        <ConsolidadoRendaVariavel
-          title="FII"
-          initialCarteira={carteira as CarteiraRendaVariavel[]}
-        />
-        <ConsolidadoRendaVariavel
-          title="ETF"
-          initialCarteira={carteira as CarteiraRendaVariavel[]}
-        />
-        <ConsolidadoRendaVariavel
-          title="BDR"
-          initialCarteira={carteira as CarteiraRendaVariavel[]}
-        />
-        <ConsolidadoRendaFixa
-          title="Tesouro Direto"
-          initialCarteira={carteira as CarteiraRendaFixa[]}
-        />
-        <ConsolidadoRendaFixa
-          title="CDB"
-          initialCarteira={carteira as CarteiraRendaFixa[]}
-        />
-        <ConsolidadoCriptomoeda
-          title="Criptomoeda"
-          initialCarteira={carteira as CarteiraCriptomoeda[]}
-        />
+        {Object.values(ClasseAtivo).map((classe) => {
+          const carteiraDaClasse = carteira.filter(
+            (c) => c.classeAtivo === classe
+          );
+
+          if (classesRendaVariavel.includes(classe)) {
+            return (
+              <ConsolidadoRendaVariavel
+                title={classe}
+                initialCarteira={carteiraDaClasse as CarteiraRendaVariavel[]}
+              />
+            );
+          } else if (classesRendaFixa.includes(classe)) {
+            return (
+              <ConsolidadoRendaFixa
+                title={classe}
+                initialCarteira={carteiraDaClasse as CarteiraRendaFixa[]}
+              />
+            );
+          } else if (classesCripto.includes(classe)) {
+            return (
+              <ConsolidadoCriptomoeda
+                title={classe}
+                initialCarteira={carteiraDaClasse as CarteiraCriptomoeda[]}
+              />
+            );
+          }
+        })}
       </main>
     </>
   );

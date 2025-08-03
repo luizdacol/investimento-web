@@ -14,9 +14,7 @@ function ConsolidadoCriptomoeda({ initialCarteira, title }: CarteiraProps) {
   const { formatPriceCell, formatPercentCell, formatHeader } = useTable();
 
   useEffect(() => {
-    setCarteira(
-      initialCarteira.filter((c) => c.tipoAtivo === title.replaceAll(" ", ""))
-    );
+    setCarteira(initialCarteira);
   }, [initialCarteira]);
 
   const columns = [
