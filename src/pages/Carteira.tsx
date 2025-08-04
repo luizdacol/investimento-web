@@ -103,6 +103,8 @@ function Carteira() {
               />
             );
           }
+
+          return <></>;
         })}
       </main>
     </>
