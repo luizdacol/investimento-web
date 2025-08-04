@@ -19,35 +19,35 @@ function ConsolidadoRendaFixa({ initialCarteira, title }: CarteiraProps) {
 
   const columns = [
     { field: "titulo", title: "Titulo" },
-    { field: "quantidade", title: "Quantidade" },
+    { field: "quantidade", title: "Posição" },
+    {
+      field: "composicao",
+      title: "% Classe",
+      content: (op: CarteiraRendaFixa) => formatPercentCell(op.composicao),
+    },
+    {
+      field: "composicaoTotal",
+      title: "% Carteira",
+      content: (op: CarteiraRendaFixa) => formatPercentCell(op.composicaoTotal),
+    },
     {
       field: "precoMedio",
       title: "Preço Médio",
       content: (op: CarteiraRendaFixa) => formatPriceCell(op.precoMedio),
     },
     {
-      field: "precoMercado",
-      title: "Preço Mercado",
-      content: (op: CarteiraRendaFixa) => formatPriceCell(op.precoMercado),
-    },
-    {
-      field: "composicao",
-      title: "Composição",
-      content: (op: CarteiraRendaFixa) => formatPercentCell(op.composicao),
-    },
-    {
-      field: "composicaoTotal",
-      title: "Composição Carteira",
-      content: (op: CarteiraRendaFixa) => formatPercentCell(op.composicaoTotal),
-    },
-    {
       field: "precoMedioTotal",
-      title: "Preço Médio Total",
+      title: "Total Investido",
       content: (op: CarteiraRendaFixa) => formatPriceCell(op.precoMedioTotal),
     },
     {
+      field: "precoMercado",
+      title: "Preço Atual",
+      content: (op: CarteiraRendaFixa) => formatPriceCell(op.precoMercado),
+    },
+    {
       field: "precoMercadoTotal",
-      title: "Preço Mercado Total",
+      title: "Total Atualizado",
       content: (op: CarteiraRendaFixa) => formatPriceCell(op.precoMercadoTotal),
     },
     {

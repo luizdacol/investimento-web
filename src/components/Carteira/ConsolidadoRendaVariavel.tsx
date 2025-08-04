@@ -20,37 +20,38 @@ function ConsolidadoRendaVariavel({ initialCarteira, title }: CarteiraProps) {
 
   const columns = [
     { field: "ticker", title: "Ticker" },
-    { field: "quantidade", title: "Quantidade" },
+    { field: "tipoAtivo", title: "Tipo" },
+    { field: "quantidade", title: "Posição" },
+    {
+      field: "composicao",
+      title: "% Classe",
+      content: (op: CarteiraRendaVariavel) => formatPercentCell(op.composicao),
+    },
+    {
+      field: "composicaoTotal",
+      title: "% Carteira",
+      content: (op: CarteiraRendaVariavel) =>
+        formatPercentCell(op.composicaoTotal),
+    },
     {
       field: "precoMedio",
       title: "Preço Médio",
       content: (op: CarteiraRendaVariavel) => formatPriceCell(op.precoMedio),
     },
     {
-      field: "precoMercado",
-      title: "Preço Mercado",
-      content: (op: CarteiraRendaVariavel) => formatPriceCell(op.precoMercado),
-    },
-    {
-      field: "composicao",
-      title: "Composição",
-      content: (op: CarteiraRendaVariavel) => formatPercentCell(op.composicao),
-    },
-    {
-      field: "composicaoTotal",
-      title: "Composição Carteira",
-      content: (op: CarteiraRendaVariavel) =>
-        formatPercentCell(op.composicaoTotal),
-    },
-    {
       field: "precoMedioTotal",
-      title: "Preço Médio Total",
+      title: "Total Investido",
       content: (op: CarteiraRendaVariavel) =>
         formatPriceCell(op.precoMedioTotal),
     },
     {
+      field: "precoMercado",
+      title: "Preço Atual",
+      content: (op: CarteiraRendaVariavel) => formatPriceCell(op.precoMercado),
+    },
+    {
       field: "precoMercadoTotal",
-      title: "Preço Mercado Total",
+      title: "Total Atualizado",
       content: (op: CarteiraRendaVariavel) =>
         formatPriceCell(op.precoMercadoTotal),
     },
@@ -61,14 +62,8 @@ function ConsolidadoRendaVariavel({ initialCarteira, title }: CarteiraProps) {
         formatPercentCell(op.variacao, true),
     },
     {
-      field: "dividendosRecebidos",
-      title: "Dividendos Recebidos",
-      content: (op: CarteiraRendaVariavel) =>
-        formatPriceCell(op.dividendosRecebidos),
-    },
-    {
       field: "yieldOnCost",
-      title: "Yield On Cost",
+      title: "YOC",
       content: (op: CarteiraRendaVariavel) =>
         formatPercentCell(op.yieldOnCost, true),
     },
