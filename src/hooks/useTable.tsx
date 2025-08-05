@@ -20,14 +20,15 @@ export const useTable = () => {
   const formatPriceCell = (
     price: number,
     title?: string,
-    enableTextColor: boolean = false
+    enableTextColor: boolean = false,
+    currency: string = "BRL"
   ) => {
     const defineCurrencyOptions = (
       maximumFractionDigits: number = 2
     ): Intl.NumberFormatOptions => {
       return {
         style: "currency",
-        currency: "BRL",
+        currency: currency,
         minimumFractionDigits: 2,
         maximumFractionDigits,
       };

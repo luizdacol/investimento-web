@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { useTable } from "../../hooks/useTable";
+import { ClasseAtivo } from "../../data/enums";
 
 function Ativos() {
   const [ativos, setAtivos] = useState<AtivoRendaVariavel[]>([]);
@@ -22,7 +23,9 @@ function Ativos() {
       content: (ativo: AtivoRendaVariavel) =>
         formatPriceCell(
           ativo.cotacao,
-          ativo.dataHoraCotacao.toLocaleString("pt-BR")
+          ativo.dataHoraCotacao.toLocaleString("pt-BR"),
+          false,
+          ativo.classe === ClasseAtivo.BOLSA_AMERICANA ? "USD" : "BRL"
         ),
     },
     { field: "segmento", title: "Segmento" },

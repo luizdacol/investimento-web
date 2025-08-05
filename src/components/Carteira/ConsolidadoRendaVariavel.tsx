@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { useTable } from "../../hooks/useTable";
+import { ClasseAtivo } from "../../data/enums";
 
 type CarteiraProps = {
   title: string;
@@ -36,24 +37,46 @@ function ConsolidadoRendaVariavel({ initialCarteira, title }: CarteiraProps) {
     {
       field: "precoMedio",
       title: "Preço Médio",
-      content: (op: CarteiraRendaVariavel) => formatPriceCell(op.precoMedio),
+      content: (op: CarteiraRendaVariavel) =>
+        formatPriceCell(
+          op.precoMedio,
+          undefined,
+          false,
+          op.classeAtivo === ClasseAtivo.BOLSA_AMERICANA ? "USD" : "BRL"
+        ),
     },
     {
       field: "precoMedioTotal",
       title: "Total Investido",
       content: (op: CarteiraRendaVariavel) =>
-        formatPriceCell(op.precoMedioTotal),
+        formatPriceCell(
+          op.precoMedioTotal,
+          undefined,
+          false,
+          op.classeAtivo === ClasseAtivo.BOLSA_AMERICANA ? "USD" : "BRL"
+        ),
     },
     {
       field: "precoMercado",
       title: "Preço Atual",
-      content: (op: CarteiraRendaVariavel) => formatPriceCell(op.precoMercado),
+      content: (op: CarteiraRendaVariavel) =>
+        formatPriceCell(
+          op.precoMercado,
+          undefined,
+          false,
+          op.classeAtivo === ClasseAtivo.BOLSA_AMERICANA ? "USD" : "BRL"
+        ),
     },
     {
       field: "precoMercadoTotal",
       title: "Total Atualizado",
       content: (op: CarteiraRendaVariavel) =>
-        formatPriceCell(op.precoMercadoTotal),
+        formatPriceCell(
+          op.precoMercadoTotal,
+          undefined,
+          false,
+          op.classeAtivo === ClasseAtivo.BOLSA_AMERICANA ? "USD" : "BRL"
+        ),
     },
     {
       field: "variacao",
