@@ -62,7 +62,7 @@ function ConsolidadoRendaVariavel({ initialCarteira, title }: CarteiraProps) {
       content: (op: CarteiraRendaVariavel) =>
         formatPriceCell(
           op.precoMercado,
-          undefined,
+          op.dataHoraCotacao.toLocaleString("pt-BR"),
           false,
           op.classeAtivo === ClasseAtivo.BOLSA_AMERICANA ? "USD" : "BRL"
         ),

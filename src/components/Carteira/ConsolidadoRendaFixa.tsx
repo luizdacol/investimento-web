@@ -43,7 +43,11 @@ function ConsolidadoRendaFixa({ initialCarteira, title }: CarteiraProps) {
     {
       field: "precoMercado",
       title: "Preço Atual",
-      content: (op: CarteiraRendaFixa) => formatPriceCell(op.precoMercado),
+      content: (op: CarteiraRendaFixa) =>
+        formatPriceCell(
+          op.precoMercado,
+          op.dataHoraCotacao.toLocaleString("pt-BR")
+        ),
     },
     {
       field: "precoMercadoTotal",

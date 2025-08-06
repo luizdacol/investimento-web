@@ -44,7 +44,11 @@ function ConsolidadoCriptomoeda({ initialCarteira, title }: CarteiraProps) {
     {
       field: "precoMercado",
       title: "Preço Atual",
-      content: (op: CarteiraCriptomoeda) => formatPriceCell(op.precoMercado),
+      content: (op: CarteiraCriptomoeda) =>
+        formatPriceCell(
+          op.precoMercado,
+          op.dataHoraCotacao.toLocaleString("pt-BR")
+        ),
     },
     {
       field: "precoMercadoTotal",
