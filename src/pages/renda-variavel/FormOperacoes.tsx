@@ -54,7 +54,7 @@ function FormOperacoes() {
       data: new Date(data),
       ticker: ticker,
       precoUnitario: formatPrice(precoUnitario),
-      quantidade: +quantidade,
+      quantidade: formatPrice(quantidade),
       tipoOperacao: tipoOperacao,
     };
 
