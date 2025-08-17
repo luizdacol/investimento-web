@@ -34,7 +34,7 @@ export const useTable = () => {
       };
     };
 
-    let textColor = "text-gray-900";
+    let textColor = "";
     if (!!enableTextColor) {
       textColor = price >= 0 ? "text-green-600" : "text-red-600";
     }
@@ -77,7 +77,7 @@ export const useTable = () => {
     value: number,
     enableTextColor: boolean = false
   ) => {
-    let textColor = "text-gray-900";
+    let textColor = "";
     if (!!enableTextColor) {
       textColor = value >= 0 ? "text-green-600" : "text-red-600";
     }
