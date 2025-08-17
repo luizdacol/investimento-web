@@ -106,7 +106,12 @@ function Operacoes() {
   useEffect(() => {
     const fetchData = async () => {
       const [data, ativos] = await Promise.all([
-        RendaVariavelService.getOperacoes(take, skip, sortBy, filterBy),
+        RendaVariavelService.getOperacoes(
+          take,
+          skip,
+          sortBy.length === 0 ? ["data|DESC"] : sortBy,
+          filterBy
+        ),
         RendaVariavelService.getAtivos(),
       ]);
 
