@@ -44,19 +44,16 @@ const ComposicaoPieChart = ({ categoria }: Props) => {
   };
 
   const COLORS = [
-    "#FF8042",
-    "#0088FE",
-    "#FFBB28",
-    "#00C49F",
-    "#E74C3C",
-    "#A569BD",
-    "#C8E309",
-    "#979A9A",
-    "#7B241C",
-    "#154360",
-    "#145A32",
-    "#7E5109",
-    "#490066",
+    "#ff0000",
+    "#ff8000",
+    "#ffbf00",
+    "#ffff00",
+    "#00ff00",
+    "#009900",
+    "#00bfff",
+    "#0040ff",
+    "#8000ff",
+    "#ff00ff",
   ];
 
   return (
