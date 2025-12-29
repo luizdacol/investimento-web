@@ -1,3 +1,4 @@
+import { TotalCarteira } from "../interfaces/Carteira/TotalCarteira";
 import { CarteiraRendaFixa } from "../interfaces/CarteiraRendaFixa";
 import { CarteiraRendaVariavel } from "../interfaces/CarteiraRendaVariavel";
 import { AxiosClient } from "../providers/AxiosClient";
@@ -41,7 +42,16 @@ const updatePrices = async (): Promise<boolean> => {
   return cotacaoAtualizada.some((c) => !!c);
 };
 
+const getTotalCarteira = async (): Promise<TotalCarteira> => {
+  const totalCarteira = await AxiosClient.get<TotalCarteira>(
+    "v1/carteira/total-consolidado"
+  );
+
+  return totalCarteira.data;
+};
+
 export const CarteiraService = {
   getConsolidado,
+  getTotalCarteira,
   updatePrices,
 };
