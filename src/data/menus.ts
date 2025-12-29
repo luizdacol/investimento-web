@@ -8,6 +8,7 @@ import {
   faChartPie,
   faUserSecret,
   faScaleBalanced,
+  faEye,
 } from "@fortawesome/free-solid-svg-icons";
 
 export type menu = {
@@ -19,6 +20,11 @@ export type menu = {
 };
 
 const initMenu: menu[] = [
+  {
+    label: "Visao Geral",
+    path: "/visao-geral",
+    icon: faEye,
+  },
   {
     label: "Carteira",
     path: "/",

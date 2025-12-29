@@ -22,12 +22,14 @@ import FormAtivosCriptomoedas from "./pages/criptomoedas/FormAtivos";
 import OperacoesCriptomoedas from "./pages/criptomoedas/Operacoes";
 import FormOperacoesCriptomoedas from "./pages/criptomoedas/FormOperacoes";
 import LucrosPrejuizos from "./pages/renda-variavel/LucrosPrejuizos";
+import VisaoGeral from "./pages/carteira/VisaoGeral";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<AuthLayout />}>
         <Route path="/" element={<Carteira />}></Route>
+        <Route path="/visao-geral" element={<VisaoGeral />}></Route>
         {/* Rotas graficos */}
         <Route
           path="/graficos/composicao-carteira"
