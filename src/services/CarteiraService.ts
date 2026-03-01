@@ -1,10 +1,10 @@
-import { TotalCarteira } from "../interfaces/Carteira/TotalCarteira";
+import { Patrimonio } from "../interfaces/Carteira/Patrimonio";
 import { CarteiraRendaFixa } from "../interfaces/CarteiraRendaFixa";
 import { CarteiraRendaVariavel } from "../interfaces/CarteiraRendaVariavel";
 import { AxiosClient } from "../providers/AxiosClient";
 
 const getConsolidado = async (
-  dataDeCorte: Date
+  dataDeCorte: Date,
 ): Promise<(CarteiraRendaVariavel | CarteiraRendaFixa)[]> => {
   let carteira = await AxiosClient.get<
     (CarteiraRendaVariavel | CarteiraRendaFixa)[]
@@ -24,13 +24,13 @@ const getConsolidado = async (
 
 const updatePrices = async (): Promise<boolean> => {
   const cotacaoRendaFixa = AxiosClient.patch<boolean>(
-    "v1/renda-fixa/ativos/update-prices"
+    "v1/renda-fixa/ativos/update-prices",
   );
   const cotacaoRendaVariavel = AxiosClient.patch<boolean>(
-    "v1/renda-variavel/ativos/update-prices"
+    "v1/renda-variavel/ativos/update-prices",
   );
   const cotacaoCriptomoedas = AxiosClient.patch<boolean>(
-    "v1/criptomoedas/ativos/update-prices"
+    "v1/criptomoedas/ativos/update-prices",
   );
 
   const cotacaoAtualizada = await Promise.all([
@@ -42,16 +42,16 @@ const updatePrices = async (): Promise<boolean> => {
   return cotacaoAtualizada.some((c) => !!c);
 };
 
-const getTotalCarteira = async (): Promise<TotalCarteira> => {
-  const totalCarteira = await AxiosClient.get<TotalCarteira>(
-    "v1/carteira/total-consolidado"
+const getPatrimonio = async (): Promise<Patrimonio> => {
+  const patrimonio = await AxiosClient.get<Patrimonio>(
+    "v1/carteira/patrimonio",
   );
 
-  return totalCarteira.data;
+  return patrimonio.data;
 };
 
 export const CarteiraService = {
   getConsolidado,
-  getTotalCarteira,
+  getPatrimonio,
   updatePrices,
 };
